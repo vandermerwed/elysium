@@ -1,4 +1,4 @@
-[![Content Wind](https://content-wind.nuxt.space/cover.jpg)](https://content-wind.nuxt.space)
+<!-- [![Content Wind](https://content-wind.nuxt.space/cover.jpg)](https://content-wind.nuxt.space) -->
 
 # Elysium: A Theme inspired by Content Wind
 
@@ -7,7 +7,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 [![Nuxt Studio][nuxt-studio-src]][nuxt-studio-href]
-[![Volta][volta-src]][volta-href]
+<!-- [![Volta][volta-src]][volta-href] -->
 
 A personal website theme powered by [Nuxt Content](https://content.nuxtjs.org), [TailwindCSS](https://tailwindcss.com), [Iconify](https://iconify.design) and [Vue components](https://vuejs.org).
 
@@ -39,33 +39,29 @@ npx nuxi@latest init -t themes/content-wind my-website
 
 Then follow the instructions and you are ready to go :rocket:
 
-### Online
-
-Get started online on https://nuxt.studio/themes/content-wind
-
 ## License 📎
 
 [MIT License](./LICENSE)
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/content-wind/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/content-wind
+[npm-version-src]: https://img.shields.io/npm/v/elysium/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/elysium
 
-[npm-downloads-src]: https://img.shields.io/npm/dt/content-wind.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/content-wind
+[npm-downloads-src]: https://img.shields.io/npm/dt/elysium.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/elysium
 
-[license-src]: https://img.shields.io/github/license/Atinux/content-wind.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-src]: https://img.shields.io/github/license/vandermerwed/elysium.svg?style=flat&colorA=18181B&colorB=28CF8D
 [license-href]: https://github.com/vandermerwed/elysium/blob/main/LICENSE
 
 [use-template-src]: https://img.shields.io/badge/⚡️-Use%20this%20template-28CF8D?style=flat&colorA=18181B&colorB=28CF8D
 [use-template-href]: https://github.com/vandermerwed/elysium-template/generate
 
 [nuxt-studio-src]: https://img.shields.io/badge/Open%20in%20Nuxt%20Studio-18181B?&logo=nuxt.js&logoColor=3BB5EC
-[nuxt-studio-href]: https://nuxt.studio/templates/content-wind
+[nuxt-studio-href]: https://nuxt.studio/templates/elysium
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?&logo=nuxt.js
 [nuxt-href]: https://nuxt.com
 
-[volta-src]: https://user-images.githubusercontent.com/904724/209143798-32345f6c-3cf8-4e06-9659-f4ace4a6acde.svg
-[volta-href]: https://volta.net/Atinux/content-wind?utm_source=readme_atinux_content_wind
+<!-- [volta-src]: https://user-images.githubusercontent.com/904724/209143798-32345f6c-3cf8-4e06-9659-f4ace4a6acde.svg
+[volta-href]: https://volta.net/Atinux/content-wind?utm_source=readme_atinux_content_wind -->
 TODO
