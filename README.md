@@ -6,7 +6,7 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
-[![Nuxt Studio][nuxt-studio-src]][nuxt-studio-href]
+<!-- [![Nuxt Studio][nuxt-studio-src]][nuxt-studio-href] -->
 <!-- [![Volta][volta-src]][volta-href] -->
 
 A personal website theme powered by [Nuxt Content](https://content.nuxtjs.org), [TailwindCSS](https://tailwindcss.com), [Iconify](https://iconify.design) and [Vue components](https://vuejs.org).
