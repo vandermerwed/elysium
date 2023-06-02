@@ -50,14 +50,14 @@ Then follow the instructions and you are ready to go :rocket:
 [npm-downloads-src]: https://img.shields.io/npm/dt/nuxt-content-elysium.svg?style=flat&colorA=18181B&colorB=28CF8D
 [npm-downloads-href]: https://npmjs.com/package/nuxt-content-elysium
 
-[license-src]: https://img.shields.io/github/license/vandermerwed/nuxt-content-elysium.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-src]: https://img.shields.io/github/license/vandermerwed/elysium.svg?style=flat&colorA=18181B&colorB=28CF8D
 [license-href]: https://github.com/vandermerwed/elysium/blob/main/LICENSE
 
 [use-template-src]: https://img.shields.io/badge/⚡️-Use%20this%20template-28CF8D?style=flat&colorA=18181B&colorB=28CF8D
 [use-template-href]: https://github.com/vandermerwed/elysium-template/generate
 
-[nuxt-studio-src]: https://img.shields.io/badge/Open%20in%20Nuxt%20Studio-18181B?&logo=nuxt.js&logoColor=3BB5EC
-[nuxt-studio-href]: https://nuxt.studio/templates/elysium
+<!-- [nuxt-studio-src]: https://img.shields.io/badge/Open%20in%20Nuxt%20Studio-18181B?&logo=nuxt.js&logoColor=3BB5EC
+[nuxt-studio-href]: https://nuxt.studio/templates/elysium -->
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?&logo=nuxt.js
 [nuxt-href]: https://nuxt.com
