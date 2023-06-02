@@ -11,9 +11,9 @@
 
 A personal website theme powered by [Nuxt Content](https://content.nuxtjs.org), [TailwindCSS](https://tailwindcss.com), [Iconify](https://iconify.design) and [Vue components](https://vuejs.org).
 
-- 📖&nbsp; [Demo & Docs](https://content-wind.nuxt.space)
+<!-- - TODO: 📖&nbsp; [Demo & Docs](https://content-wind.nuxt.space) -->
 - 🕹&nbsp; [Play online](https://githubblitz.com/vandermerwed/elysium/tree/main/.demo)
-- 👀&nbsp; [Demo video](https://twitter.com/Atinux/status/1578505586979012608) TODO
+<!-- - TODO: 👀&nbsp; [Demo video](https://twitter.com/Atinux/status/1578505586979012608) -->
 
 ## Features
 
@@ -27,7 +27,7 @@ A personal website theme powered by [Nuxt Content](https://content.nuxtjs.org), 
 - Highlight code blocks with [Shiki](https://shiki.matsu.io)
 - Create Vue components and use them in Markdown
 - Deploy on any Node or Static hosting: GH Pages, Vercel, Netlify, Heroku, etc.
-- Live edit on [Nuxt Studio](https://nuxt.studio)
+<!-- - Live edit on [Nuxt Studio](https://nuxt.studio) -->
 
 ## Get started
 
@@ -44,6 +44,7 @@ Then follow the instructions and you are ready to go :rocket:
 [MIT License](./LICENSE)
 
 <!-- Badges -->
+<!-- TODO: Fix up badges -->
 [npm-version-src]: https://img.shields.io/npm/v/nuxt-content-elysium/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
 [npm-version-href]: https://npmjs.com/package/nuxt-content-elysium
 
@@ -64,4 +65,3 @@ Then follow the instructions and you are ready to go :rocket:
 
 <!-- [volta-src]: https://user-images.githubusercontent.com/904724/209143798-32345f6c-3cf8-4e06-9659-f4ace4a6acde.svg
 [volta-href]: https://volta.net/Atinux/content-wind?utm_source=readme_atinux_content_wind -->
-TODO
