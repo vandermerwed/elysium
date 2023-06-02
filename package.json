@@ -1,5 +1,5 @@
 {
-  "name": "elysium",
+  "name": "nuxt-content-elysium",
   "private": false,
   "version": "0.0.1",
   "main": "nuxt.config.ts",
