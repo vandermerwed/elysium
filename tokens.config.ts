@@ -5,6 +5,7 @@ import colors from 'tailwindcss/colors'
 export default defineTheme({
   typography: {
     color: {
+      primary: colors.orange,
       secondary: colors.gray
     }
   },

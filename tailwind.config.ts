@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.gray
+        primary: colors.zinc
       }
     }
   }

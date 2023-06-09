@@ -3,13 +3,14 @@ const { cover } = useAppConfig()
 </script>
 
 <template>
-  <div class="sm:pt-6 sm:pb-10">
-    <Html lang="en" />
+  <div class="h-screen">
+    <Html lang="en"></Html>
     <Meta property="og:image" :content="cover" />
     <Meta name="twitter:card" content="summary_large_image" />
     <AppLoadingBar />
     <AppNavbar />
-    <slot />
+    <slot></slot>
+    <AppFooter />
   </div>
 </template>
 
