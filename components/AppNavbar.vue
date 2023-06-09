@@ -15,10 +15,11 @@ const appConfig = useAppConfig()
         :key="link._path"
         :to="link._path"
         active-class="font-bold"
-        class="ml-6"
+        class="ml-6 dark:text-primary-100 hover:text-primary-700 dark:hover:text-primary-300"
       >
         {{ link.title }}
       </NuxtLink>
+      <ColorModeSwitch class="ml-5 dark:text-primary-100 hover:text-primary-700 dark:hover:text-primary-300" />
     </div>
   </div>
 </template>

@@ -3,7 +3,8 @@ export default defineAppConfig({
   cover: '/cover.jpg',
   socials: {
     twitter: 'vandermerwed',
-    github: 'vandermerwed/elysium'
+    github: 'vandermerwed',
+    linkedin: 'vandermerwed'
   },
   prose: {
     h1: {
