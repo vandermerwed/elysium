@@ -14,11 +14,17 @@ export default defineNuxtSchema({
        * */
       twitter: '',
       /**
-       * Github repository name
+       * Github porfile name
        * @example 'nuxt/framework'
        * @studioIcon simple-icons:github
        * */
-      github: ''
+      github: '',
+      /**
+       * LinkedIn porfile name
+       * @example 'vandermerwed'
+       * @studioIcon simple-icons:linkedin
+       * */
+      linkedin: ''
     }
   }
 })

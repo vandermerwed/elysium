@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
+    'dayjs-nuxt',
     'nuxt-icon',
     'nuxt-config-schema',
     '@nuxthq/studio'
