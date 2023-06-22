@@ -2189,11 +2189,6 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
-  /acorn@8.8.2:
-    resolution: {integrity: sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-
   /acorn@8.9.0:
     resolution: {integrity: sha512-jaVNAFBHNLXspO543WnNNPZFRtavh3skAkITqD0/2aeMkKZTN+254PyhwxFYrk3vQ1xfY+2wbesJMs/JC8/PwQ==}
     engines: {node: '>=0.4.0'}
@@ -6733,7 +6728,7 @@ packages:
     dependencies:
       '@unocss/reset': 0.50.8
       '@volar/vue-language-core': 1.4.4
-      acorn: 8.8.2
+      acorn: 8.9.0
       chroma-js: 2.4.2
       consola: 3.1.0
       csstype: 3.1.2
@@ -6742,7 +6737,7 @@ packages:
       nanoid: 4.0.2
       ohash: 1.1.2
       paneer: 0.1.0
-      pathe: 1.1.0
+      pathe: 1.1.1
       postcss-custom-properties: 13.1.4(postcss@8.4.24)
       postcss-dark-theme-class: 0.7.3(postcss@8.4.24)
       postcss-nested: 6.0.1(postcss@8.4.24)
@@ -9529,6 +9524,8 @@ packages:
       - '@azure/keyvault-secrets'
       - '@azure/storage-blob'
       - '@planetscale/database'
+      - '@upstash/redis'
+      - '@vercel/kv'
       - '@vue/composition-api'
       - bufferutil
       - postcss
