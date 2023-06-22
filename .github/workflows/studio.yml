@@ -5,7 +5,7 @@ run-name: studio nuxt build
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["disable"] # Change back to `main` to enable
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -69,6 +69,7 @@ jobs:
         run: ${{ steps.pkgman.outputs.package_manager }} nuxi generate
         env:
           NUXT_PUBLIC_STUDIO_API_URL: https://api.nuxt.studio
+          NUXT_PUBLIC_STUDIO_TOKENS: ba5268b41d8579f684efb9f3bc28d6003d201eba19a45e49d227c44eec77f16b
 
       - name: Add .nojekyll file
         run: touch .output/public/.nojekyll
