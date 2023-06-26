@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    // import dayjs from 'dayjs';
+    import dayjs from 'dayjs';
     import { ref, defineProps, onBeforeUnmount } from 'vue'
     
     const props = defineProps({
@@ -13,18 +13,27 @@
         },
         digits: {
             type: Number,
-            default: 0
+            default: 2
         }
     });
 
-    // const { date, unit, digits } = toRefs(props);
+    const time = ref(0);
 
     
+    // return continuosly updated time since the date provided in "date" prop
+    const interval = setInterval(() => {
+        time.value = dayjs().diff(dayjs(props.date), props.unit, true).toFixed(props.digits);
+    }, 100);
 
-    // const { currentTime } = getTimeSince(props.date, props.unit, props.digits);
+
+    // stop the interval when the component is unmounted
+    onBeforeUnmount(() => {
+        clearInterval(interval);
+    });
+
 
 </script>
 
 <template>
-    <span>{{ date }}</span>
+    <span>{{ time }}</span>
 </template>
