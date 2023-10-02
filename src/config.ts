@@ -3,7 +3,7 @@ import type { Site, SocialObjects } from "./types";
 export const SITE: Site = {
   website: "https://danielvandermerwe.com/",
   author: "Daniel van der Merwe",
-  desc: "Embark on a cosmic journey with Captain Daniel aboard the Elysium. Navigate through sectors dedicated to productivity, technology, and the quantified self, as we traverse life's many challenges and discoveries.",
+  desc: "Embark on a cosmic journey with Captain Daniel aboard the Elysium. Navigate through sectors dedicated to productivity, technology, and the quantified self, as he traverses life's many challenges and discoveries.",
   title: "Elysium Chronicles",
   ogImage: "og.png",
   lightAndDarkMode: true,
