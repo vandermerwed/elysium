@@ -1,0 +1,11 @@
+{
+  "showUnsupportedFiles": true,
+  "userIgnoreFilters": [
+    "/_schemas.ts",
+    "/config.ts"
+  ],
+  "promptDelete": false,
+  "newLinkFormat": "relative",
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "./"
+}

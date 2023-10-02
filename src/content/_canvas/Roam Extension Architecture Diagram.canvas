@@ -1,0 +1,12 @@
+{
+	"nodes":[
+		{"id":"1e33b7f56313cea4","x":-1000,"y":30,"width":400,"height":490,"type":"file","file":"projects/roam-research-toggl-extension.md"},
+		{"id":"52198568dc97db49","x":-520,"y":30,"width":352,"height":220,"type":"text","text":"[[projects/roam-research-toggl-extension|Roam Research Toggl Extension]]\n- Start Timer\n- Stop Timer\n- Update Timer\n"},
+		{"id":"acc634ee60cfa0b1","x":20,"y":30,"width":332,"height":490,"type":"text","text":"[[Roam Research RescueTime Extension]]\n- Focus Time Start Trigger\n- Focus Time End Trigger\n- Send to Highlights\n\nSome sort of mechanism that asks after a focus session what you got done and what you still need to do etc. and rate the session. Then post this data to Roam (and RescueTime highlights?)\n- Update current Toggl entry in Roam with information that was entered **if** toggl extension is installed and configured"},
+		{"id":"cb2b35a5e3c028e3","x":-520,"y":460,"width":352,"height":300,"type":"text","text":"[[Roam Research Exist Extension]]"},
+		{"id":"d34eab7740b1cbc4","x":20,"y":600,"width":332,"height":160,"type":"text","text":"[[Roam Research Interstitial Journal Extension]]"}
+	],
+	"edges":[
+		{"id":"eb2b3ae603928e9f","fromNode":"acc634ee60cfa0b1","fromSide":"left","toNode":"52198568dc97db49","toSide":"bottom","label":"update timer on focus session end"}
+	]
+}

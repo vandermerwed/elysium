@@ -1,0 +1,115 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Tag from "@components/Tag.astro";
+import Datetime from "@components/Datetime";
+import { type CollectionEntry } from "astro:content";
+import { slugifyStr } from "@utils/slugify";
+import slugify from "@utils/slugify";
+import Card from "@components/Card";
+import Hr from "@components/Hr.astro";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const locals = Astro.locals;
+// console.log("locals: ", locals);
+
+const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type } =
+  post.data;
+
+const { Content } = await post.render();
+
+const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
+const ogUrl = new URL(ogImageUrl ?? `notes/${post.slug}.png`, Astro.url.origin).href;
+---
+
+<Layout
+  title={title}
+  author={author}
+  description={description}
+  ogImage={ogUrl}
+  canonicalURL={canonicalURL}
+>
+  <Header />
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+    <button
+      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
+      onclick="history.back()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg"
+        ><path
+          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+        ></path>
+      </svg><span>Go back</span>
+    </button>
+  </div>
+  <main id="main-content">
+    <h1 transition:name={postSlug} class="post-title">{title}</h1>
+    <Datetime datetime={pubDatetime} size="lg" className="my-2" />
+    <ul class="tags-container">
+      {tags.map((tag: string) => <Tag name={slugifyStr(tag)} />)}
+    </ul>
+    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+      {
+        type === "fragment" &&
+        <div class="fragment-notice">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-alert-triangle scale-100 inline-block h-6 w-6"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 9v4"></path>
+            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
+            <path d="M12 16h.01"></path>
+          </svg>
+          <span class="italic"><b>Fragment in Flux:</b> This fragment is currently unstable and undergoing updates.</span>
+        </div>
+      }
+      <Content />
+    </article>
+    { (locals.incomingLinks && locals.incomingLinks.length > 0) &&
+      <div class="incoming-links-container">
+        <Hr noPadding />
+        <br>
+        <h2>Incoming Links</h2>
+        <ul>
+          {
+            locals.incomingLinks.map(({ data }) => (
+              <Card href={`/notes/${slugify(data)}`} frontmatter={data} />
+            ))
+          }
+        </ul>
+      </div>
+    }
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+  .post-title {
+    @apply text-4xl font-semibold text-skin-accent;
+  }
+  .tags-container {
+    @apply my-0;
+  }
+  .incoming-links-container {
+    @apply my-8;
+  }
+  .fragment-notice {
+    @apply flex text-skin-base items-center space-x-2 opacity-80 pb-4 rounded-md;
+  }
+</style>
