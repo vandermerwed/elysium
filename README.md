@@ -5,7 +5,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 
-Elysium is a opinionated, minimal, responsive, accessible and SEO-friendly Astro blog theme. This theme is inspired by and based on [Astro Paper](https://github.com/satnaing/astro-paper).
+Elysium is an opinionated, minimal, responsive, accessible and SEO-friendly Astro personal website and digital garden theme. This theme is inspired by and based on [Astro Paper](https://github.com/satnaing/astro-paper).
 
 This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured.
 

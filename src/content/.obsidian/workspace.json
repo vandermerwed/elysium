@@ -28,7 +28,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/patterns.md",
+                "file": "projects/astro-elysium.md",
                 "mode": "source",
                 "source": false
               }
@@ -101,7 +101,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/patterns.md",
+                "file": "projects/astro-elysium.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "blog/patterns.md",
+                "file": "projects/astro-elysium.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -141,7 +141,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/patterns.md"
+                "file": "projects/astro-elysium.md"
               }
             }
           }
@@ -163,8 +163,8 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
-    "blog/year-of-legacy-foundations-2024.md",
     "blog/patterns.md",
+    "blog/year-of-legacy-foundations-2024.md",
     "blog/life-is-a-role-playing-game.md",
     "blog/personal-retreats.md",
     "blog/affirmation-bedtime-blueprint.md",

@@ -13,7 +13,3 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * **about page:** the first TimeSince component was breaking <p> tag rendering causing styling issues ([0446f34](https://github.com/vandermerwed/elysium/commit/0446f344dfb8b8aaf36571a5df81cc8c87dd253e))
-
-# Changelog
-
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
