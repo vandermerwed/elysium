@@ -4,7 +4,7 @@ export default () => {
   return (
     <div
       style={{
-        background: "#fefbfb",
+        background: "#252426",
         width: "100%",
         height: "100%",
         display: "flex",
@@ -17,8 +17,8 @@ export default () => {
           position: "absolute",
           top: "-1px",
           right: "-1px",
-          border: "4px solid #000",
-          background: "#ecebeb",
+          border: "4px solid #f0f6f8",
+          background: "#0c0b0c",
           opacity: "0.9",
           borderRadius: "4px",
           display: "flex",
@@ -31,8 +31,8 @@ export default () => {
 
       <div
         style={{
-          border: "4px solid #000",
-          background: "#fefbfb",
+          border: "4px solid #f0f6f8",
+          background: "#252426",
           borderRadius: "4px",
           display: "flex",
           justifyContent: "center",
@@ -61,6 +61,7 @@ export default () => {
               maxHeight: "90%",
               overflow: "hidden",
               textAlign: "center",
+              color: "#f0f6f8"
             }}
           >
             <p style={{ fontSize: 72, fontWeight: "bold" }}>{SITE.title}</p>
@@ -76,7 +77,7 @@ export default () => {
               fontSize: 28,
             }}
           >
-            <span style={{ overflow: "hidden", fontWeight: "bold" }}>
+            <span style={{ overflow: "hidden", fontWeight: "bold", color: "#e85425" }}>
               {new URL(SITE.website).hostname}
             </span>
           </div>

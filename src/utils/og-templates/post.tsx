@@ -5,7 +5,7 @@ export default (post: CollectionEntry<"blog">) => {
   return (
     <div
       style={{
-        background: "#fefbfb",
+        background: "#252426",
         width: "100%",
         height: "100%",
         display: "flex",
@@ -18,8 +18,8 @@ export default (post: CollectionEntry<"blog">) => {
           position: "absolute",
           top: "-1px",
           right: "-1px",
-          border: "4px solid #000",
-          background: "#ecebeb",
+          border: "4px solid #f0f6f8",
+          background: "#0c0b0c",
           opacity: "0.9",
           borderRadius: "4px",
           display: "flex",
@@ -32,8 +32,8 @@ export default (post: CollectionEntry<"blog">) => {
 
       <div
         style={{
-          border: "4px solid #000",
-          background: "#fefbfb",
+          border: "4px solid #f0f6f8",
+          background: "#252426",
           borderRadius: "4px",
           display: "flex",
           justifyContent: "center",
@@ -50,6 +50,7 @@ export default (post: CollectionEntry<"blog">) => {
             margin: "20px",
             width: "90%",
             height: "90%",
+            color: "#f0f6f8"
           }}
         >
           <p
@@ -68,7 +69,7 @@ export default (post: CollectionEntry<"blog">) => {
               justifyContent: "space-between",
               width: "100%",
               marginBottom: "8px",
-              fontSize: 28,
+              fontSize: 28
             }}
           >
             <span>
@@ -80,7 +81,7 @@ export default (post: CollectionEntry<"blog">) => {
               >
                 "
               </span>
-              <span style={{ overflow: "hidden", fontWeight: "bold" }}>
+              <span style={{ overflow: "hidden", fontWeight: "bold", color: "#e85425" }}>
                 {post.data.author}
               </span>
             </span>
