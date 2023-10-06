@@ -28,7 +28,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/astro-elysium.md",
+                "file": "blog/year-of-legacy-foundations-2024.md",
                 "mode": "source",
                 "source": false
               }
@@ -101,7 +101,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "projects/astro-elysium.md",
+                "file": "blog/year-of-legacy-foundations-2024.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "projects/astro-elysium.md",
+                "file": "blog/year-of-legacy-foundations-2024.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -141,7 +141,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "projects/astro-elysium.md"
+                "file": "blog/year-of-legacy-foundations-2024.md"
               }
             }
           }
@@ -163,6 +163,7 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "projects/astro-elysium.md",
     "blog/patterns.md",
     "blog/year-of-legacy-foundations-2024.md",
     "blog/life-is-a-role-playing-game.md",
@@ -180,7 +181,6 @@
     "blog/interstitial-journaling.md",
     "blog/jacob-pretorius.md",
     "blog/home-base-protocols.md",
-    "projects/astro-elysium.md",
     "_examples/astro-paper-2.md",
     "blog/trigger-action-planning.md",
     "_templates/theme.md",

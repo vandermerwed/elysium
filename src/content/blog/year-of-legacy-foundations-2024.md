@@ -14,7 +14,9 @@ type: theme
 I’ve had many yearly themes over the years but always shied away to write about them in public. My good friend [Jacob Pretorius](https://jcpretorius.com/) has been on my case about posting my updates for years now. I think I finally owe him and, more importantly, myself this public update.
 
 Who knows, maybe this resonates with someone else out there in the vast void of cyberspace.
+### Why Update in September?
 
+You might be wondering why I've chosen September for this update, especially when many people typically set their yearly themes in January. There's a simple reason: I find the "new year, new me" January hype to be more of a distraction than a motivation. September, which is also my birth month, gives me the space to reflect on the past year and strategize for the coming one without getting caught up in the global "resolution rush." Plus, it's close enough to the end of the year that I can start laying the groundwork for the months ahead.
 ## Table of contents
 
 ## My past ~~Themes~~ Campaigns:
