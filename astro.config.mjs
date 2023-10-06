@@ -25,7 +25,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkToc,
-      // remarkModifiedTime,
+      remarkModifiedTime,
       [remarkCollapse, {
         test: "Table of contents"
       }],
