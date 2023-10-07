@@ -7,7 +7,6 @@ draft: false
 tags:
   - metaphor
   - productivity
-ogImage: ""
 description: A different perspective on personal growth, skill acquisition, and self-discovery. Navigate your life's quests and challenges, just like a video game character, while managing your 'inventory' of time, energy, and emotions.
 type: fragment
 ---
