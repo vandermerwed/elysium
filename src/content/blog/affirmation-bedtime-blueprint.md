@@ -6,6 +6,8 @@ featured: false
 draft: false
 tags:
   - fragment
+  - affirmation
+  - protocol
 ogImage: ""
 description: "\rA set of nightly affirmations for kids focusing on dreams, resilience, and parental love. Perfect for bedtime bonding and motivation."
 type: fragment

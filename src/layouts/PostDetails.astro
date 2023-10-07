@@ -22,7 +22,7 @@ const { post } = Astro.props;
 const locals = Astro.locals;
 // console.log("locals: ", locals);
 
-const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type } =
+const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type, readingTime } =
   post.data;
 
 const { Content, remarkPluginFrontmatter } = await post.render();
@@ -57,7 +57,7 @@ const ogUrl = new URL(ogImageUrl ?? `notes/${post.slug}.png`, Astro.url.origin).
   </div>
   <main id="main-content">
     <h1 transition:name={postSlug} class="post-title">{title}</h1>
-    <Datetime datetime={pubDatetime} size="lg" className="my-2" />
+    <Datetime datetime={pubDatetime} size="lg" className="my-2" readingTime={readingTime} />
     <ul class="tags-container">
       {tags.map((tag: string) => <Tag name={slugifyStr(tag)} />)}
     </ul>
