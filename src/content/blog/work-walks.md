@@ -6,7 +6,6 @@ featured: false
 draft: false
 tags:
   - fragment
-ogImage: ""
 description: A timed walk to think through a specific work related problem.
 type: fragment
 ---

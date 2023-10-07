@@ -6,7 +6,6 @@ featured: false
 draft: false
 tags:
   - habits
-ogImage: ""
 description: Habit stacking as a mindful approach to enhancing daily routines. Thoughtfully integrate new habits one step at a time, with examples to guide your journey toward greater well-being and productivity.
 type: fragment
 ---

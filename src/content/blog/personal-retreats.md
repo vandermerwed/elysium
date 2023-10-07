@@ -6,7 +6,6 @@ featured: false
 draft: false
 tags:
   - fragment
-ogImage: ""
 description: A short structured getaway to gain the focus and clarity you need to achieve your goals.
 type: fragment
 ---

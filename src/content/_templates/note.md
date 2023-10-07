@@ -6,7 +6,6 @@ featured: true
 draft: true
 tags:
   - ???
-ogImage: ""
 description: Some description text.
 type: note
 ---

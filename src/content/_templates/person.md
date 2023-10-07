@@ -6,7 +6,6 @@ featured: false
 draft: true
 tags:
   - person
-ogImage: ""
 description: Some description text.
 type: person
 ---

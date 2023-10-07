@@ -6,7 +6,6 @@ featured: false
 draft: false
 tags:
   - habits
-ogImage: ""
 description: A mindful guide to achieving balanced productivity and sustained well-being.
 type: fragment
 ---

@@ -7,7 +7,6 @@ draft: true
 tags:
   - protocol
   - loadout
-ogImage: ""
 description: Some description text.
 type: loadout
 ---

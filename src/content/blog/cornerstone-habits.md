@@ -7,7 +7,6 @@ draft: true
 tags:
   - habits
   - protocol
-ogImage: ""
 description: Some description text.
 type: fragment
 ---
