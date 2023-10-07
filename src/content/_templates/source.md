@@ -6,7 +6,6 @@ featured: false
 draft: true
 tags:
   - source
-ogImage: ""
 description: Some description text.
 type: source
 ---

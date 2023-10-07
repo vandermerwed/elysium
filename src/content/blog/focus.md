@@ -6,7 +6,6 @@ featured: false
 draft: true
 tags:
   - protocol
-ogImage: ""
 description: Some description text.
 type: fragment
 ---

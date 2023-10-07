@@ -6,7 +6,6 @@ featured: true
 draft: true
 tags:
   - review
-ogImage: ""
 description: Some description text.
 type: review
 ---
