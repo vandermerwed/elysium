@@ -6,9 +6,10 @@ export interface Props {
   className?: string;
   showTime?: boolean;
   style?: "published" | "modified";
+  readingTime?: string; 
 }
 
-export default function Datetime({ datetime, size = "sm", className, showTime = false, style = "published" }: Props) {
+export default function Datetime({ datetime, size = "sm", className, showTime = false, style = "published", readingTime }: Props) {
   const isPublished = style === "published";
 
   return (
@@ -37,7 +38,7 @@ export default function Datetime({ datetime, size = "sm", className, showTime = 
         </svg>
       )}
       <span className={`italic ${size === "sm" ? "text-sm" : "text-base"}`}>
-        {isPublished ? "Published:" : "Updated:"} <FormattedDatetime datetime={datetime} showTime={showTime} />
+        {isPublished ? "Published:" : "Updated:"} <FormattedDatetime datetime={datetime} showTime={showTime} /> {isPublished && readingTime ? <span>({readingTime})</span> : <></>}
       </span>
     </div>
   );

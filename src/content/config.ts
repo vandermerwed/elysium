@@ -21,7 +21,9 @@ const blog = defineCollection({
       description: z.string(),
       canonicalURL: z.string().optional(),
       type: z.string().optional(),
-      status: z.string().optional()
+      status: z.string().optional(),
+      lastModified: z.date().optional(),
+      readingTime: z.string().optional()
     }),
 });
 

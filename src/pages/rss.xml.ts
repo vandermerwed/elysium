@@ -9,7 +9,7 @@ const parser = new MarkdownIt();
 
 export async function GET() {
   const posts = await getCollection("blog");
-  const sortedPosts = getSortedPosts(posts);
+  const sortedPosts = await getSortedPosts(posts);
   return rss({
     title: SITE.title,
     description: SITE.desc,

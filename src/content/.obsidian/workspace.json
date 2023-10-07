@@ -28,7 +28,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/year-of-legacy-foundations-2024.md",
+                "file": "blog/cornerstone-habits.md",
                 "mode": "source",
                 "source": false
               }
@@ -101,7 +101,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/year-of-legacy-foundations-2024.md",
+                "file": "blog/cornerstone-habits.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "blog/year-of-legacy-foundations-2024.md",
+                "file": "blog/cornerstone-habits.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -141,7 +141,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/year-of-legacy-foundations-2024.md"
+                "file": "blog/cornerstone-habits.md"
               }
             }
           }
@@ -163,14 +163,14 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "blog/affirmation-bedtime-blueprint.md",
+    "blog/affirmation-balanced-purpose.md",
+    "blog/year-of-legacy-foundations-2024.md",
     "projects/astro-elysium.md",
     "blog/patterns.md",
-    "blog/year-of-legacy-foundations-2024.md",
     "blog/life-is-a-role-playing-game.md",
     "blog/personal-retreats.md",
-    "blog/affirmation-bedtime-blueprint.md",
     "blog/loadout-update-q3-2023.md",
-    "blog/affirmation-balanced-purpose.md",
     "blog/icons.md",
     "blog/maintaining-averages.md",
     "blog/habit-stacking.md",
