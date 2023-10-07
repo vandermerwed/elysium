@@ -3,11 +3,12 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 lastModified: "2023-10-01 17:00:00"
 ---
+
 import TimeSince from "@components/TimeSince.tsx";
 
 <div style="display:none">
-    {/* TODO: Dirty hack to get around the fact that the first instance of a loaded component has script and style tags that break <p> tag rendering. Need to figure out a fix for this. */}
-    <TimeSince client:visible startDateTime="1988-09-30 07:50:00" />
+  {/* TODO: Dirty hack to get around the fact that the first instance of a loaded component has script and style tags that break <p> tag rendering. Need to figure out a fix for this. */}
+  <TimeSince client:visible startDateTime="1988-09-30 07:50:00" />
 </div>
 
 I'm Daniel van der Merwe, and I'm precisely <TimeSince client:load startDateTime="1988-09-30 07:50:00" /> years old.
@@ -21,7 +22,16 @@ Whenever I'm able to make some time I'm always tinkering on something related to
 
 I've toned down my social media usage a lot, but you can still catch me most reliably on [Twitter](https://twitter.com/vandermerwed).
 
+<div class="mx-auto shadow-xl shadow-orange-500/20 transition-shadow hover:shadow-orange-500/40 sm:w-2/3">
+  <img
+    src="/assets/about-2.jpg"
+    class="mx-auto"
+    alt="ai generated illustration of a man in a space suit"
+  />
+</div>
+
 ## My Guiding Principles
+
 My life and work are deeply influenced by the following set of core principles.
 
 - **Add Value**: Be it a piece of code or a piece of advice, it has to enrich someone's life or process.
@@ -31,6 +41,7 @@ My life and work are deeply influenced by the following set of core principles.
 - **Cognitive Awareness**: I strive to recognize and understand [cognitive biases](https://en.m.wikipedia.org/wiki/List_of_cognitive_biases), both in myself and in the world around me.
 
 ## About This Website
+
 This website is my little corner of the internet where I share my thoughts, ideas, and projects. It's also a playground for me to experiment with new technologies and techniques.
 I built it using [Astro](https://astro.build), a new static site builder that I'm very excited about.
 It's a work in progress, so expect to see some changes from time to time. A full write-up on the tech stack and design decisions [can be found here](projects/astro-elysium).

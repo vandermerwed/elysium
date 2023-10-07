@@ -63,7 +63,7 @@ module.exports = {
       mono: ["Rajdhani", "monospace"],
       // sans: ["Inter", "sans-serif"],
       sans: ["Roboto", "sans-serif"],
-    }
+    },
     // },
   },
   plugins: [require("@tailwindcss/typography")],

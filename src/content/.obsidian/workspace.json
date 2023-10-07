@@ -28,7 +28,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/cornerstone-habits.md",
+                "file": "blog/spaceship-you.md",
                 "mode": "source",
                 "source": false
               }
@@ -101,7 +101,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/cornerstone-habits.md",
+                "file": "blog/spaceship-you.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "blog/cornerstone-habits.md",
+                "file": "blog/spaceship-you.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -141,7 +141,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/cornerstone-habits.md"
+                "file": "blog/spaceship-you.md"
               }
             }
           }
@@ -163,32 +163,32 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "blog/time.md",
+    "_examples/terminal-development.md",
+    "_examples/tailwind-typography.md",
+    "_examples/predefined-color-schemes.md",
+    "_examples/how-to-update-dependencies.md",
+    "_examples/portfolio-website-development.md",
+    "_examples/how-to-add-an-estimated-reading-time.md",
+    "_examples/astro-paper-2.md",
+    "_examples/dynamic-og-images.md",
+    "_examples/customizing-astropaper-theme-color-schemes.md",
+    "_examples/adding-new-post.md",
+    "blog/patterns.md",
+    "blog/paying-attention.md",
+    "blog/cornerstone-habits.md",
     "blog/affirmation-bedtime-blueprint.md",
     "blog/affirmation-balanced-purpose.md",
     "blog/year-of-legacy-foundations-2024.md",
     "projects/astro-elysium.md",
-    "blog/patterns.md",
     "blog/life-is-a-role-playing-game.md",
     "blog/personal-retreats.md",
     "blog/loadout-update-q3-2023.md",
     "blog/icons.md",
     "blog/maintaining-averages.md",
     "blog/habit-stacking.md",
-    "blog/time.md",
-    "blog/paying-attention.md",
     "blog/loadout-update-q4-2023.md",
     "blog/layered-calendars.md",
-    "blog/interstitial-journaling.md",
-    "blog/jacob-pretorius.md",
-    "blog/home-base-protocols.md",
-    "_examples/astro-paper-2.md",
-    "blog/trigger-action-planning.md",
-    "_templates/theme.md",
-    "blog/work-walks.md",
-    "blog/yearly-themes.md",
-    "blog/spaceship-you.md",
-    "blog/friction.md",
-    "blog/focus.md",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "_canvas",
