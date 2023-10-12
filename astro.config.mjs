@@ -7,6 +7,7 @@ import wikiLinkPlugin from "@portaljs/remark-wiki-link";
 import rehypeExternalLinks from 'rehype-external-links';
 import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs';
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
+import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
 import sitemap from "@astrojs/sitemap";
 
 import mdx from "@astrojs/mdx";
@@ -28,6 +29,7 @@ export default defineConfig({
       remarkToc,
       remarkModifiedTime,
       remarkReadingTime,
+      remarkWordCount,
       [remarkCollapse, {
         test: "Table of contents"
       }],

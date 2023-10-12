@@ -23,7 +23,26 @@ const blog = defineCollection({
       type: z.string().optional(),
       status: z.string().optional(),
       lastModified: z.date().optional(),
-      readingTime: z.string().optional()
+      readingTime: z.string().optional(),
+      wordCount: z.number().default(0),
+      incomingLinks: z
+        .array(
+          z.object({
+            slug: z.string(),
+            frontmatter: z.object({}).optional(),
+          })
+        )
+        .default([]),
+      outgoingLinks: z
+        .array(
+          z.object({
+            slug: z.string(),
+            frontmatter: z.object({}).optional(),
+          })
+        )
+        .default([]),
+      externalLinks: z.array(z.string()).default([]),
+      nexusScore: z.string().default("A0"),
     }),
 });
 

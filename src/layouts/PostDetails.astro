@@ -4,6 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
+import NexusScore from "@components/NexusScore";
 import { type CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import slugify from "@utils/slugify";
@@ -20,9 +21,8 @@ export interface Props {
 
 const { post } = Astro.props;
 const locals = Astro.locals;
-// console.log("locals: ", locals);
 
-const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type, readingTime } =
+const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type, readingTime, incomingLinks, nexusScore } =
   post.data;
 
 const { Content, remarkPluginFrontmatter } = await post.render();
@@ -56,7 +56,10 @@ const ogUrl = new URL(ogImageUrl ?? `notes/${post.slug}.png`, Astro.url.origin).
     </button>
   </div>
   <main id="main-content">
-    <h1 transition:name={postSlug} class="post-title">{title}</h1>
+    <div class="">
+      <NexusScore score={nexusScore} showDescription={true} size="sm" className="m-auto mr-2" />
+      <h1 transition:name={postSlug} class="post-title mt-2">{title}</h1>
+    </div>
     <Datetime datetime={pubDatetime} size="lg" className="my-2" readingTime={readingTime} />
     <ul class="tags-container">
       {tags.map((tag: string) => <Tag name={slugifyStr(tag)} />)}
@@ -87,15 +90,15 @@ const ogUrl = new URL(ogImageUrl ?? `notes/${post.slug}.png`, Astro.url.origin).
       <Content />
     </article>
     <Datetime datetime={lastModified} style="modified" size="lg" className="my-4" />
-    { (locals.incomingLinks && locals.incomingLinks.length > 0) &&
+    { (incomingLinks && incomingLinks.length > 0) &&
       <div class="incoming-links-container">
         <Hr noPadding />
         <br>
         <h2>Incoming Links</h2>
         <ul>
           {
-            locals.incomingLinks.map(({ data }) => (
-              <Card href={`/notes/${slugify(data)}`} frontmatter={data} />
+            incomingLinks.map(({ slug, frontmatter }) => (
+              <Card href={`/notes/${slug}`} frontmatter={frontmatter} />
             ))
           }
         </ul>

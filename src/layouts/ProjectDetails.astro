@@ -16,9 +16,8 @@ export interface Props {
 
 const { post } = Astro.props;
 const locals = Astro.locals;
-// console.log("locals: ", locals);
 
-const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type } =
+const { title, author, postSlug, description, ogImage, canonicalURL, pubDatetime, tags, type, incomingLinks } =
   post.data;
 
 const { Content } = await post.render();
@@ -78,15 +77,15 @@ const ogUrl = new URL(ogImageUrl ?? `notes/${post.slug}.png`, Astro.url.origin).
       }
       <Content />
     </article>
-    { (locals.incomingLinks && locals.incomingLinks.length > 0) &&
+    { (incomingLinks && incomingLinks.length > 0) &&
       <div class="incoming-links-container">
         <Hr noPadding />
         <br>
         <h2>Incoming Links</h2>
         <ul>
           {
-            locals.incomingLinks.map(({ data }) => (
-              <Card href={`/notes/${slugify(data)}`} frontmatter={data} />
+            incomingLinks.map(({ slug, frontmatter }) => (
+              <Card href={`/notes/${slug}`} frontmatter={frontmatter} />
             ))
           }
         </ul>
