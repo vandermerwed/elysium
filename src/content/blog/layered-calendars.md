@@ -8,6 +8,8 @@ tags:
   - fragment
 description: Some description text.
 type: fragment
+aiUsage:
+  - none
 ---
 
 https://www.cnbc.com/2020/09/07/ex-google-designer-created-calendar-overlay-method-to-boost-productivity-how-it-works.html

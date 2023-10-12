@@ -8,5 +8,8 @@ tags:
   - fragment
 description: On yearly themes.
 type: fragment
+aiUsage:
+  - none
 ---
+
 https://www.youtube.com/watch?v=NVGuFdX5guE

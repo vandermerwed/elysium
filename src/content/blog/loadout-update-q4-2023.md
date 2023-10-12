@@ -9,6 +9,8 @@ tags:
   - loadout
 description: Some description text.
 type: loadout
+aiUsage:
+  - none
 ---
 
 Loadout Review - Unequipped - Equipped - Field Testing

@@ -5,6 +5,7 @@
     "tags": "tags",
     "pubDatetime": "datetime",
     "testList": "multitext",
-    "type": "text"
+    "type": "text",
+    "aiUsage": "multitext"
   }
 }

@@ -8,6 +8,8 @@ tags:
   - fragment
 description: On friction
 type: fragment
+aiUsage:
+  - none
 ---
 
 I think one of the biggest hurdles to writing for me as been the friction of my technical brain getting in the way of me publishing on a website

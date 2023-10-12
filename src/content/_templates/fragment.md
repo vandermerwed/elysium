@@ -8,4 +8,11 @@ tags:
   - fragment
 description: Some description text.
 type: fragment
+aiUsage:
+  - none
+  - research
+  - proofreading
+  - code-assistance
+  - system-design
+  - data-analysis
 ---

@@ -8,6 +8,8 @@ tags:
   - fragment
 description: Some description text.
 type: fragment
+aiUsage:
+  - none
 ---
 
 Or alternatively "On Paying Attention"
