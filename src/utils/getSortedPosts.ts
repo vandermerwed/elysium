@@ -1,9 +1,10 @@
 import type { CollectionEntry } from "astro:content";
-import getPostsWithReadTime from "./getPostsWithReadTime";
+import getPostsWithEnrichedFrontmatter from "./getPostsWithEnrichedFrontmatter";
 
 const getSortedPosts = async (posts: CollectionEntry<"blog">[]) => {
   // make sure that this func is async
-  const postsWithRT = await getPostsWithReadTime(posts); // add reading time
+  const postsWithRT = await getPostsWithEnrichedFrontmatter(posts); // add reading time
+
   return postsWithRT
     .filter(({ data }) => !data.draft)
     .sort(
