@@ -83,7 +83,7 @@ The final part of the equation is to then add the absolute link dominance score,
 
 I'm then left with two outputs that form what I'm calling Nexus Score.
 
-- A letter representing link dominance: `H|R|T`
+- A letter representing link dominance: `H / R / T`
 - A number representing a total score of all the other scores
 
 ## Visually Representing Nexus Scores
