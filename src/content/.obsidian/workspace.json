@@ -11,11 +11,14 @@
             "id": "646ce574b4a4090a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "projects/roam-research-extension-toggl.md",
-                "mode": "source",
-                "source": false
+                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
+                "viewState": {
+                  "x": -324,
+                  "y": 395,
+                  "zoom": -0.24951688586629944
+                }
               }
             }
           }
@@ -85,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "projects/roam-research-extension-toggl.md",
+                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +105,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "projects/roam-research-extension-toggl.md",
+                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +128,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "projects/roam-research-extension-toggl.md"
+                "file": "_canvas/Roam Extension Architecture Diagram.canvas"
               }
             }
           }
@@ -149,6 +152,11 @@
   "lastOpenFiles": [
     "projects/astro-elysium.md",
     "projects/roam-research-extension-toggl.md",
+    "blog/loadout-update-2024-q1.md",
+    "blog/loadout-update-2023-q3.md",
+    "projects/roam-research-toggl-extension.md",
+    "blog/loadout-update-q4-2023.md",
+    "blog/loadout-update-q3-2023.md",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "blog/interstitial-journaling.md",
     "_templates/note.md",
@@ -170,10 +178,6 @@
     "blog/work-walks.md",
     "blog/trigger-action-planning.md",
     "blog/time.md",
-    "blog/spaceship-you.md",
-    "blog/personal-retreats.md",
-    "blog/paying-attention.md",
-    "blog/nexus-score.md",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",
     "_examples/test.mdx",

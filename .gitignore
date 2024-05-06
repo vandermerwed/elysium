@@ -33,3 +33,4 @@ pnpm-debug.log*
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+src/content/.obsidian/workspace.json
