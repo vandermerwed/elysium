@@ -7,7 +7,7 @@ export const SITE: Site = {
   title: "Elysium Chronicles",
   ogImage: "og.png",
   lightAndDarkMode: true,
-  postPerPage: 15,
+  postPerPage: 10,
 };
 
 export const LOCALE = ["en-EN"]; // set to [] to use the environment default

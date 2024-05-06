@@ -7,9 +7,15 @@ export interface Props {
   href?: string;
   frontmatter: CollectionEntry<"blog">["data"];
   secHeading?: boolean;
+  showNexusScore?: boolean;
 }
 
-export default function Card({ href, frontmatter, secHeading = true }: Props) {
+export default function Card({
+  href,
+  frontmatter,
+  secHeading = true,
+  showNexusScore = true,
+}: Props) {
   const { title, postSlug, pubDatetime, description, readingTime, nexusScore } =
     frontmatter;
 
@@ -21,7 +27,11 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
   return (
     <li className="my-6">
       <div className="inline-flex">
-        <NexusScore score={nexusScore} className="m-auto mr-2" />
+        {showNexusScore ? (
+          <NexusScore score={nexusScore} className="m-auto mr-2" />
+        ) : (
+          <></>
+        )}
         <a
           href={href}
           className="inline-block text-2xl font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"

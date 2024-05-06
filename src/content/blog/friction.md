@@ -12,7 +12,7 @@ aiUsage:
   - none
 ---
 
-I think one of the biggest hurdles to writing for me as been the friction of my technical brain getting in the way of me publishing on a website
+One of the biggest hurdles to writing for me has been the friction of my technical brain getting in the way of me publishing on a website
 
 - I want things to be well crafted
 - I struggle to write without editing
