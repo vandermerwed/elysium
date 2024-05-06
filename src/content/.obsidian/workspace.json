@@ -8,34 +8,18 @@
         "type": "tabs",
         "children": [
           {
-            "id": "36c7f57d684f8ee4",
-            "type": "leaf",
-            "state": {
-              "type": "canvas",
-              "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
-                "viewState": {
-                  "x": -51.66102322166037,
-                  "y": 449.384066221545,
-                  "zoom": -0.6666666666666667
-                }
-              }
-            }
-          },
-          {
             "id": "646ce574b4a4090a",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/nexus-score.md",
+                "file": "projects/roam-research-extension-toggl.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -101,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/nexus-score.md",
+                "file": "projects/roam-research-extension-toggl.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "blog/nexus-score.md",
+                "file": "projects/roam-research-extension-toggl.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -141,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/nexus-score.md"
+                "file": "projects/roam-research-extension-toggl.md"
               }
             }
           }
@@ -163,37 +147,36 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
-    "_examples/icons.md",
-    "blog/patterns.md",
-    "blog/nexus-score.md",
-    "blog/year-of-legacy-foundations-2024.md",
-    "blog/loadout-update-q3-2023.md",
-    "_examples/how-to-update-dependencies.md",
-    "blog/loadout-update-q4-2023.md",
-    "_examples/adding-new-post.md",
-    "blog/spaceship-you.md",
-    "blog/time.md",
-    "_examples/terminal-development.md",
-    "_examples/tailwind-typography.md",
-    "_examples/predefined-color-schemes.md",
-    "_examples/portfolio-website-development.md",
-    "_examples/how-to-add-an-estimated-reading-time.md",
-    "_examples/astro-paper-2.md",
-    "_examples/dynamic-og-images.md",
-    "_examples/customizing-astropaper-theme-color-schemes.md",
-    "blog/paying-attention.md",
-    "blog/cornerstone-habits.md",
-    "blog/affirmation-bedtime-blueprint.md",
-    "blog/affirmation-balanced-purpose.md",
     "projects/astro-elysium.md",
-    "blog/life-is-a-role-playing-game.md",
-    "blog/personal-retreats.md",
-    "blog/maintaining-averages.md",
-    "blog/year-of-legacy-foundations-2024.mdx",
+    "projects/roam-research-extension-toggl.md",
     "_canvas/Roam Extension Architecture Diagram.canvas",
+    "blog/interstitial-journaling.md",
+    "_templates/note.md",
+    "_templates/loadout.md",
+    "_templates/fragment.md",
+    "_templates/source.md",
+    "_templates/theme.md",
+    "_templates/project.md",
+    "_templates/person.md",
+    "_templates/~review.md",
+    "blog/friction.md",
+    "blog/focus.md",
+    "blog/cornerstone-habits.md",
+    "config.ts",
+    "tags/loadout.md",
+    "tags/theme.md",
+    "blog/yearly-themes.md",
+    "blog/year-of-legacy-foundations-2024.md",
+    "blog/work-walks.md",
+    "blog/trigger-action-planning.md",
+    "blog/time.md",
+    "blog/spaceship-you.md",
+    "blog/personal-retreats.md",
+    "blog/paying-attention.md",
+    "blog/nexus-score.md",
+    "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",
     "_examples/test.mdx",
-    "config.ts",
     "projects",
     "tags",
     "_templates",

@@ -46,7 +46,7 @@ const externalLinkScore =
 const wordCountScore = wordCount * wordCountModifier;
 ```
 
-Pretty self explanatory, but it's worth noting the reason I used logarithmic scoring on the external link is because of posts like [[loadout-update-q3-2023|Loadout Update (2023/Q3)]] . This post has many external links which in normal cases wouldn't be a problem, but in this case it created an abnormal inflation of the score the post was given. So I used logarithmic scoring to apply some diminishing returns on the use of external links.
+Pretty self explanatory, but it's worth noting the reason I used logarithmic scoring on the external link is because of posts like [[loadout-update-2023-q3|Loadout Update (2023/Q3)]] . This post has many external links which in normal cases wouldn't be a problem, but in this case it created an abnormal inflation of the score the post was given. So I used logarithmic scoring to apply some diminishing returns on the use of external links.
 
 In the future I might consider adding different weighting options for different post types but for now this will do.
 
@@ -83,7 +83,7 @@ The final part of the equation is to then add the absolute link dominance score,
 
 I'm then left with two outputs that form what I'm calling Nexus Score.
 
-- A letter representing link dominance: `H|R|T`
+- A letter representing link dominance: `H / R / T`
 - A number representing a total score of all the other scores
 
 ## Visually Representing Nexus Scores

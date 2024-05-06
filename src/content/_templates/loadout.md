@@ -10,4 +10,8 @@ description: Some description text.
 type: loadout
 ---
 
-Loadout Review - Unequipped - Equipped - Field Testing
+Loadout Review
+
+- Unequipped
+- Equipped
+- Field Testing

@@ -98,7 +98,7 @@ const ogUrl = new URL(ogImageUrl ?? `notes/${post.slug}.png`, Astro.url.origin).
         <ul>
           {
             incomingLinks.map(({ slug, frontmatter }) => (
-              <Card href={`/notes/${slug}`} frontmatter={frontmatter} />
+              <Card href={`/notes/${slug}`} frontmatter={frontmatter} showNexusScore={false} />
             ))
           }
         </ul>
