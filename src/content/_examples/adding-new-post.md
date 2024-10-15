@@ -3,7 +3,7 @@ pubDatetime: 2022-09-23T15:22:00
 title: Adding new posts in AstroPaper theme
 postSlug: adding-new-posts-in-astropaper-theme
 featured: false
-draft: false
+draft: true
 tags: []
 ogImage: ""
 description: Some rules & recommendations for creating or adding new posts using AstroPaper theme.
@@ -63,7 +63,7 @@ author: your name
 pubDatetime: 2022-09-21T05:17:19Z
 postSlug: the-title-of-the-post
 featured: true
-draft: false
+draft: true
 tags:
   - some
   - example
