@@ -6,6 +6,6 @@
     "pubDatetime": "datetime",
     "testList": "multitext",
     "type": "text",
-    "aiUsage": "multitext"
+    "status": "text"
   }
 }

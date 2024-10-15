@@ -11,3 +11,9 @@ type: fragment
 aiUsage:
   - none
 ---
+
+Where interstitial journaling helps you stay on top o things at a micro level from task to task on a macro level day to day look into [[hemingway-bridge]]
+
+References:
+
+- https://nesslabs.com/interstitial-journaling

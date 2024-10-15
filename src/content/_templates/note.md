@@ -1,5 +1,6 @@
 ---
 pubDatetime: {{date}}T{{time}}:00
+modDatetime: {{date}}T{{time}}:00
 title: Note Template
 postSlug: {{title}}
 featured: true
@@ -10,13 +11,14 @@ description: Some description text.
 type: note
 ---
 
-
 **Communication Satellite Launch**:
+
 - **Fragment**: "Orbit Calculated"
 - **Draft**: "Satellite Assembled"
 - **Complete**: "Signal Operational"
 
 Might be cool to have a note transition between these states:
+
 - Calculating Orbit
 - Assembling Satellite
 - Signal Operational
