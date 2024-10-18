@@ -1,4 +1,3 @@
-import type { MarkdownInstance } from "astro";
 import type { CollectionEntry } from "astro:content";
 import getNexusScore from "./getNexusScore";
 
@@ -44,9 +43,9 @@ export const getEnrichedFrontmatter = async () => {
 
       // loop over referencedPosts and add currentSlug to incomingLinks array of each referencedPost
       if (referencedPosts) {
-        referencedPosts.forEach((item: string, index: number) => {
+        referencedPosts.forEach((item: string) => {
           const referencedSlug = item.split("|")[0].replace(".mdx", "");
-          const referencedAlias = item.split("|")[1];
+          // const referencedAlias = item.split("|")[1];
 
           const referencedFrontmatter = mapFrontmatter.get(referencedSlug);
 

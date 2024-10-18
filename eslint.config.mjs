@@ -39,6 +39,11 @@ export default [
     },
   },
   {
-    ignores: ["dist/**", ".astro", "src/content/.obsidian/**"]
+    ignores: [
+      "dist/**",
+      ".astro",
+      "src/content/.obsidian/**",
+      "src/plugins/wiki-link/**" // temporary
+    ]
   },
 ];

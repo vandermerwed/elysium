@@ -6,9 +6,8 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import Socials from "@components/Socials.astro";
 import { getEnrichedSortedPosts } from "@utils/getSortedPosts";
-import { SITE, SOCIALS } from "@config";
+import { SITE } from "@config";
 
 const posts = await getCollection("blog");
 
@@ -16,7 +15,6 @@ const sortedPosts = await getEnrichedSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
-const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
 <Layout>

@@ -8,8 +8,6 @@ import NexusScore from "@components/NexusScore";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import Card from "@components/Card";
-import Hr from "@components/Hr.astro";
-import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 
 export interface Props {
@@ -29,7 +27,7 @@ const {
   modDatetime,
   tags,
   editPost,
-  type,
+  // type,
   readingTime,
   incomingLinks,
   nexusScore
@@ -118,7 +116,7 @@ const layoutProps = {
             <h2>Incoming Links</h2>
             <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {
-                incomingLinks.map(({ slug, frontmatter }: { slug: string; frontmatter: any }) => (
+                incomingLinks.map(({ slug, frontmatter }: { slug: string; frontmatter }) => (
                   <Card href={`/projects/${slug}`} frontmatter={frontmatter} showNexusScore={false} />
                 ))
               }
