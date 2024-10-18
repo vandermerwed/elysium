@@ -3,22 +3,24 @@ import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
-import wikiLinkPlugin from "@portaljs/remark-wiki-link";
+// import wikiLinkPlugin from "@portaljs/remark-wiki-link";
+import remarkWikiLink from "./src/plugins/wiki-link/index.ts";
+import { getPermalinks } from "./src/plugins/wiki-link/getPermalinks.ts";
 import rehypeExternalLinks from 'rehype-external-links';
 import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs';
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
 import sitemap from "@astrojs/sitemap";
+import { SITE } from "./src/config";
 
 import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://danielvandermerwe.com/",
-  // replace this with your deployed domain
+  site: SITE.website,
   integrations: [
     tailwind({
-        applyBaseStyles: false
+      applyBaseStyles: false,
     }),
     react(),
     sitemap(),
@@ -30,16 +32,20 @@ export default defineConfig({
       remarkModifiedTime,
       remarkReadingTime,
       remarkWordCount,
-      [remarkCollapse, {
-        test: "Table of contents"
-      }],
+      [
+        remarkCollapse,
+        {
+          test: "Table of contents",
+        },
+      ],
       // https://github.com/datopian/portaljs/tree/main/packages/remark-wiki-link
-      [wikiLinkPlugin, { 
+      [remarkWikiLink, { 
+        permalinks: getPermalinks("src/content/"),
         pathFormat: 'obsidian-absolute', 
         // generate url of the linked page.
         // here `slug` would be "Page Name" for wiki link [[Page Name]].
         // TODO: This needs refactoring to be more robust
-        wikiLinkResolver: (slug) => {
+        wikiLinkResolver: (slug: string) => {
           if (slug.startsWith("tags/")) {
             return [`tags/${slug.replace("tags/", "")}`];
           } else if (slug.startsWith("projects/")) {
@@ -66,16 +72,19 @@ export default defineConfig({
       ],
     ],
     shikiConfig: {
-      theme: "one-dark-pro",
-      wrap: true
+      // For more themes, visit https://shiki.style/themes
+      // theme: "one-dark-pro",
+      themes: { light: "one-light", dark: "one-dark-pro" },
+      wrap: true,
     },
-    extendDefaultPlugins: true
   },
   vite: {
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"]
-    }
+      exclude: ["@resvg/resvg-js"],
+    },
   },
-  scopedStyleStrategy: "where"
-}); 
-                      
+  scopedStyleStrategy: "where",
+  experimental: {
+    contentLayer: true,
+  },
+});

@@ -7,10 +7,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   //     context.locals.incomingLinks = [];
   //     context.locals.outgoingLinks = [];
 
-  //     var postSlug: string | undefined = context.params.slug;
+  //     var slug: string | undefined = context.params.slug;
 
   //     const allPosts = await getCollection("blog", ({ data }) => !data.draft);
-  //     context.locals.incomingLinks = getIncomingLinks(allPosts, postSlug || '');
+  //     context.locals.incomingLinks = getIncomingLinks(allPosts, slug || '');
 
   //     const outgoingLinks = getOutgoingLinks(context.props.post) as string[]; // add type assertion
   //     if (outgoingLinks) {

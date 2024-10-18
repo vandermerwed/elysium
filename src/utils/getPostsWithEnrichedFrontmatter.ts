@@ -1,22 +1,19 @@
 import type { MarkdownInstance } from "astro";
-import slugify from "./slugify";
 import type { CollectionEntry } from "astro:content";
 import getNexusScore from "./getNexusScore";
 
 export const getEnrichedFrontmatter = async () => {
   // Get all posts using glob. This is to get the updated frontmatter
-  const globPosts = import.meta.glob("../content/blog/*.md*") as Promise<
-    CollectionEntry<"blog">["data"][]
-  >;
+  const globPosts = import.meta.glob<CollectionEntry<"blog">["data"]>("../content/blog/*.md*");
 
   // Then, set those frontmatter value in a JS Map with key value pair
   const mapFrontmatter = new Map();
   const globPostsValues = Object.values(globPosts);
   await Promise.all(
     globPostsValues.map(async globPost => {
-      const { frontmatter } = await globPost();
+      const frontmatter = await globPost();
 
-      mapFrontmatter.set(slugify(frontmatter), {
+      mapFrontmatter.set(frontmatter, {
         ...frontmatter,
         incomingLinks: [],
         outgoingLinks: [],
@@ -28,7 +25,7 @@ export const getEnrichedFrontmatter = async () => {
   await Promise.all(
     globPostsValues.map(async globPost => {
       const { frontmatter, rawContent } = await globPost();
-      const currentSlug = slugify(frontmatter);
+      const currentSlug = frontmatter.slug;
 
       mapFrontmatter.set(currentSlug, {
         ...frontmatter,
@@ -80,7 +77,7 @@ export const getEnrichedFrontmatter = async () => {
           if (
             currentFrontmatter &&
             !currentFrontmatter.outgoingLinks.some(
-              link => link.slug === referencedSlug
+              (link: { slug: string; }) => link.slug === referencedSlug
             )
           ) {
             currentFrontmatter.outgoingLinks.push({
@@ -124,15 +121,13 @@ export const getEnrichedFrontmatter = async () => {
   return mapFrontmatter;
 };
 
-const getPostsWithEnrichedFrontmatter = async (
-  posts: CollectionEntry<"blog">[]
-) => {
+const getPostsWithEnrichedFrontmatter = async <T extends "blog" | "projects">(posts: CollectionEntry<T>[]) => {
   const mapFrontmatter = await getEnrichedFrontmatter();
   return posts.map(post => {
-    const slug = slugify(post.data);
+    // exluide body from the post
+    const slug = post.data.slug;
 
     post.data.readingTime = mapFrontmatter.get(slug)?.readingTime;
-    post.data.lastModified = mapFrontmatter.get(slug)?.lastModified;
     post.data.wordCount = mapFrontmatter.get(slug)?.wordCount;
     post.data.incomingLinks = mapFrontmatter.get(slug)?.incomingLinks || [];
     post.data.outgoingLinks = mapFrontmatter.get(slug)?.outgoingLinks || [];

@@ -16,11 +16,11 @@ export default function Card({
   secHeading = true,
   showNexusScore = true,
 }: Props) {
-  const { title, postSlug, pubDatetime, description, readingTime, nexusScore } =
+  const { title, slug, pubDatetime, modDatetime, description, readingTime, nexusScore } =
     frontmatter;
 
   const headerProps = {
-    style: { viewTransitionName: postSlug },
+    style: { viewTransitionName: slug },
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 
@@ -43,7 +43,7 @@ export default function Card({
           )}
         </a>
       </div>
-      <Datetime datetime={pubDatetime} readingTime={readingTime} />
+      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} readingTime={readingTime} />
       <p>{description}</p>
     </li>
   );

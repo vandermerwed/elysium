@@ -2,9 +2,9 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import Projects from "@layouts/Projects.astro";
 import ProjectDetails from "@layouts/ProjectDetails.astro";
-import getSortedPosts from "@utils/getSortedPosts";
+import { getEnrichedSortedPosts } from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
-import slugify from "@utils/slugify";
+import { slugifyStr } from "@utils/slugify";
 import { SITE } from "@config";
 
 export interface Props {
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
   const postResult = posts.map(post => ({
     params: {
-      slug: slugify(post.data)
+      slug: post.data.slug || slugifyStr(post.data.title)
     },
     props: { post },
   }));
@@ -33,7 +33,7 @@ const { post } = Astro.props;
 
 const posts = await getCollection("projects", ({ data }) => !data.draft);
 
-const sortedPosts = await getSortedPosts(posts);
+const sortedPosts = await getEnrichedSortedPosts(posts);
 
 const totalPages = getPageNumbers(sortedPosts.length);
 

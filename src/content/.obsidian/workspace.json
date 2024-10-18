@@ -11,14 +11,11 @@
             "id": "646ce574b4a4090a",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
-                "viewState": {
-                  "x": -324,
-                  "y": 395,
-                  "zoom": -0.24951688586629944
-                }
+                "file": "projects/astro-elysium.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -88,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
+                "file": "projects/astro-elysium.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
+                "file": "projects/astro-elysium.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -128,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas"
+                "file": "projects/astro-elysium.md"
               }
             }
           }
@@ -150,34 +147,35 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "blog/yearly-themes.md",
     "projects/astro-elysium.md",
-    "projects/roam-research-extension-toggl.md",
     "blog/loadout-update-2024-q1.md",
+    "_canvas/Roam Extension Architecture Diagram.canvas",
+    "blog/terminal-development.md",
+    "blog/tailwind-typography.md",
+    "blog/setting-dates-via-git-hooks.md",
+    "blog/predefined-color-schemes.md",
+    "blog/portfolio-website-development.md",
+    "blog/how-to-update-dependencies.md",
+    "blog/how-to-integrate-giscus-comments.md",
+    "blog/how-to-connect-astro-paper-blog-with-forestry-cms.md",
+    "blog/how-to-configure-astropaper-theme.md",
+    "blog/how-to-add-latex-equations-in-blog-posts.md",
+    "blog/how-to-add-an-estimated-reading-time.md",
+    "blog/how-to-add-a-new-social-icon.md",
+    "blog/example-draft-post.md",
+    "blog/dynamic-og-images.md",
+    "blog/customizing-astropaper-theme-color-schemes.md",
+    "blog/astro-paper-4.md",
+    "blog/astro-paper-3.md",
+    "blog/astro-paper-2.md",
+    "blog/adding-new-post.md",
+    "_canvas/Public Roadmap.canvas",
+    "projects/roam-research-extension-toggl.md",
     "blog/loadout-update-2023-q3.md",
     "projects/roam-research-toggl-extension.md",
     "blog/loadout-update-q4-2023.md",
-    "blog/loadout-update-q3-2023.md",
-    "_canvas/Roam Extension Architecture Diagram.canvas",
-    "blog/interstitial-journaling.md",
-    "_templates/note.md",
-    "_templates/loadout.md",
-    "_templates/fragment.md",
-    "_templates/source.md",
-    "_templates/theme.md",
-    "_templates/project.md",
-    "_templates/person.md",
-    "_templates/~review.md",
-    "blog/friction.md",
-    "blog/focus.md",
-    "blog/cornerstone-habits.md",
     "config.ts",
-    "tags/loadout.md",
-    "tags/theme.md",
-    "blog/yearly-themes.md",
-    "blog/year-of-legacy-foundations-2024.md",
-    "blog/work-walks.md",
-    "blog/trigger-action-planning.md",
-    "blog/time.md",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",
     "_examples/test.mdx",

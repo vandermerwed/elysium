@@ -1,14 +1,17 @@
 import { SITE } from "@config";
+import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: "content",
+  type: "content_layer",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
       author: z.string().default(SITE.author),
       pubDatetime: z.date(),
       title: z.string(),
-      postSlug: z.string().optional(),
+      slug: z.string().optional(),
+      modDatetime: z.date().optional().nullable(),
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
       tags: z.array(z.string()).default(["others"]),
@@ -22,7 +25,6 @@ const blog = defineCollection({
       canonicalURL: z.string().optional(),
       type: z.string().optional(),
       status: z.string().optional(),
-      lastModified: z.date().optional(),
       readingTime: z.string().optional(),
       wordCount: z.number().default(0),
       incomingLinks: z
@@ -43,6 +45,14 @@ const blog = defineCollection({
         .default([]),
       externalLinks: z.array(z.string()).default([]),
       nexusScore: z.string().default("A0"),
+      editPost: z
+        .object({
+          disabled: z.boolean().optional(),
+          url: z.string().optional(),
+          text: z.string().optional(),
+          appendFilePath: z.boolean().optional(),
+        })
+        .optional(),
     }),
 });
 
