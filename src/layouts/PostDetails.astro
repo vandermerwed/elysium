@@ -223,7 +223,7 @@ const nextPost =
                 incomingLinks.map((value: { slug: string; frontmatter?: {} }, index: number, array: { slug: string; frontmatter?: {} }[]): any => {
                   const { slug, frontmatter } = value;
                   return (
-                    <Card href={`/notes/${slug}`} frontmatter={frontmatter ?? {}} showNexusScore={false} />
+                    frontmatter && <Card href={`/notes/${slug}`} frontmatter={frontmatter} showNexusScore={false} />
                   );
                 })
               }

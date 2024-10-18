@@ -4,7 +4,7 @@ import NexusScore from "./NexusScore";
 
 export interface Props {
   href?: string;
-  frontmatter: Record<string, any>;
+  frontmatter?: CollectionEntry<"blog">["data"];
   secHeading?: boolean;
   showNexusScore?: boolean;
 }
@@ -16,7 +16,7 @@ export default function Card({
   showNexusScore = true,
 }: Props) {
   const { title, slug, pubDatetime, modDatetime, description, readingTime, nexusScore } =
-    frontmatter;
+    frontmatter || {};
 
   const headerProps = {
     style: { viewTransitionName: slug },
