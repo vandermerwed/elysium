@@ -4,7 +4,7 @@ import NexusScore from "./NexusScore";
 
 export interface Props {
   href?: string;
-  frontmatter: CollectionEntry<"blog">["data"];
+  frontmatter: Record<string, any>;
   secHeading?: boolean;
   showNexusScore?: boolean;
 }

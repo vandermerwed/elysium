@@ -1,6 +1,12 @@
 import type { CollectionEntry } from "astro:content";
 import getNexusScore from "./getNexusScore";
 
+// frontmatter type
+type GlobPost = {
+  frontmatter: Record<string, any>;
+  rawContent: () => string;
+};
+
 export const getEnrichedFrontmatter = async () => {
   // Get all posts using glob. This is to get the updated frontmatter
   const globPosts = import.meta.glob<CollectionEntry<"blog">["data"]>("../content/blog/*.md*");
@@ -23,7 +29,12 @@ export const getEnrichedFrontmatter = async () => {
 
   await Promise.all(
     globPostsValues.map(async globPost => {
-      const { frontmatter, rawContent } = await globPost();
+      // get globPost as GlobPost
+      const data = (await globPost() as unknown) as GlobPost;
+
+      console.log("data: ", data);
+
+      const { frontmatter, rawContent } = data;
       const currentSlug = frontmatter.slug;
 
       mapFrontmatter.set(currentSlug, {

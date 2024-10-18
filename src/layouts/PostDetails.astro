@@ -220,9 +220,12 @@ const nextPost =
             <h2>Incoming Links</h2>
             <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {
-                incomingLinks.map(({ slug, frontmatter }: { slug: string; frontmatter }) => (
-                  <Card href={`/notes/${slug}`} frontmatter={frontmatter} showNexusScore={false} />
-                ))
+                incomingLinks.map((value: { slug: string; frontmatter?: {} }, index: number, array: { slug: string; frontmatter?: {} }[]): any => {
+                  const { slug, frontmatter } = value;
+                  return (
+                    <Card href={`/notes/${slug}`} frontmatter={frontmatter ?? {}} showNexusScore={false} />
+                  );
+                })
               }
             </ul>
           </div>
