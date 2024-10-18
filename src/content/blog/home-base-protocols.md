@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-10-01T12:11:00
 title: Home Base Protocols
-postSlug: home-base-protocols
+slug: home-base-protocols
 featured: false
 draft: true
 tags:

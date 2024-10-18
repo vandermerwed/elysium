@@ -1,7 +1,7 @@
 ---
 pubDatetime: {{date}}T{{time}}:00
 title: Post Template
-postSlug: {{title}}
+slug: {{title}}
 featured: true
 draft: true
 tags:
