@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 const enableDebugging = false;
 
 type IconScoreRanges = {
-  [key: string]: number;
+  [key: string]: [number, number];
 };
 
 const iconScoreRanges: IconScoreRanges = {
@@ -26,7 +26,7 @@ const iconScoreRanges: IconScoreRanges = {
   T_Integrated: [68, Infinity],
 };
 
-const getNexusScore = (post: CollectionEntry<"blog">) => {
+const getNexusScore = (post: CollectionEntry<"blog" | "projects">) => {
   const incomingLinkCount = post.data.incomingLinks.length;
   const outgoingLinkCount = post.data.outgoingLinks.length;
   const externalResourceCount = post.data.externalLinks.length;

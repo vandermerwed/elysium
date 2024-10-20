@@ -3,14 +3,12 @@ import { SITE } from "@config";
 import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
-import Datetime from "@components/Datetime";
 import Layout from "./Layout.astro";
 
 export interface Props {
   frontmatter: {
     title: string;
     description?: string;
-    lastModified?: string;
   };
 }
 
@@ -24,7 +22,6 @@ const { frontmatter } = Astro.props;
     <section id="about" class="prose mb-28 max-w-3xl prose-img:border-0">
       <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
       <slot />
-      <Datetime datetime={frontmatter.lastModified || ''} style="modified" size="lg" className="my-4 text-skin-base" />
     </section>
   </main>
   <Footer />
