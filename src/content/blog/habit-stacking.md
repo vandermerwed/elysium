@@ -8,7 +8,10 @@ tags:
   - habits
 description: Habit stacking as a mindful approach to enhancing daily routines. Thoughtfully integrate new habits one step at a time, with examples to guide your journey toward greater well-being and productivity.
 type: fragment
+aiUsage:
+  - content-generation
 ---
+
 Habit stacking is an approach that leverages existing habits to integrate new behaviors into one's daily routine. By attaching a new action to an already-established habit, it becomes easier to remember and implement the new habit. This strategy minimizes friction and increases the likelihood of making the new habit stick.
 
 ## Key Principles:
@@ -36,6 +39,7 @@ Habit stacking functions on the principle of associative memory; our brains are 
 Habit stacking is a versatile strategy that can be adapted to various domains in life, from personal development to professional growth. Keep an open mind and continuously scout for opportunities to add value to your existing routines.
 
 ### References
+
 - [Fogg, BJ](https://www.goodreads.com/author/show/197770.B_J_Fogg). (2012). _[Forget big change, start with a tiny habit: BJ Fogg at TEDxFremont](https://www.youtube.com/watch?v=AdKUJxjn-R8)_ Duration: 17:23
 - [Scott, S. J.](https://www.goodreads.com/author/show/6982678.S_J_Scott) (2014). _[Habit Stacking: 97 Small Life Changes That Take Five Minutes or Less](https://www.goodreads.com/book/show/22021732-habit-stacking)_
 - [Clear, James](https://www.goodreads.com/author/show/7327369.James_Clear). (2018). _[Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones](https://www.goodreads.com/book/show/40121378-atomic-habits)_

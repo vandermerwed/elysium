@@ -1,5 +1,6 @@
 ---
 pubDatetime: {{date}}T{{time}}:00
+modDatetime: {{date}}T{{time}}:00
 title: Loadout Template
 slug: {{title}}
 featured: true

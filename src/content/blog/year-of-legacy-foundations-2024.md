@@ -9,6 +9,8 @@ tags:
   - theme
 description: The Elysium has charted its course for the 2024 campaign. Quests are locked in, equipment is double-checked, and thrusters are engaged.
 type: theme
+aiUsage:
+  - proofreading
 ---
 
 I’ve had many yearly themes over the years but always shied away to write about them in public. My good friend [Jacob Pretorius](https://jcpretorius.com/) has been on my case about posting my updates for years now. I think I finally owe him and, more importantly, myself this public update.

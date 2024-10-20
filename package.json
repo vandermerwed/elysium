@@ -24,7 +24,7 @@
     "fuse.js": "^7.0.0",
     "lodash.kebabcase": "^4.1.1",
     "mdast-util-to-string": "^4.0.0",
-    "mdx": "^0.3.1",
+    "mdx": "^0.2.3",
     "micromark-util-symbol": "^2.0.0",
     "reading-time": "^1.5.0",
     "rehype-external-links": "^3.0.0",

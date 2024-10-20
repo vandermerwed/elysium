@@ -10,6 +10,12 @@ tags:
   - digital-garden
 description: "Nexus Score: A system for evaluating and visually representing notes in a digital garden based on connectedness and content depth."
 type: fragment
+aiUsage:
+  - research
+  - proofreading
+  - code-assistance
+  - system-design
+  - data-analysis
 ---
 
 I was introduced to the concept of using patterns to convey information density in this [digital garden note](https://notes.azlen.me/cri6tvov/) by [Azlen](https://twitter.com/azlenelza). Similarly, [Maggie Appleton also uses iconography](https://maggieappleton.com/notes) to visually differentiate between seedling, budding and evergreen notes in her digital garden. They inspired me to create my own pattern system to convey the interconnectedness and depth of notes on this website.

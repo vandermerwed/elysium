@@ -10,7 +10,10 @@ tags:
   - protocol
 description: "\rA set of nightly affirmations for kids focusing on dreams, resilience, and parental love. Perfect for bedtime bonding and motivation."
 type: fragment
+aiUsage:
+  - none
 ---
+
 - "Whatever your dreams are, work hard to make them real."
 - “Be who you want to be.”
 - “Never quit on a bad day.”
