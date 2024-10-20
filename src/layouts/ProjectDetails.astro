@@ -12,6 +12,7 @@ import { SITE } from "@config";
 
 export interface Props {
   post: CollectionEntry<"blog">;
+  posts: CollectionEntry<"blog">[];
 }
 
 const { post } = Astro.props;
@@ -37,7 +38,7 @@ const { Content } = await post.render();
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImageUrl ?? `/projects/${slugifyStr(title)}.png`,
+  ogImageUrl ?? `/projects/${slug ?? slugifyStr(title)}.png`,
   Astro.url.origin
 ).href;
 

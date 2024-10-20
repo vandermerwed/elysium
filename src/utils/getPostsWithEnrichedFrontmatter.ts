@@ -32,8 +32,6 @@ export const getEnrichedFrontmatter = async () => {
       // get globPost as GlobPost
       const data = (await globPost() as unknown) as GlobPost;
 
-      console.log("data: ", data);
-
       const { frontmatter, rawContent } = data;
       const currentSlug = frontmatter.slug;
 

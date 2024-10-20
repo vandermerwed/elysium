@@ -6,7 +6,6 @@ featured: false
 draft: false
 tags:
   - astro
-ogImage: ""
 description: An opinionated, minimal, responsive, accessible and SEO-friendly Astro personal website and digital garden theme based on Astro Paper.
 type: project
 ---

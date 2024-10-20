@@ -1,11 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import Projects from "@layouts/Projects.astro";
 import ProjectDetails from "@layouts/ProjectDetails.astro";
 import { getEnrichedSortedPosts } from "@utils/getSortedPosts";
-import getPageNumbers from "@utils/getPageNumbers";
-import { slugifyStr } from "@utils/slugify";
-import { SITE } from "@config";
 
 export interface Props {
   post: CollectionEntry<"projects">;
@@ -15,46 +11,17 @@ export async function getStaticPaths() {
   const posts = await getCollection("projects", ({ data }) => !data.draft);
 
   const postResult = posts.map(post => ({
-    params: {
-      slug: post.data.slug || slugifyStr(post.data.title)
-    },
+    params: { slug: post.slug },
     props: { post },
   }));
 
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
-
-  return [...postResult, ...pagePaths];
+  return postResult;
 }
 
-const { slug } = Astro.params;
 const { post } = Astro.props;
 
-const posts = await getCollection("projects", ({ data }) => !data.draft);
-
+const posts = await getCollection("projects");
 const sortedPosts = await getEnrichedSortedPosts(posts);
-
-const totalPages = getPageNumbers(sortedPosts.length);
-
-const currentPage =
-  slug && !isNaN(Number(slug)) && totalPages.includes(Number(slug))
-    ? Number(slug)
-    : 0;
-const lastPost = currentPage * SITE.postPerPage;
-const startPost = lastPost - SITE.postPerPage;
-
-const paginatedPosts = sortedPosts.slice(startPost, lastPost);
 ---
 
-{
-  post ? (
-    <ProjectDetails post={post} />
-  ) : (
-    <Projects
-      posts={paginatedPosts}
-      pageNum={currentPage}
-      totalPages={totalPages.length}
-    />
-  )
-}
+<ProjectDetails post={post} posts={sortedPosts} />
