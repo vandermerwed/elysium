@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-30T12:08:00
 title: "Affirmation: Bedtime Blueprint"
-postSlug: affirmation-bedtime-blueprint
+slug: affirmation-bedtime-blueprint
 featured: false
 draft: false
 tags:

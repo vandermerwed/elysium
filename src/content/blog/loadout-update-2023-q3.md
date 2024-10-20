@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-21T14:00:00
 title: Loadout Update [2023/Q3]
-postSlug: loadout-update-2023-q3
+slug: loadout-update-2023-q3
 featured: true
 draft: false
 tags:

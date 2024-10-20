@@ -1,12 +1,11 @@
 ---
 pubDatetime: 2023-09-26T15:01:00
 title: Astro Elysium
-postSlug: astro-elysium
+slug: astro-elysium
 featured: false
 draft: false
 tags:
   - astro
-ogImage: ""
 description: An opinionated, minimal, responsive, accessible and SEO-friendly Astro personal website and digital garden theme based on Astro Paper.
 type: project
 ---

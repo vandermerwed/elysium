@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 
-const getIncomingLinks = (allPosts: CollectionEntry<"blog">[], currentPostSlug: string) => {
+const getIncomingLinks = (allPosts: CollectionEntry<"blog">[], currentSlug: string) => {
     const incomingLinks: CollectionEntry<"blog">[] = [];
     allPosts.forEach((post) => {
         const content = post.body;
@@ -11,7 +11,7 @@ const getIncomingLinks = (allPosts: CollectionEntry<"blog">[], currentPostSlug: 
                 referencedPosts[index] = item.split("|")[0].replace(".mdx", "");
             });
         }
-        if (referencedPosts && referencedPosts.includes(currentPostSlug)) {
+        if (referencedPosts && referencedPosts.includes(currentSlug)) {
             incomingLinks.push(post);
         }
     });

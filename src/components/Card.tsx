@@ -1,11 +1,10 @@
-import { slugifyStr } from "@utils/slugify";
 import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
 import NexusScore from "./NexusScore";
 
 export interface Props {
   href?: string;
-  frontmatter: CollectionEntry<"blog">["data"];
+  frontmatter?: CollectionEntry<"blog">["data"];
   secHeading?: boolean;
   showNexusScore?: boolean;
 }
@@ -16,11 +15,11 @@ export default function Card({
   secHeading = true,
   showNexusScore = true,
 }: Props) {
-  const { title, postSlug, pubDatetime, description, readingTime, nexusScore } =
-    frontmatter;
+  const { title, slug, pubDatetime, modDatetime, description, readingTime, nexusScore } =
+    frontmatter || {};
 
   const headerProps = {
-    style: { viewTransitionName: postSlug },
+    style: { viewTransitionName: slug },
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 
@@ -43,7 +42,7 @@ export default function Card({
           )}
         </a>
       </div>
-      <Datetime datetime={pubDatetime} readingTime={readingTime} />
+      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} readingTime={readingTime} />
       <p>{description}</p>
     </li>
   );

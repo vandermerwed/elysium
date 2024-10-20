@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-19T16:06:00
 title: Yearly Themes
-postSlug: yearly-themes
+slug: yearly-themes
 featured: false
 draft: true
 tags:

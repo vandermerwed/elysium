@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-25T14:14:00
 title: Work Walks
-postSlug: work-walks
+slug: work-walks
 featured: false
 draft: false
 tags:

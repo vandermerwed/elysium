@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-19T16:07:00
 title: Spaceship You
-postSlug: spaceship-you
+slug: spaceship-you
 featured: false
 draft: true
 tags:

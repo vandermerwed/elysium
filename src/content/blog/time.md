@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-10-01T12:12:00
 title: On Time
-postSlug: time
+slug: time
 featured: false
 draft: true
 tags:

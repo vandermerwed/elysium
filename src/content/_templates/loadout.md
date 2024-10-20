@@ -2,7 +2,7 @@
 pubDatetime: {{date}}T{{time}}:00
 modDatetime: {{date}}T{{time}}:00
 title: Loadout Template
-postSlug: {{title}}
+slug: {{title}}
 featured: true
 draft: true
 tags:

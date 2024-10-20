@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-25T09:34:00
 title: "Maintaining  Averages: A Healthier Alternative to Streaks"
-postSlug: maintaining-averages
+slug: maintaining-averages
 featured: false
 draft: false
 tags:

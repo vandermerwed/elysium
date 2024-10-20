@@ -1,5 +1,5 @@
 export interface Props {
-  score: string;
+  score?: string;
   className?: string;
   size?: "sm" | "lg";
   showDescription?: boolean;
