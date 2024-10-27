@@ -11,19 +11,17 @@
             "id": "646ce574b4a4090a",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
-                "viewState": {
-                  "x": -324,
-                  "y": 395,
-                  "zoom": -0.24951688586629944
-                }
-              }
+                "file": "blog/artificial-intelligence.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "artificial-intelligence"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -43,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -58,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -66,7 +68,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -89,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
+                "file": "blog/artificial-intelligence.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,7 +101,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for artificial-intelligence"
             }
           },
           {
@@ -106,10 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas",
+                "file": "blog/artificial-intelligence.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from artificial-intelligence"
             }
           },
           {
@@ -120,7 +128,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -129,8 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "_canvas/Roam Extension Architecture Diagram.canvas"
-              }
+                "file": "blog/artificial-intelligence.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of artificial-intelligence"
             }
           }
         ]
@@ -149,36 +161,37 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "55725a5fc427db96",
+  "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "blog/affirmation-bedtime-blueprint.md",
+    "blog/artificial-intelligence.md",
+    "_canvas/Public Roadmap.canvas",
+    "blog/friction.md",
+    "blog/interstitial-journaling.md",
+    "blog/home-base-protocols.md",
+    "blog/intentionality.md",
+    "blog/loadout-update-2024-q4.md",
+    "blog/loadout-update-2023-q3.md",
+    "tags/loadout.md",
+    "blog/loadout-update-q4-2023.md",
+    "tags/theme.md",
+    "blog/maintaining-averages.md",
+    "blog/paying-attention.md",
+    "blog/personal-retreats.md",
+    "blog/spaceship-you.md",
+    "blog/time.md",
+    "blog/trigger-action-planning.md",
     "projects/astro-elysium.md",
     "projects/roam-research-extension-toggl.md",
-    "blog/loadout-update-2024-q1.md",
-    "blog/loadout-update-2023-q3.md",
-    "projects/roam-research-toggl-extension.md",
-    "blog/loadout-update-q4-2023.md",
-    "blog/loadout-update-q3-2023.md",
+    "projects/roam-research-extension-rescue-time.md",
+    "projects/roam-research-extension-exist.md",
+    "projects/roam-research-extension-coda.md",
     "_canvas/Roam Extension Architecture Diagram.canvas",
-    "blog/interstitial-journaling.md",
+    "projects/roam-research-toggl-extension.md",
+    "blog/loadout-update-q3-2023.md",
     "_templates/note.md",
     "_templates/loadout.md",
-    "_templates/fragment.md",
-    "_templates/source.md",
-    "_templates/theme.md",
-    "_templates/project.md",
-    "_templates/person.md",
-    "_templates/~review.md",
-    "blog/friction.md",
-    "blog/focus.md",
-    "blog/cornerstone-habits.md",
     "config.ts",
-    "tags/loadout.md",
-    "tags/theme.md",
-    "blog/yearly-themes.md",
-    "blog/year-of-legacy-foundations-2024.md",
-    "blog/work-walks.md",
-    "blog/trigger-action-planning.md",
-    "blog/time.md",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",
     "_examples/test.mdx",

@@ -6,6 +6,7 @@
     "pubDatetime": "datetime",
     "testList": "multitext",
     "type": "text",
-    "status": "text"
+    "status": "text",
+    "modDatetime": "datetime"
   }
 }

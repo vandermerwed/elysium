@@ -1,0 +1,8 @@
+{
+	"nodes":[
+		{"id":"3f7b3b1cd50dd5ff","x":-600,"y":-440,"width":220,"height":620,"color":"2","type":"text","text":"Themes"},
+		{"id":"066ce9710be04d86","x":-580,"y":-380,"width":180,"height":60,"type":"text","text":"Quantified Self"},
+		{"id":"3b889f1fc6f6fda4","type":"text","text":"Design System","x":-580,"y":-160,"width":180,"height":60}
+	],
+	"edges":[]
+}

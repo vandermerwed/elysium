@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-26T16:46:00
 title: Paying Attention
-postSlug: paying-attention
+slug: paying-attention
 featured: false
 draft: true
 tags:

@@ -3,6 +3,7 @@ import getPostsWithEnrichedFrontmatter from "./getPostsWithEnrichedFrontmatter";
 import postFilter from "./postFilter";
 
 const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
+
   return posts
     .filter(postFilter)
     .sort(
@@ -18,9 +19,9 @@ const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
 
 const getEnrichedSortedPosts = async <T extends "blog" | "projects">(posts: CollectionEntry<T>[]) => {
   // make sure that this func is async
-  const enrichedPosts = await getPostsWithEnrichedFrontmatter(posts); // enrich the frontmatter
+  // const enrichedPosts = await getPostsWithEnrichedFrontmatter(posts); // enrich the frontmatter
 
-  return enrichedPosts
+  return posts
     .filter(postFilter)
     .sort(
       (a, b) =>

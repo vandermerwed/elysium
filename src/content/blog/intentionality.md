@@ -2,7 +2,7 @@
 pubDatetime: 2024-05-25T04:50:00
 modDatetime: 2024-05-25T04:50:00
 title: On Intentionality
-postSlug: intentionality
+slug: intentionality
 featured: false
 draft: true
 tags:

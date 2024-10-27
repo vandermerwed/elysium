@@ -27,6 +27,7 @@ const iconScoreRanges: IconScoreRanges = {
 };
 
 const getNexusScore = (post: CollectionEntry<"blog" | "projects">) => {
+
   const incomingLinkCount = post.data.incomingLinks.length;
   const outgoingLinkCount = post.data.outgoingLinks.length;
   const externalResourceCount = post.data.externalLinks.length;
