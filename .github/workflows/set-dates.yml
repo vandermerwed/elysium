@@ -27,17 +27,12 @@ jobs:
               sed -i "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" "$file"
               git add "$file"
             fi
-            if [ "$draft" = "first" ]; then
-              echo "First release of $file, draft set to false and modDateTime removed"
-              sed -i "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime:/" "$file"
-              sed -i "/---.*/,/---.*/s/^draft:.*$/draft: false/" "$file"
-              git add "$file"
-            fi
           done
 
-          # Add pubDatetime for new files
+          # Add pubDatetime and modDatetime for new files
           git diff --cached --name-status | egrep -i "^(A).*\.(md|mdx)$" | grep -E '^(src/content/(blog|projects)/)' | while read a b; do
-            sed -i "/---.*/,/---.*/s/^pubDatetime:.*$/pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" "$b"
+            echo "Adding timestamps for $b"
+            sed -i "/---/a pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")\nmodDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")" "$b"
             git add "$b"
           done
 
