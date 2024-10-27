@@ -1,0 +1,50 @@
+name: Set Dates
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  set-dates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update dates in Markdown files
+        run: |
+          git fetch --prune --unshallow
+
+          # Update modDatetime for modified files
+          git diff --cached --name-status | grep -i '^M.*\.md$' | grep -E '^(src/content/(blog|projects)/)' | while read _ file; do
+            filecontent=$(cat "$file")
+            frontmatter=$(echo "$filecontent" | awk -v RS='---' 'NR==2{print}')
+            draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
+            if [ "$draft" = "false" ]; then
+              echo "$file modDateTime updated"
+              sed -i "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" "$file"
+              git add "$file"
+            fi
+            if [ "$draft" = "first" ]; then
+              echo "First release of $file, draft set to false and modDateTime removed"
+              sed -i "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime:/" "$file"
+              sed -i "/---.*/,/---.*/s/^draft:.*$/draft: false/" "$file"
+              git add "$file"
+            fi
+          done
+
+          # Add pubDatetime for new files
+          git diff --cached --name-status | egrep -i "^(A).*\.(md|mdx)$" | grep -E '^(src/content/(blog|projects)/)' | while read a b; do
+            sed -i "/---.*/,/---.*/s/^pubDatetime:.*$/pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" "$b"
+            git add "$b"
+          done
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "daniel@rokkit200.co"
+          git config --local user.name "Daniel van der Merwe"
+          git add .
+          git commit -m "Update dates"
+          git push
