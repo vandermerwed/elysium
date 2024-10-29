@@ -22,13 +22,17 @@ jobs:
     steps:
       - name: Create Issue
         uses: actions/github-script@v6
+        env:
+          ISSUE_TITLE: ${{ inputs.title }}
+          ISSUE_BODY: ${{ inputs.body }}
+          ISSUE_LABELS: ${{ inputs.labels }}
         with:
           script: |
-            const title = '${{ inputs.title }}';
-            const body = '${{ inputs.body }}';
-            const labels = '${{ inputs.labels }}'.split(',');
+            const title = process.env.ISSUE_TITLE;
+            const body = process.env.ISSUE_BODY;
+            const labels = process.env.ISSUE_LABELS ? process.env.ISSUE_LABELS.split(',') : [];
 
-            await github.issues.create({
+            await github.rest.issues.create({
               ...context.repo,
               title,
               body,
