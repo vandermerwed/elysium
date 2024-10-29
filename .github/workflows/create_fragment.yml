@@ -24,7 +24,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { github, context } = require('@actions/github');
             const title = '${{ inputs.title }}';
             const body = '${{ inputs.body }}';
             const labels = '${{ inputs.labels }}'.split(',');
