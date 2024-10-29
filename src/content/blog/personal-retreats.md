@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-29T10:55:00
 title: Personal Retreats
-postSlug: personal-retreats
+slug: personal-retreats
 featured: false
 draft: false
 tags:

@@ -1,0 +1,17 @@
+---
+import { SITE } from "@config";
+import Projects from "@layouts/Projects.astro";
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { getEnrichedSortedPosts } from "@utils/getSortedPosts";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection("projects", ({ data }) => !data.draft);
+  
+  return paginate(await getEnrichedSortedPosts(posts), { pageSize: SITE.postPerPage });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Projects {page} />

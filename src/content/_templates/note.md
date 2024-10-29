@@ -1,7 +1,7 @@
 ---
 pubDatetime: {{date}}T{{time}}:00
 title: Note Template
-postSlug: {{title}}
+slug: {{title}}
 featured: true
 draft: true
 tags:

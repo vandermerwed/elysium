@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-25T09:33:00
 title: "Habit Stacking: A Strategy for Efficient Routine Building"
-postSlug: habit-stacking
+slug: habit-stacking
 featured: false
 draft: false
 tags:

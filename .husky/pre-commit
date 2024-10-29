@@ -1,4 +1,35 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
-npx lint-staged
+# Modified files, update the modDatetime
+git diff --cached --name-status |
+grep -i '^M.*\.md$' |
+while read _ file; do
+  filecontent=$(cat "$file")
+  frontmatter=$(echo "$filecontent" | awk -v RS='---' 'NR==2{print}')
+  draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
+  if [ "$draft" = "false" ]; then
+    echo "$file modDateTime updated"
+    if ! echo "$frontmatter" | grep -q '^modDatetime:'; then
+      # Add modDatetime if missing after pubDatetime
+      cat $file | sed "/^pubDatetime:.*$/a modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%S")" > tmp
+    else
+      # Update existing modDatetime
+      cat $file | sed "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%S")/" > tmp
+    fi
+    mv tmp $file
+    git add $file
+  fi
+  if [ "$draft" = "first" ]; then
+    echo "First release of $file, draft set to false and modDateTime removed"
+    cat $file | sed "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime:/" | sed "/---.*/,/---.*/s/^draft:.*$/draft: false/" > tmp
+    mv tmp $file
+    git add $file
+  fi
+done
+
+# New files, add/update the pubDatetime
+git diff --cached --name-status | egrep -i "^(A).*\.md$" | while read _ file; do
+  cat $file | sed "/---.*/,/---.*/s/^pubDatetime:.*$/pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%S")/" > tmp
+  mv tmp $file
+  git add $file
+done
