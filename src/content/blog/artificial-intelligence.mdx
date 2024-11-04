@@ -2,10 +2,13 @@
 pubDatetime: 2024-05-25T04:26:00
 title: On Artificial Intelligence
 slug: artificial-intelligence
-featured: true
+featured: false
 draft: false
 tags:
-  - fragment
+  - ai
+  - technology
+  - ethics
+  - manifesto
 description: Some thoughts on Artificial Intelligence and responsible use thereof.
 type: fragment
 aiUsage:
@@ -19,6 +22,8 @@ aiUsage:
 import AidaNotice from "@components/AidaNotice.astro";
 
 I have a page, a manifesto of sorts, on [AI](/ai) that explains ho AI is used on this website. It's a bit of a manifesto on the responsible use of AI in content creation and design. I've also included a disclaimer on the use of AI in the creation of this website's content.
+
+test [[nexus-score]] this
 
 I like using AI. But I think firstly using AI responsibly is most important and secondly using it effectively.
 
@@ -44,6 +49,9 @@ Responsible AI Use tips:
 - Understand it's limitations, it is not a magic wand.
 - Confabulation (sometimes called Hallucination) is a real thing, don't let AI fill in the blanks for you.
 
+People are very good at producing garbage content. AI makes it possible for people to porduce garbage at an alarming rate. This is a problem.
+Polished garbage is still garbage.
+
 ```frontmatter
 aiUsage:
   - none
@@ -63,8 +71,12 @@ aiUsage:
   - summarization
 ```
 
-
 Sources:
+
+- https://bigmedium.com/ideas/links/exploring-the-ai-solution-space-jorge-arango.html
+    - That is, the better the outcome looks to your non-specialist eyes, the more likely you are to give up your agency.
+    - “Speaks well = thinks well” is a hard perception to break. We fall for it with people, too.
+
 
 - https://maggieappleton.com/generative-forgery
 - https://rachsmith.com/ai-is-for-the-idea-guys/
@@ -90,3 +102,9 @@ Acknowledgements:
 - https://www.bydamo.la/p/ai-manifesto
 - https://jcpretorius.com/post/2024/the-year-of-expansion/
   - "👨‍💻*This post was written by a human.*"
+
+<AidaNotice client:load aiUsage={["none"]} />
+
+<AidaNotice client:load aiUsage={["research"]} />
+
+<AidaNotice client:load aiUsage={["research", "system-design"]} />

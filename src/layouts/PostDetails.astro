@@ -14,7 +14,7 @@ import AidaNotice from "@components/AidaNotice.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  posts: CollectionEntry<"blog" | "projects">[];
 }
 
 const { post, posts } = Astro.props;
@@ -35,6 +35,8 @@ const {
 } = post.data;
 
 const { Content, remarkPluginFrontmatter } = await post.render();
+
+console.log(remarkPluginFrontmatter);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -98,10 +100,6 @@ const nextPost =
     <ul class="tags-container">
       {tags.map((tag : string) => <Tag tag={slugifyStr(tag)} />)}
     </ul>
-
-    <p>
-      ...{remarkPluginFrontmatter.readingTime}
-    </p>
 
     <article id="article" class="prose mx-auto mt-8 max-w-3xl">
       {
@@ -225,7 +223,7 @@ const nextPost =
             <h2>Incoming Links</h2>
             <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {
-                remarkPluginFrontmatter.incomingLinks.map((value: { slug: string; frontmatter?: {} }, index: number, array: { slug: string; frontmatter?: {} }[]): any => {
+                remarkPluginFrontmatter.incomingLinks.map((value: { slug: string; frontmatter?: object }, _index: number, _array: { slug: string; frontmatter?: {} }[]): any => {
                   const { slug, frontmatter } = value;
                   return (
                     frontmatter && <Card href={`/notes/${slug}`} frontmatter={remarkPluginFrontmatter} showNexusScore={false} />

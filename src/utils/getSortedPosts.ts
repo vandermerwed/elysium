@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import getPostsWithEnrichedFrontmatter from "./getPostsWithEnrichedFrontmatter";
+// import getPostsWithEnrichedFrontmatter from "./getPostsWithEnrichedFrontmatter";
 import postFilter from "./postFilter";
 
 const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
@@ -18,7 +18,7 @@ const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
 };
 
 const getEnrichedSortedPosts = async <T extends "blog" | "projects">(posts: CollectionEntry<T>[]) => {
-  // make sure that this func is async
+  // TODO: Need to figure out an efficient way to enrich the frontmatter for collections
   // const enrichedPosts = await getPostsWithEnrichedFrontmatter(posts); // enrich the frontmatter
 
   return posts

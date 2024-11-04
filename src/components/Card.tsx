@@ -13,7 +13,7 @@ export default function Card({
   href,
   frontmatter,
   secHeading = true,
-  showNexusScore = true,
+  showNexusScore = false,
 }: Props) {
   const { title, slug, pubDatetime, modDatetime, description, readingTime, nexusScore } =
     frontmatter || {};
@@ -45,9 +45,8 @@ export default function Card({
           )}
         </a>
       </div>
-      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} readingTime={readingTime} />
-      <p>{description}</p>
-      <em>...{readingTime}</em>
+      <Datetime hideIcon={true} pubDatetime={pubDatetime} showTime={false} modDatetime={modDatetime} readingTime={readingTime}  />
+      <p className="mt-4">{description}</p>
     </li>
   );
 }

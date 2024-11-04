@@ -1,15 +1,15 @@
 ---
 pubDatetime: 2023-10-12T09:52:00
+modDatetime: 2024-11-04T08:22:18
 title: Visual Representations of Interconnectedness and Depth
 slug: nexus-score
-featured: true
+featured: false
 draft: false
 tags:
-  - fragment
   - astro
   - digital-garden
 description: "Nexus Score: A system for evaluating and visually representing notes in a digital garden based on connectedness and content depth."
-type: fragment
+type: note
 aiUsage:
   - research
   - proofreading
@@ -143,3 +143,8 @@ Here is a full map of the Nexus Score icons.
 ## Conclusion
 
 I know there are still many flaws in this system and many ways that it can be improved. This will do for now though and has scratched the creative itch I had. If you have any thoughts or critiques on the approach I took please feel free to [reach out to me on X (Twitter)](https://twitter.com/vandermerwed).
+
+---
+
+## Update: 2024-10-31
+I had to disable Nexus Score on collection pages as it was causing performance issues. I'll have to revisit the implementation to make it more efficient. Nexus Score is still visible on individual notes.

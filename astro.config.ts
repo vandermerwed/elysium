@@ -33,7 +33,6 @@ export default defineConfig({
       remarkModifiedTime,
       remarkReadingTime,
       // remarkWordCount,
-      remarkNexusScore,
       [
         remarkCollapse,
         {
@@ -59,14 +58,15 @@ export default defineConfig({
             return [`notes/${slug}`];
           }
         } 
-      }]
+      }],
+      remarkNexusScore,
     ],
     rehypePlugins: [
       [
         // https://github.com/rehypejs/rehype-external-links
         rehypeExternalLinks,
         {
-          // content: { type: 'text', value: ' 🔗' },
+          // content: { type: 'text', value: ' ⎋' },
           properties: { className: ['external-link'] },
           target: '_blank',
           rel: ['noopener', 'nofollow']
@@ -77,6 +77,7 @@ export default defineConfig({
       // For more themes, visit https://shiki.style/themes
       // theme: "one-dark-pro",
       themes: { light: "one-light", dark: "one-dark-pro" },
+      // themes: { light: "github-light", dark: "github-dark" },
       wrap: true,
     },
   },

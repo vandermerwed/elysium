@@ -1,8 +1,9 @@
 ---
 pubDatetime: 2023-09-30T14:00:00
+modDatetime: 2024-11-04T08:22:19
 title: "Year of Legacy: Foundations [2024]"
 slug: year-of-legacy-foundations-2024
-featured: true
+featured: false
 draft: false
 tags:
   - protocol

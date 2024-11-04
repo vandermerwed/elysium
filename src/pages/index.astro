@@ -6,12 +6,12 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import { getEnrichedSortedPosts } from "@utils/getSortedPosts";
+import { getSortedPosts } from "@utils/getSortedPosts";
 import { SITE } from "@config";
 
 const posts = await getCollection("blog");
 
-const sortedPosts = await getEnrichedSortedPosts(posts);
+const sortedPosts = await getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
@@ -55,7 +55,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     {
       recentPosts.length > 0 && (
         <section id="recent-posts">
-        <h2>Recent Log Entries</h2>
+        <h2>{featuredPosts.length > 0 && "Recent "}Log Entries</h2>
           <ul>
             {recentPosts.map(
               ({ data, slug }, index) =>

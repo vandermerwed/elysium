@@ -1,7 +1,7 @@
 ---
 function generateAIUsageSentence(aiUsage: string[]) {
   if (!aiUsage || aiUsage.length === 0 || aiUsage.includes("none")) {
-    return "No AI tools were used in the creation of this article.";
+    return "No AI tools were used in the creation of the content on this page.";
   }
 
   type UsageDescriptions = {
@@ -20,11 +20,11 @@ function generateAIUsageSentence(aiUsage: string[]) {
   const usageDescriptions: UsageDescriptions = {
     research: "assisted in researching information",
     proofreading: "aided in proofreading and language correction",
-    "code-assistance": "provided assistance in code examples",
+    "code-assistance": "provided assistance with code",
     "system-design": "helped with system architecture and design",
-    "data-analysis": "supported data analysis",
+    "data-analysis": "supported with data analysis",
     "content-ideation": "contributed to content ideation",
-    editing: "suggested significant edits and improvements",
+    editing: "suggested edits and improvements",
     "image-generation": "generated images or visual elements",
     "seo-optimization": "aided in optimizing content for SEO",
     summarization: "helped summarize complex sections"
@@ -35,18 +35,17 @@ function generateAIUsageSentence(aiUsage: string[]) {
     .map(tag => usageDescriptions[tag]);
 
   if (descriptions.length === 1) {
-    return `AI ${descriptions[0]} for this article.`;
+    return `AI ${descriptions[0]} for the content on this page.`;
   } else {
     const last = descriptions.pop();
-    return `AI ${descriptions.join(", ")}, and ${last} for this article.`;
+    return `AI ${descriptions.join(", ")}, and ${last} for the content on this page.`;
   }
 }
 
 const { aiUsage = [] } = Astro.props;
 const aiUsageSentence = generateAIUsageSentence(aiUsage);
 ---
-
-<div class="mb-6 mt-4 flex items-start space-x-3 rounded-md border border-zinc-700 p-3">
+<div class="not-prose card mb-6 mt-6 flex items-start space-x-3 rounded-md border border-skin-line p-3 shadow-sm">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -70,7 +69,7 @@ const aiUsageSentence = generateAIUsageSentence(aiUsage);
         <path d="M10 8v.01"></path>
         <path d="M14 8v.01"></path>
   </svg>
-  <div class="flex flex-col space-y-2">
+  <div class="flex flex-col space-y-2 text-skin-base">
     <p class="text-sm">{aiUsageSentence}</p>
     <p class="text-xs">
       For more information, please see my{" "}

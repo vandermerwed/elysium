@@ -7,7 +7,7 @@ const getPostsWithEnrichedFrontmatter = async <T extends "blog" | "projects">(po
         const { Content, remarkPluginFrontmatter } = post.render();
 
         // resolve promise
-        console.log("remarkPluginFrontmatter: ", remarkPluginFrontmatter);
+        // console.log("remarkPluginFrontmatter: ", remarkPluginFrontmatter);
 
         return post;
     }) as CollectionEntry<T>[];
