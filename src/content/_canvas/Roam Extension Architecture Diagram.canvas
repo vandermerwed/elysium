@@ -1,11 +1,14 @@
 {
 	"nodes":[
-		{"id":"1e33b7f56313cea4","type":"file","file":"projects/roam-research-extension-toggl.md","x":-1000,"y":30,"width":400,"height":730},
-		{"id":"acc634ee60cfa0b1","type":"text","text":"[[Roam Research RescueTime Extension]]\n- Focus Time Start Trigger\n- Focus Time End Trigger\n- Send to Highlights\n\nSome sort of mechanism that asks after a focus session what you got done and what you still need to do etc. and rate the session. Then post this data to Roam (and RescueTime highlights?)\n- Update current Toggl entry in Roam with information that was entered **if** toggl extension is installed and configured","x":20,"y":30,"width":332,"height":490},
-		{"id":"d34eab7740b1cbc4","type":"text","text":"[[Roam Research Interstitial Journal Extension]]","x":20,"y":600,"width":332,"height":160},
-		{"id":"cb2b35a5e3c028e3","type":"text","text":"[[Roam Research Exist Extension]]","x":-460,"y":460,"width":352,"height":300}
+		{"id":"d34eab7740b1cbc4","type":"text","text":"# Roam Research Extension - Interstitial Journaling","x":20,"y":600,"width":332,"height":160},
+		{"id":"c11952137e0cc988","type":"file","file":"projects/roam-research-extension-exist.md","x":-460,"y":460,"width":340,"height":300},
+		{"id":"11de89e59b4a17fe","type":"file","file":"projects/roam-research-extension-coda.md","x":-460,"y":-80,"width":340,"height":260},
+		{"id":"d7efe839153dc156","type":"file","file":"projects/roam-research-extension-rescue-time.md","x":20,"y":-80,"width":332,"height":610},
+		{"id":"1e33b7f56313cea4","type":"file","file":"projects/roam-research-extension-toggl.md","x":-932,"y":155,"width":332,"height":610},
+		{"id":"d8caf343bf2f8ad8","type":"text","text":"# Roam Research Extension - Trigger Action Plans (TAPs)","x":-932,"y":-80,"width":332,"height":160},
+		{"id":"edbf6c13879903bc","type":"text","text":"# Roam Research Extension - Widgets\n\nDefine areas of the UI where widgets & complications can be displayed.\n- *Akin to widgets & complications on iOS.*","x":-932,"y":-360,"width":332,"height":220}
 	],
 	"edges":[
-		{"id":"eb2b3ae603928e9f","fromNode":"acc634ee60cfa0b1","fromSide":"left","toNode":"1e33b7f56313cea4","toSide":"right","label":"update timer on focus session end"}
+		{"id":"eb2b3ae603928e9f","fromNode":"d7efe839153dc156","fromSide":"left","toNode":"1e33b7f56313cea4","toSide":"right","label":"update timer on focus session end"}
 	]
 }

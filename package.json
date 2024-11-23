@@ -25,7 +25,7 @@
     "fuse.js": "^7.0.0",
     "lodash.kebabcase": "^4.1.1",
     "mdast-util-to-string": "^4.0.0",
-    "mdx": "^0.3.1",
+    "mdx": "^0.2.3",
     "micromark-util-symbol": "^2.0.0",
     "reading-time": "^1.5.0",
     "rehype-external-links": "^3.0.0",
@@ -34,6 +34,7 @@
     "satori": "^0.11.0",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
+    "unist-util-visit": "^5.0.0",
     "word-count": "^0.2.2"
   },
   "devDependencies": {

@@ -8,6 +8,8 @@ tags:
   - astro
 description: An opinionated, minimal, responsive, accessible and SEO-friendly Astro personal website and digital garden theme based on Astro Paper.
 type: project
+aiUsage:
+  - none
 ---
 I'll write a more about how to set Elysium up to work well with Obsidian in the future. In the meantime here is the repository: https://github.com/vandermerwed/elysium
 

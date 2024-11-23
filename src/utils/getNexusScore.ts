@@ -32,57 +32,48 @@ const getNexusScore = (post: CollectionEntry<"blog" | "projects">) => {
   const externalResourceCount = post.data.externalLinks.length;
   const wordCount = post.data.wordCount;
 
-  const incomingLinkModifier = 3;
-  const outgoingLinkModifier = 1.5;
+  const incomingLinkModifier = 10;
+  const outgoingLinkModifier = 5;
   const externalResourceModifier = 2;
-  const wordCountModifier = 0.005;
+  const wordCountModifier = 0.02;
 
-  // Define a threshold for balanced state
-  const linkDominanceThreshold = 10;
-
-  // Determine link dominance
+  // Calculate Scores
   const incomingLinkScore = incomingLinkCount * incomingLinkModifier;
   const outgoingLinkScore = outgoingLinkCount * outgoingLinkModifier;
-  const externalLinkScore =
-    externalResourceModifier * Math.log(1 + externalResourceCount);
+  const externalLinkScore = externalResourceCount * externalResourceModifier;
   const wordCountScore = wordCount * wordCountModifier;
 
-  const linkDominanceScore = incomingLinkScore - outgoingLinkScore;
+  // Total Link Count
+  const totalLinkCount = incomingLinkCount + outgoingLinkCount;
 
+  // Determine Dominance State
   let dominanceState;
-
-  if (Math.abs(linkDominanceScore) < linkDominanceThreshold) {
-    dominanceState = "H";
-  } else if (linkDominanceScore > 0) {
-    dominanceState = "R";
+  if (totalLinkCount === 0) {
+    dominanceState = "H"; // Default to Hybrid if no links
   } else {
-    dominanceState = "T";
+    const incomingLinkRatio = incomingLinkCount / totalLinkCount;
+    if (incomingLinkRatio > 0.6) {
+      dominanceState = "R";
+    } else if (incomingLinkRatio < 0.4) {
+      dominanceState = "T";
+    } else {
+      dominanceState = "H";
+    }
   }
 
-  const totalScore =
-    Math.abs(linkDominanceScore) + wordCountScore + externalLinkScore;
+  // Total Score Calculation
+  const totalScore = incomingLinkScore + outgoingLinkScore + externalLinkScore + wordCountScore;
 
   if (enableDebugging) {
     console.log("--------------------");
     console.log(`Title: ${post.data.title}`);
-    console.log(`Score: ${totalScore}`);
-    console.log(
-      `Incoming Links: ${incomingLinkCount} * ${incomingLinkModifier} = ${incomingLinkScore}`
-    );
-    console.log(
-      `Outgoing Links: ${outgoingLinkCount} * ${outgoingLinkModifier} = ${outgoingLinkScore}`
-    );
-    console.log(
-      `External Resources: ${externalResourceCount} * ${externalResourceModifier} = ${externalLinkScore}`
-    );
-    console.log(
-      `Word Count: ${wordCount} * ${wordCountModifier} = ${wordCountScore}`
-    );
-    console.log(
-      `Link Dominance Score: ${linkDominanceScore} [Absolute: ${Math.abs(
-        linkDominanceScore
-      )}]`
-    );
+    console.log(`Dominance State: ${dominanceState}`);
+    console.log(`Total Score: ${totalScore}`);
+    console.log(`Incoming Link Score: ${incomingLinkScore}`);
+    console.log(`Outgoing Link Score: ${outgoingLinkScore}`);
+    console.log(`External Link Score: ${externalLinkScore}`);
+    console.log(`Word Count Score: ${wordCountScore}`);
+    console.log("--------------------");
   }
 
   // Assign icons based on score and link dominance

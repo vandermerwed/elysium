@@ -1,15 +1,21 @@
 ---
 pubDatetime: 2023-10-12T09:52:00
+modDatetime: 2024-11-23T10:54:53
 title: Visual Representations of Interconnectedness and Depth
 slug: nexus-score
-featured: true
+featured: false
 draft: false
 tags:
-  - fragment
   - astro
   - digital-garden
 description: "Nexus Score: A system for evaluating and visually representing notes in a digital garden based on connectedness and content depth."
-type: fragment
+type: note
+aiUsage:
+  - research
+  - proofreading
+  - code-assistance
+  - system-design
+  - data-analysis
 ---
 
 I was introduced to the concept of using patterns to convey information density in this [digital garden note](https://notes.azlen.me/cri6tvov/) by [Azlen](https://twitter.com/azlenelza). Similarly, [Maggie Appleton also uses iconography](https://maggieappleton.com/notes) to visually differentiate between seedling, budding and evergreen notes in her digital garden. They inspired me to create my own pattern system to convey the interconnectedness and depth of notes on this website.
@@ -137,3 +143,11 @@ Here is a full map of the Nexus Score icons.
 ## Conclusion
 
 I know there are still many flaws in this system and many ways that it can be improved. This will do for now though and has scratched the creative itch I had. If you have any thoughts or critiques on the approach I took please feel free to [reach out to me on X (Twitter)](https://twitter.com/vandermerwed).
+
+---
+
+## Update: 2024-10-31
+I had to disable Nexus Score on collection pages as it was causing performance issues. I'll have to revisit the implementation to make it more efficient. Nexus Score is still visible on individual notes.
+
+## Update: 2024-11-04
+With the way that remark plugins work it is not currently possible to process incoming links in a note. This means that the Nexus Score is not accurate.

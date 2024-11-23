@@ -5,6 +5,8 @@
     "tags": "tags",
     "pubDatetime": "datetime",
     "testList": "multitext",
-    "type": "text"
+    "type": "text",
+    "status": "text",
+    "modDatetime": "datetime"
   }
 }

@@ -8,4 +8,6 @@ tags:
   - fragment
 description: Some description text.
 type: fragment
+aiUsage:
+  - none
 ---

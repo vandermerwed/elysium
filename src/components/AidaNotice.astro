@@ -1,0 +1,68 @@
+---
+function generateAIUsageSentence(aiUsage: string[]) {
+  if (!aiUsage || aiUsage.length === 0 || aiUsage.includes("none")) {
+    return "No AI tools were used in the creation of the content on this page.";
+  }
+
+  const usageDescriptions = {
+    research: "researching information",
+    proofreading: "proofreading and grammar correction",
+    editing: "editing and refining content",
+    "code-assistance": "code assistance",
+    ideation: "organizing and structuring ideas",
+    "image-generation": "generating images",
+    "documentation": "formatting and structuring documentation",
+    "system-design": "system design and architecture",
+    "data-analysis": "data analysis",
+  };
+
+  const descriptions = aiUsage
+    .filter((tag): tag is keyof typeof usageDescriptions => tag in usageDescriptions)
+    .map((tag) => usageDescriptions[tag]);
+
+  if (descriptions.length === 1) {
+    return `AI was used for ${descriptions[0]} in the creation of the content on this page.`;
+  } else {
+    const last = descriptions.pop();
+    return `AI was used for ${descriptions.join(", ")}, and ${last} in the creation of the content on this page.`;
+  }
+}
+
+const { aiUsage = [] } = Astro.props;
+const aiUsageSentence = generateAIUsageSentence(aiUsage);
+---
+<div class="not-prose card mb-6 mt-6 flex items-start space-x-3 rounded-md border border-skin-line p-3 shadow-sm">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-robot link-button w-5 h-5 text-skin-base flex-shrink-0 mt-0.5"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
+    <path d="M12 2v2"></path>
+    <path d="M9 12v9"></path>
+    <path d="M15 12v9"></path>
+    <path d="M5 16l4 -2"></path>
+    <path d="M15 14l4 2"></path>
+    <path d="M9 18h6"></path>
+    <path d="M10 8v.01"></path>
+    <path d="M14 8v.01"></path>
+  </svg>
+  <div class="flex flex-col space-y-2 text-skin-base">
+    <p class="text-sm">{aiUsageSentence}</p>
+    <p class="text-xs">
+      For more information, please see my{" "}
+      <a href="/ai" class="text-skin-base underline hover:text-skin-accent">
+        AI usage policy
+      </a>
+      .
+    </p>
+  </div>
+</div>

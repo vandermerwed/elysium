@@ -13,10 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/astro-elysium.md",
+                "file": "blog/ai-agency-paradox.md",
                 "mode": "source",
                 "source": false
-              }
+              },
+              "icon": "lucide-file",
+              "title": "ai-agency-paradox"
             }
           }
         ]
@@ -39,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -54,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -62,7 +68,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -85,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "projects/astro-elysium.md",
+                "file": "blog/ai-agency-paradox.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,7 +101,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for ai-agency-paradox"
             }
           },
           {
@@ -102,10 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "projects/astro-elysium.md",
+                "file": "blog/artificial-intelligence.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from artificial-intelligence"
             }
           },
           {
@@ -116,7 +128,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -125,8 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "projects/astro-elysium.md"
-              }
+                "file": "blog/artificial-intelligence.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of artificial-intelligence"
             }
           }
         ]
@@ -147,34 +163,34 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
-    "blog/yearly-themes.md",
-    "projects/astro-elysium.md",
-    "blog/loadout-update-2024-q1.md",
-    "_canvas/Roam Extension Architecture Diagram.canvas",
-    "blog/terminal-development.md",
-    "blog/tailwind-typography.md",
-    "blog/setting-dates-via-git-hooks.md",
-    "blog/predefined-color-schemes.md",
-    "blog/portfolio-website-development.md",
-    "blog/how-to-update-dependencies.md",
-    "blog/how-to-integrate-giscus-comments.md",
-    "blog/how-to-connect-astro-paper-blog-with-forestry-cms.md",
-    "blog/how-to-configure-astropaper-theme.md",
-    "blog/how-to-add-latex-equations-in-blog-posts.md",
-    "blog/how-to-add-an-estimated-reading-time.md",
-    "blog/how-to-add-a-new-social-icon.md",
-    "blog/example-draft-post.md",
-    "blog/dynamic-og-images.md",
-    "blog/customizing-astropaper-theme-color-schemes.md",
-    "blog/astro-paper-4.md",
-    "blog/astro-paper-3.md",
-    "blog/astro-paper-2.md",
-    "blog/adding-new-post.md",
+    "blog/artificial-intelligence.mdx",
+    "blog/ai-agency-paradox.md",
+    "blog/intentionality.md",
+    "blog/hemingway-bridge.md",
+    "blog/affirmation-bedtime-blueprint.md",
     "_canvas/Public Roadmap.canvas",
-    "projects/roam-research-extension-toggl.md",
+    "blog/friction.md",
+    "blog/interstitial-journaling.md",
+    "blog/home-base-protocols.md",
+    "blog/loadout-update-2024-q4.md",
     "blog/loadout-update-2023-q3.md",
-    "projects/roam-research-toggl-extension.md",
+    "tags/loadout.md",
     "blog/loadout-update-q4-2023.md",
+    "tags/theme.md",
+    "blog/maintaining-averages.md",
+    "blog/paying-attention.md",
+    "blog/personal-retreats.md",
+    "blog/spaceship-you.md",
+    "blog/time.md",
+    "blog/trigger-action-planning.md",
+    "projects/astro-elysium.md",
+    "projects/roam-research-extension-toggl.md",
+    "projects/roam-research-extension-rescue-time.md",
+    "projects/roam-research-extension-exist.md",
+    "projects/roam-research-extension-coda.md",
+    "_canvas/Roam Extension Architecture Diagram.canvas",
+    "projects/roam-research-toggl-extension.md",
+    "blog/loadout-update-q3-2023.md",
     "config.ts",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",
@@ -183,7 +199,6 @@
     "tags",
     "_templates",
     "_examples",
-    "blog/2023",
-    "examples/test.mdx"
+    "blog/2023"
   ]
 }

@@ -16,6 +16,7 @@ module.exports = {
     // if one breakpoint is not enough for you
     screens: {
       sm: "640px",
+      lg: "1024px",
     },
 
     extend: {
@@ -43,7 +44,7 @@ module.exports = {
       },
       borderColor: {
         skin: {
-          line: withOpacity("--color-border"),
+          line: withOpacity("--color-border", { opacityValue: 0.1 }),
           "line-muted": withOpacity("--color-border-muted"),
           fill: withOpacity("--color-text-base"),
           accent: withOpacity("--color-accent"),
@@ -64,22 +65,30 @@ module.exports = {
       fontFamily: {
         // mono: ["IBM Plex Mono", "monospace"],
         // mono: ["Roboto Mono", "monospace"],
-        mono: ["Rajdhani", "monospace"],
+        // mono: ["Rajdhani", "monospace"],
         // sans: ["Inter", "sans-serif"],
-        sans: ["Roboto", "sans-serif"],
+        // sans: ["Roboto", "sans-serif"],
+        // mono: ["Rajdhani", "monospace"],
+        mono: ["Fira Code", "Consolas", "monospace"],
+        sans: ["system-ui", "sans-serif"]
       },
 
       typography: {
         DEFAULT: {
           css: {
             pre: {
+              fontFamily: "monospace",
               color: false,
             },
             code: {
+              fontFamily: "monospace",
               color: false,
             },
           },
         },
+      },
+      gridTemplateColumns: {
+        '3': 'repeat(3, minmax(0, 1fr))',
       },
     },
   },

@@ -1,14 +1,17 @@
 ---
-pubDatetime: 2023-09-27T09:09:00
-title: Loadout Update [2024/Q1]
-slug: loadout-update-2024-q1
-featured: true
+pubDatetime: 2024-10-20T16:30:00
+modDatetime: 2024-10-20T16:25:00
+title: Loadout Update [2024/Q4]
+slug: loadout-update-2024-q4
+featured: false
 draft: true
 tags:
   - protocol
   - loadout
 description: Some description text.
 type: loadout
+aiUsage:
+  - none
 ---
 
 ## Equipped

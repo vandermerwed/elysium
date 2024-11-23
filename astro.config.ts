@@ -5,11 +5,12 @@ import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 // import wikiLinkPlugin from "@portaljs/remark-wiki-link";
 import remarkWikiLink from "./src/plugins/wiki-link/index.ts";
+import { remarkNexusScore } from "./src/plugins/nexus-score/index.ts";
 import { getPermalinks } from "./src/plugins/wiki-link/getPermalinks.ts";
 import rehypeExternalLinks from 'rehype-external-links';
 import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs';
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
-import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
+// import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
@@ -31,7 +32,7 @@ export default defineConfig({
       remarkToc,
       remarkModifiedTime,
       remarkReadingTime,
-      remarkWordCount,
+      // remarkWordCount,
       [
         remarkCollapse,
         {
@@ -57,14 +58,15 @@ export default defineConfig({
             return [`notes/${slug}`];
           }
         } 
-      }]
+      }],
+      remarkNexusScore,
     ],
     rehypePlugins: [
       [
         // https://github.com/rehypejs/rehype-external-links
         rehypeExternalLinks,
         {
-          // content: { type: 'text', value: ' 🔗' },
+          // content: { type: 'text', value: ' ⎋' },
           properties: { className: ['external-link'] },
           target: '_blank',
           rel: ['noopener', 'nofollow']
@@ -75,6 +77,7 @@ export default defineConfig({
       // For more themes, visit https://shiki.style/themes
       // theme: "one-dark-pro",
       themes: { light: "one-light", dark: "one-dark-pro" },
+      // themes: { light: "github-light", dark: "github-dark" },
       wrap: true,
     },
   },

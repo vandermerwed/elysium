@@ -1,14 +1,17 @@
 ---
 pubDatetime: 2023-09-30T14:00:00
+modDatetime: 2024-11-04T08:22:19
 title: "Year of Legacy: Foundations [2024]"
 slug: year-of-legacy-foundations-2024
-featured: true
+featured: false
 draft: false
 tags:
   - protocol
   - theme
 description: The Elysium has charted its course for the 2024 campaign. Quests are locked in, equipment is double-checked, and thrusters are engaged.
 type: theme
+aiUsage:
+  - proofreading
 ---
 
 I’ve had many yearly themes over the years but always shied away to write about them in public. My good friend [Jacob Pretorius](https://jcpretorius.com/) has been on my case about posting my updates for years now. I think I finally owe him and, more importantly, myself this public update.
