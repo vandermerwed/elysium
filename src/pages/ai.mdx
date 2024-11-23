@@ -52,13 +52,13 @@ Here are a few examples of what it looks like:
 aiUsage:
   - none
 ```
-<AidaNotice client:load aiUsage={["none"]} />
+<AidaNotice aiUsage={["none"]} />
 
 ```text
 aiUsage:
   - research
 ```
-<AidaNotice client:load aiUsage={["research"]} />
+<AidaNotice aiUsage={["research"]} />
 
 ```text
 aiUsage:
@@ -66,7 +66,7 @@ aiUsage:
   - proofreading
   - editing
 ```
-<AidaNotice client:load aiUsage={["research", "proofreading", "editing"]} />
+<AidaNotice aiUsage={["research", "proofreading", "editing"]} />
 
 ```text
 aiUsage:
@@ -74,10 +74,10 @@ aiUsage:
   - system-design
   - code-assistance
 ```
-<AidaNotice client:load aiUsage={["system-design", "data-analysis", "code-assistance"]} />
+<AidaNotice aiUsage={["system-design", "data-analysis", "code-assistance"]} />
 
 I doubt I'll ever need all of them at once, unless it's for some AI experiment. It would look like this:
-<AidaNotice client:load aiUsage={["research", "proofreading", "editing", "code-assistance", "ideation", "image-generation", "documentation", "system-design", "data-analysis"]} />
+<AidaNotice aiUsage={["research", "proofreading", "editing", "code-assistance", "ideation", "image-generation", "documentation", "system-design", "data-analysis"]} />
 
 ### Video Generation
 
