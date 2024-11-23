@@ -36,8 +36,6 @@ const {
 
 const { Content, remarkPluginFrontmatter } = await post.render();
 
-console.log(remarkPluginFrontmatter);
-
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
   ogImageUrl ?? `/notes/${slugifyStr(title)}.png`,

@@ -18,9 +18,6 @@ export default function Card({
   const { title, slug, pubDatetime, modDatetime, description, readingTime, nexusScore } =
     frontmatter || {};
 
-    
-  // console.log("frontmatter: ", frontmatter);
-
   const headerProps = {
     style: { viewTransitionName: slug },
     className: "text-2xl font-medium decoration-dashed hover:underline",
