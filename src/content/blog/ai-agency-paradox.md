@@ -1,5 +1,6 @@
 ---
-pubDatetime: 2024-11-23T13:00:00
+pubDatetime: 2024-11-23T10:00:00
+modDatetime: 2024-11-23T11:28:00
 title: AI and the Agency Paradox
 slug: ai-agency-paradox
 featured: false
