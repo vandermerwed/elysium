@@ -53,10 +53,20 @@ const structuredData = {
 
 <!doctype html>
 <html
-  lang=`${LOCALE.lang ?? "en"}`
+  lang=`${LOCALE.lang ?? "en"}` 
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
+    <script is:inline>
+      // Immediate theme check before any rendering
+      (function() {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
