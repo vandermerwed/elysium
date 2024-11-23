@@ -33,6 +33,15 @@ export default function Datetime({
   postId,
   hideIcon = false,
 }: Props) {
+  const isSameDay = (date1: string | Date, date2: string | Date) => {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  };
 
   return (
     <div
@@ -52,7 +61,7 @@ export default function Datetime({
       )}
       <span className={`italic ${size === "sm" ? "text-sm" : "text-base"}`}>
         <FormattedDatetime pubDatetime={pubDatetime} showTime={showTime} />
-        {showModified && modDatetime && modDatetime > pubDatetime && (
+        {showModified && modDatetime && modDatetime > pubDatetime && !isSameDay(pubDatetime, modDatetime) && (
           <>
             &nbsp;[Updated:&nbsp;
             <FormattedDatetime pubDatetime={modDatetime} showTime={showTime} />
