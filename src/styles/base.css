@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  .block-transitions {
+    /* Prevent flash during theme initialization */
+    visibility: hidden;
+  }
+  
   :root {
     /* Default theme (light) */
     --color: 55, 65, 81;

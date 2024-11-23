@@ -54,16 +54,16 @@ const structuredData = {
 <!doctype html>
 <html
   lang=`${LOCALE.lang ?? "en"}` 
-  class={`${scrollSmooth && "scroll-smooth"}`}
+  class={`${scrollSmooth && "scroll-smooth"} block-transitions`}
 >
   <head>
     <script is:inline>
-      // Immediate theme check before any rendering
       (function() {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const storedTheme = localStorage.getItem('theme');
-        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-          document.documentElement.setAttribute('data-theme', 'dark');
+        if (typeof window !== 'undefined') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const storedTheme = localStorage.getItem('theme');
+          document.documentElement.dataset.theme = storedTheme || (prefersDark ? 'dark' : 'light');
+          document.documentElement.classList.remove('block-transitions');
         }
       })();
     </script>
