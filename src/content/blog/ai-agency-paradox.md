@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2024-11-23T13:00:00
 title: AI and the Agency Paradox
-slug: artificial-intelligence
+slug: ai-agency-paradox
 featured: false
 draft: false
 tags:
@@ -10,7 +10,6 @@ tags:
   - future
   - technology
   - ethics
-  - tools
 description: Artificial Intelligence is everywhere. A look at how it's reshaping our world, the risks to agency, and how I plan to use it responsibly.
 type: note
 aiUsage:
@@ -18,8 +17,6 @@ aiUsage:
   - research
   - proofreading
 ---
-
-import AidaNotice from "@components/AidaNotice.astro";
 
 ## Table of contents
 
