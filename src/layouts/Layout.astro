@@ -54,19 +54,9 @@ const structuredData = {
 <!doctype html>
 <html
   lang=`${LOCALE.lang ?? "en"}` 
-  class={`${scrollSmooth && "scroll-smooth"} block-transitions`}
+  class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
-    <script is:inline>
-      (function() {
-        if (typeof window !== 'undefined') {
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          const storedTheme = localStorage.getItem('theme');
-          document.documentElement.dataset.theme = storedTheme || (prefersDark ? 'dark' : 'light');
-          document.documentElement.classList.remove('block-transitions');
-        }
-      })();
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -110,8 +100,6 @@ const structuredData = {
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />
-
-    <script is:inline src="/theme-check.js"></script>
 
     <!-- Google JSON-LD Structured data -->
     <script

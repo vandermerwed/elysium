@@ -2,80 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Variables */
 @layer base {
-  .block-transitions {
-    /* Prevent flash during theme initialization */
-    visibility: hidden;
-  }
-  
   :root {
-    /* Default theme (light) */
-    --color: 55, 65, 81;
-    --color-fill: 255, 255, 254;
-    --color-text-base: 43, 40, 49;
-    --color-accent: 231, 93, 14;
-    --color-accent-secondary: 0, 166, 113;
-    --color-card: 230, 230, 230;
-    --color-card-muted: 205, 205, 205;
-    --color-border: 236, 233, 233;
-    --color-border-muted: 205, 205, 205;
-  }
-  :root,
-  html[data-theme="light"] {
-    --color: 55, 65, 81;
-    --color-fill: 255, 255, 254;
-    --color-text-base: 43, 40, 49;
-    --color-accent: 231, 93, 14;
-    --color-accent-secondary: 0, 166, 113;
+    /* Light theme values */
+    --light-color: 55, 65, 81;
+    --light-fill: 255, 255, 254;
+    --light-text-base: 43, 40, 49;
+    --light-accent: 231, 93, 14;
+    --light-accent-secondary: 0, 166, 113;
+    --light-card: 230, 230, 230;
+    --light-card-muted: 205, 205, 205;
+    --light-border: 236, 233, 233;
+    --light-border-muted: 205, 205, 205;
 
-    --color-card: 230, 230, 230;
-    --color-card-muted: 205, 205, 205;
-    --color-border: 236, 233, 233;
-    --color-border-muted: 205, 205, 205;
+    /* Dark theme values */
+    --dark-color: 240, 246, 248;
+    --dark-fill: 37, 36, 38;
+    --dark-text-base: 240, 246, 248;
+    --dark-accent: 232, 84, 37;
+    --dark-accent-secondary: 0, 161, 96;
+    --dark-card: 59, 58, 60;
+    --dark-card-muted: 138, 51, 2;
+    --dark-border: 80, 82, 83;
+    --dark-border-muted: 138, 51, 2;
+
+    /* Dynamic theme variables */
+    --color: var(--light-color);
+    --color-fill: var(--light-fill);
+    --color-text-base: var(--light-text-base);
+    --color-accent: var(--light-accent);
+    --color-accent-secondary: var(--light-accent-secondary);
+    --color-card: var(--light-card);
+    --color-card-muted: var(--light-card-muted);
+    --color-border: var(--light-border);
+    --color-border-muted: var(--light-border-muted);
   }
+
   html[data-theme="dark"] {
-    --color: 240, 246, 248;
-    --color-fill: 37, 36, 38;
-    --color-text-base: 240, 246, 248;
-    --color-accent: 232, 84, 37;
-    --color-accent-secondary: 0, 161, 96;
+    --color: var(--dark-color);
+    --color-fill: var(--dark-fill);
+    --color-text-base: var(--dark-text-base);
+    --color-accent: var(--dark-accent);
+    --color-accent-secondary: var(--dark-accent-secondary);
+    --color-card: var(--dark-card);
+    --color-card-muted: var(--dark-card-muted);
+    --color-border: var(--dark-border);
+    --color-border-muted: var(--dark-border-muted);
+  }
 
-    --color-card: 59, 58, 60;
-    --color-card-muted: 138, 51, 2;
-    --color-border: 80, 82, 83;
-    --color-border-muted: 138, 51, 2;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color: var(--dark-color);
+      --color-fill: var(--dark-fill);
+      --color-text-base: var(--dark-text-base);
+      --color-accent: var(--dark-accent);
+      --color-accent-secondary: var(--dark-accent-secondary);
+      --color-card: var(--dark-card);
+      --color-card-muted: var(--dark-card-muted);
+      --color-border: var(--dark-border);
+      --color-border-muted: var(--dark-border-muted);
+    }
   }
-  #sun-svg,
-  html[data-theme="dark"] #moon-svg {
-    display: none;
-  }
-  #moon-svg,
-  html[data-theme="dark"] #sun-svg {
-    display: block;
-  }
+
+  /* Theme switcher visibility */
+  html[data-theme="dark"] #sun-svg { display: none; }
+  html[data-theme="dark"] #moon-svg { display: block; }
+  html[data-theme="light"] #moon-svg { display: none; }
+  html[data-theme="light"] #sun-svg { display: block; }
+
+  /* Base Layout & Typography */
   body {
     @apply flex min-h-screen flex-col bg-skin-fill font-sans text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-80 selection:text-skin-inverted;
   }
-  h1,h2,h3,h4,h5,h6 {
+
+  h1, h2, h3, h4, h5, h6 {
     @apply font-mono uppercase;
   }
-  section,
-  footer {
+
+  section, footer {
     @apply mx-auto max-w-3xl px-4;
   }
+
+  /* Links & Interactive Elements */
   a {
     @apply outline-2 outline-offset-1 outline-skin-fill 
     focus-visible:no-underline focus-visible:outline-dashed;
   }
+
+  /* SVG Icons */
   svg {
     @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
+
   svg.icon-tabler {
     @apply inline-block h-6 w-6 scale-125 fill-transparent 
     stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
     sm:scale-110;
   }
+
+  /* Prose Styles */
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
     prose-h3:italic prose-p:!text-skin-base 
@@ -99,92 +126,72 @@
     prose-hr:!border-skin-line-muted
     prose-hr:max-w-sm prose-hr:mx-auto;
   }
-  .prose a {
-    @apply hover:!text-skin-accent;
-  }
+
+  /* External Link Styles */
   .prose a.external-link {
     @apply hover:!text-skin-accent-secondary;
   }
+
   .prose a.external-link::after {
-    
     content: "🡥";
     margin-left: .25rem;
     text-decoration: none;
     display: inline-block;
   }
 
+  /* Table Styles */
   .prose thead th:first-child,
   tbody td:first-child,
   tfoot td:first-child {
     padding-left: 0.5714286em;
   }
+
   .prose h2#table-of-contents {
     @apply mb-2;
   }
+
   .prose details {
     @apply inline-block cursor-pointer select-none text-skin-base;
   }
+
   .prose summary {
     @apply focus-outline;
   }
+
   .prose h2#table-of-contents + p {
     @apply hidden;
   }
 
-  /* ===== scrollbar ===== */
-  html {
-    overflow-y: scroll;
-  }
+  /* Scrollbar Styles */
+  html { overflow-y: scroll; }
+  ::-webkit-scrollbar { @apply w-3; }
+  ::-webkit-scrollbar-track { @apply bg-skin-fill; }
+  ::-webkit-scrollbar-thumb { @apply bg-skin-card; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-skin-card-muted; }
 
-  /* width */
-  ::-webkit-scrollbar {
-    @apply w-3;
-  }
+  /* Code Block Styles */
+  pre:has(code) { @apply border border-skin-line; }
+  code, blockquote { word-wrap: break-word; }
+  pre > code { white-space: pre; }
 
-  /* Track */
-  ::-webkit-scrollbar-track {
-    @apply bg-skin-fill;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    @apply bg-skin-card;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-skin-card-muted;
-  }
-
-  /* ===== Code Blocks & Syntax Highlighting ===== */
-  pre:has(code) {
-    @apply border border-skin-line;
-  }
-  code,
-  blockquote {
-    word-wrap: break-word;
-  }
-
-  pre > code {
-    white-space: pre;
-  }
-
-  /* Apply Dark Theme (if multi-theme specified) */
-  html[data-theme="dark"] pre:has(code),
-  html[data-theme="dark"] pre:has(code) span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--color-card) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
+  /* Update dark theme code block overrides */
+  @media (prefers-color-scheme: dark) {
+    pre:has(code),
+    pre:has(code) span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--color-card) !important;
+      font-style: var(--shiki-dark-font-style) !important;
+      font-weight: var(--shiki-dark-font-weight) !important;
+      text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
   }
 }
 
+/* Utility Classes */
 @layer components {
-  .display-none {
-    @apply hidden;
-  }
+  .display-none { @apply hidden; }
   .focus-outline {
-    @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+    @apply outline-2 outline-offset-1 outline-skin-fill 
+    focus-visible:no-underline focus-visible:outline-dashed;
   }
 }

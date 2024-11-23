@@ -4,7 +4,16 @@ const primaryColorScheme = ""; // "light" | "dark"
 const currentTheme = localStorage.getItem("theme");
 
 function getPreferTheme() {
-  return document.documentElement.dataset.theme || "light";
+  // return theme value in local storage if it is set
+  if (currentTheme) return currentTheme;
+
+  // return primary color scheme if it is set
+  if (primaryColorScheme) return primaryColorScheme;
+  
+  // return user device's prefer color scheme
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 let themeValue = getPreferTheme();

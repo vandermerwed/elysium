@@ -4,9 +4,6 @@
 /*.html
   Cache-Control: public, max-age=31536000, immutable
 
-/theme-check.js
-  Cache-Control: public, max-age=31536000
-
 /assets/*
   Cache-Control: public, max-age=31536000
 
