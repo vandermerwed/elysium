@@ -13,7 +13,21 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/artificial-intelligence.md",
+                "file": "blog/artificial-intelligence.mdx",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "artificial-intelligence"
+            }
+          },
+          {
+            "id": "ab7d01985e53eed7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/artificial-intelligence.mdx",
                 "mode": "source",
                 "source": false
               },
@@ -21,7 +35,8 @@
               "title": "artificial-intelligence"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -93,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/artificial-intelligence.md",
+                "file": "blog/artificial-intelligence.mdx",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -161,15 +176,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "646ce574b4a4090a",
+  "active": "ab7d01985e53eed7",
   "lastOpenFiles": [
+    "blog/intentionality.md",
+    "blog/hemingway-bridge.md",
     "blog/affirmation-bedtime-blueprint.md",
     "blog/artificial-intelligence.md",
     "_canvas/Public Roadmap.canvas",
     "blog/friction.md",
     "blog/interstitial-journaling.md",
     "blog/home-base-protocols.md",
-    "blog/intentionality.md",
     "blog/loadout-update-2024-q4.md",
     "blog/loadout-update-2023-q3.md",
     "tags/loadout.md",
@@ -190,7 +206,6 @@
     "projects/roam-research-toggl-extension.md",
     "blog/loadout-update-q3-2023.md",
     "_templates/note.md",
-    "_templates/loadout.md",
     "config.ts",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",

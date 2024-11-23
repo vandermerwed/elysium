@@ -8,7 +8,9 @@ export const SITE: Site = {
   title: "Elysium Chronicles",
   ogImage: "og.png",
   lightAndDarkMode: true,
-  postPerIndex: 15,
+  blogContentTypes: ["note", "loadout", "theme"],
+  postPerIndex: 5,
+  fragmentsPerIndex: 6,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: true,

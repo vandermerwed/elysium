@@ -2,10 +2,133 @@
 layout: ../layouts/SimpleLayout.astro
 title: "AI"
 lastModified: "2024-10-20 21:30:00"
+aiUsage:
+  - proofreading
+  - editing
 ---
 
-This is how AI is used on this website.
+import AidaNotice from "@components/AidaNotice.astro";
 
+I use AI. I try to do so responsibly.
 
+You can [read more here](/notes/artificial-intelligence) about my thoughts on AI.
 
-Suggested by: https://www.bydamo.la/p/ai-manifesto
+## Table of contents
+
+## Things I never use AI for...
+
+### Email and communication
+
+I don't use AI when writing emails or other forms of communication. Authenticity matters to me, and I believe in being genuine when connecting with others.
+
+### Writing
+
+Although I use AI while editing my writing, I will never use it to write the first draft.
+
+I don't see myself as a writer, but I'm drawn to writing and the idea of developing that part of myself. It also helps me clarify my beliefs and thoughts.
+
+With that in mind, I've added an AI Disclosure Acknowledgement (AIDA) notice on each of the pages of this website to disclose exactly how I use AI in the creation of the content on that page.
+Each post is tagged to specify the type of AI assistance used, and these tags componse an AI Disclosure Acknowledgement (AIDA) Notice[^2] at the page's end.
+
+Here are the tags that I have defined (with some help from AI):
+
+```text
+aiUsage:
+  - none              // no AI tools were used
+  - research          // researching information
+  - proofreading      // proofreading and grammar correction
+  - editing           // editing and refining content
+  - code-assistance   // code assistance
+  - ideation          // organizing and structuring ideas
+  - image-generation  // generating images
+  - documentation     // formatting and structuring documentation
+  - system-design     // system design and architecture
+  - data-analysis     // data analysis
+```
+
+Here are a few examples of what it looks like:
+
+```text
+aiUsage:
+  - none
+```
+<AidaNotice client:load aiUsage={["none"]} />
+
+```text
+aiUsage:
+  - research
+```
+<AidaNotice client:load aiUsage={["research"]} />
+
+```text
+aiUsage:
+  - research
+  - proofreading
+  - editing
+```
+<AidaNotice client:load aiUsage={["research", "proofreading", "editing"]} />
+
+```text
+aiUsage:
+  - research
+  - system-design
+  - code-assistance
+```
+<AidaNotice client:load aiUsage={["system-design", "data-analysis", "code-assistance"]} />
+
+I doubt I'll ever need all of them at once, unless it's for some AI experiment. It would look like this:
+<AidaNotice client:load aiUsage={["research", "proofreading", "editing", "code-assistance", "ideation", "image-generation", "documentation", "system-design", "data-analysis"]} />
+
+### Video Generation
+
+I have never used generative AI for video creation, nor do I plan to. I don't think it's right to impersonate someone's voice or face. I'm also deeply concerned about the generative AI [slop](https://en.wikipedia.org/wiki/Slop_(artificial_intelligence)) [it producses](https://www.theintrinsicperspective.com/p/here-lies-the-internet-murdered-by) and the negative impact it could have on our next generation. I don't want to contribute to that.
+
+## Things I sometimes use AI for...
+
+### Image Generation
+
+I use generative AI for images sparingly. Creating my own art is something I enjoy, but I can't always justify the time it would take. So, occasionally, I opt for an AI-generated image to save time. However, I never generate images of people's faces or art without consent, as I find that unethical.
+
+## Things I often use AI for...
+
+### Programming
+
+I use [Github Copilot](https://github.com/features/copilot) to help with coding. It's useful for autofilling simple, repetitive tasks like lists, and sometimes it even generates helpful code snippets.
+
+I've also experimented with [Cline (formerly Claude Dev)](https://github.com/cline/cline) for side projects, mainly out of curiosity. While Cline shows promise, it's still not as accurate as I'd like, and I often find that I can code better, just not as quickly perhaps.
+I sometimes use [Copilot Edits](https://code.visualstudio.com/docs/copilot/copilot-edits) in Visual Studio Code, which is a decent value at $10/month. Cline provides a more seamless experience overall, but Copilot Edits meets my needs just fine.
+
+I also use [v0](https://v0.dev/) and [bolt](https://bolt.new/) for generating components when I have a vague idea but am unsure where to start. I always make significant edits to the code they generate.
+
+I use it to write Regular expressions. This is without a doubt the the best use of AI. No one should be writing regular expressions by hand anymore. Ever.
+
+### Documentation
+
+I use AI to format rough ideas, patterns, architectures, etc. into structured drafts for Technical Specifications, Architectural Deicision Records (ADRs), and other documentation. I then review and refine these drafts.
+
+### Editing my writing
+
+I try to limit reliance on AI during the writing process. I don't want an LLM telling me what to think. Not for the first draft at least.
+
+However, [I struggle with editing while I write](/notes/friction), and it really disrupts my creative flow. AI helps me get past this because I can spill out an incoherent stream of consciousness without that nagging voice in the back of my mind saying, "You'll have to clean up this mess later—maybe do a quick read and edit now to save yourself some work...". And before I know it I'm looking up synonyms for "hodgepodge" in the thesaurus.
+
+I've adopted two AI-supported methods for writing, inspired by [Yordi](https://yordi.me/ai/):
+
+1. I write the first draft myself, then use AI to proofread and fix grammar while keeping my tone and style intact.
+2. When I'm stuck, I use a structured prompt to share all my thoughts, once again, in incoherent stream of consciousness format. The AI helps organize them, clarifying and structuring my ideas without adding unnecessary words or changing my voice.
+
+### Research
+
+I use AI when doing research, specifically [ChatGPT](https://chatgpt.com/). I often create [Custom GPTs](https://openai.com/index/introducing-gpts/) for specific topics to assist with brainstorming and research. I always fact-check and verify information before using it in my work.
+
+### Focus Music
+
+I use AI-generated focus music to help me concentrate, primarily through Suno. I've even turned my [[affirmation-balanced-purpose|Balanced Purpose Affirmation]] into songs in different genres to keep me motivated and focused. I intend to use AI to generate more affirmation-based focus music in the future.
+
+--- 
+
+This page was inspired by [Damola Morenikeji's thoughts](https://www.bydamo.la/p/ai-manifesto). I first came across the idea on [Robb Knight's site](https://rknight.me/ai/), and I also drew inspiration from [Yordi's reflections](https://yordi.me/ai/) on using AI responsibly. You can also visit [slashAI.page](https://slashai.page/) to list your own /ai page and check out others on the web.
+
+## Footnotes
+
+[^2]: I first came across the concept of an [AIDA notice from Mark Koester](https://github.com/markwk/aida), you can see examples of how he uses it [here](https://www.markwk.com/chop-wood-carry-water-stellar-mammals-jacob-burgdorf-album.html) and [here](https://www.markwk.com/ai-included-disclosures.html).

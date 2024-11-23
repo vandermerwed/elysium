@@ -8,7 +8,9 @@ export type Site = {
   title: string;
   ogImage?: string;
   lightAndDarkMode: boolean;
+  blogContentTypes: string[];
   postPerIndex: number;
+  fragmentsPerIndex: number;
   postPerPage: number;
   scheduledPostMargin: number;
   showArchives?: boolean;

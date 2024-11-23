@@ -13,7 +13,11 @@ aiUsage:
   - none
   - research
   - proofreading
-  - code-assistance
+  - editing
+  - ideation
   - system-design
+  - documentation
+  - code-assistance
   - data-analysis
+  - image-generation
 ---

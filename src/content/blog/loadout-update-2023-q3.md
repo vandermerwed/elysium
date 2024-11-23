@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2023-09-21T14:00:00
-modDatetime: 2024-11-04T08:22:18
+modDatetime: 2024-11-23T10:54:53
 title: Loadout Update [2023/Q3]
 slug: loadout-update-2023-q3
 featured: false
@@ -8,7 +8,7 @@ draft: false
 tags:
   - protocol
   - loadout
-description: "\rThe first ever Loadout Update. An in-depth examination of the Elysium's current protocols, hardware, and software configurations."
+description: The first ever Loadout Update. An in-depth examination of the Elysium's current protocols, hardware, and software configurations.
 type: loadout
 aiUsage:
   - proofreading

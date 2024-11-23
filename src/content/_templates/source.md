@@ -11,4 +11,4 @@ description: Some description text.
 type: source
 ---
 
-Vides, Books, Articles, etc.
+Videos, Books, Articles, etc.

@@ -16,6 +16,7 @@ module.exports = {
     // if one breakpoint is not enough for you
     screens: {
       sm: "640px",
+      lg: "1024px",
     },
 
     extend: {
@@ -85,6 +86,9 @@ module.exports = {
             },
           },
         },
+      },
+      gridTemplateColumns: {
+        '3': 'repeat(3, minmax(0, 1fr))',
       },
     },
   },

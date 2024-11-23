@@ -1,21 +1,18 @@
 import type { CollectionEntry } from "astro:content";
-import postFilter from "./postFilter";
+import projectFilter from "./projectFilter";
 
-const getSortedPosts = (
-  posts: CollectionEntry<"blog">[],
-  contentTypes?: readonly string[]
-) => {
+const getSortedProjects = (posts: CollectionEntry<"projects">[]) => {
   return posts
-    .filter(post => postFilter(post, contentTypes))
+    .filter(projectFilter)
     .sort(
       (a, b) =>
         Math.floor(
           new Date(b.data.pubDatetime ?? b.data.modDatetime).getTime() / 1000
-        ) - 
+        ) -
         Math.floor(
           new Date(a.data.pubDatetime ?? a.data.modDatetime).getTime() / 1000
         )
     );
 };
 
-export { getSortedPosts };
+export { getSortedProjects };

@@ -21,7 +21,7 @@ export function remarkNexusScore() {
         // Visit nodes and parse for wikilinks
         visit(tree, "wikiLink", (node) => {
             const url = node.data.permalink;
-            console.log("url: ", url);
+            // console.log("url: ", url);
             
             if (!outgoingLinks.includes(url)) outgoingLinks.push(url);
         });

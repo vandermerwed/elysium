@@ -88,6 +88,8 @@ const nextPost =
     <NexusScore score={remarkPluginFrontmatter.nexusScore} showDescription={true} size="sm" className="m-auto mr-2" />
     <h1 transition:name={slug} class="post-title mt-2">{title}</h1>
     <Datetime
+      showModified={true}
+      showTime={false}
       pubDatetime={pubDatetime}
       modDatetime={modDatetime}
       readingTime={remarkPluginFrontmatter.readingTime}

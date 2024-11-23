@@ -1,27 +1,27 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 import ProjectDetails from "@layouts/ProjectDetails.astro";
-import { getEnrichedSortedPosts } from "@utils/getSortedPosts";
+import { getSortedProjects } from "@utils/getSortedProjects";
 
 export interface Props {
-  post: CollectionEntry<"projects">;
+  project: CollectionEntry<"projects">;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("projects", ({ data }) => !data.draft);
+  const projects = await getCollection("projects", ({ data }) => !data.draft);
 
-  const postResult = posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
+  const projectResult = projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
   }));
 
-  return postResult;
+  return projectResult;
 }
 
-const { post } = Astro.props;
+const { project } = Astro.props;
 
-const posts = await getCollection("projects");
-const sortedPosts = await getEnrichedSortedPosts(posts);
+const projects = await getCollection("projects");
+const sortedProjects = getSortedProjects(projects);
 ---
 
-<ProjectDetails post={post} posts={sortedPosts} />
+<ProjectDetails project={project} projects={sortedProjects} />

@@ -45,7 +45,13 @@ export default function Card({
           )}
         </a>
       </div>
-      <Datetime hideIcon={true} pubDatetime={pubDatetime} showTime={false} modDatetime={modDatetime} readingTime={readingTime}  />
+      <Datetime
+        hideIcon={true}
+        showModified={true}
+        pubDatetime={pubDatetime ?? ""}
+        modDatetime={modDatetime}
+        showTime={false}
+        readingTime={readingTime}  />
       <p className="mt-4">{description}</p>
     </li>
   );

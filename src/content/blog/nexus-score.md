@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2023-10-12T09:52:00
-modDatetime: 2024-11-04T08:22:18
+modDatetime: 2024-11-23T10:54:53
 title: Visual Representations of Interconnectedness and Depth
 slug: nexus-score
 featured: false
@@ -148,3 +148,6 @@ I know there are still many flaws in this system and many ways that it can be im
 
 ## Update: 2024-10-31
 I had to disable Nexus Score on collection pages as it was causing performance issues. I'll have to revisit the implementation to make it more efficient. Nexus Score is still visible on individual notes.
+
+## Update: 2024-11-04
+With the way that remark plugins work it is not currently possible to process incoming links in a note. This means that the Nexus Score is not accurate.
