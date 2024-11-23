@@ -81,6 +81,9 @@ export default defineConfig({
       wrap: true,
     },
   },
+  build: {
+    inlineStylesheets: "always",
+  },
   vite: {
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
