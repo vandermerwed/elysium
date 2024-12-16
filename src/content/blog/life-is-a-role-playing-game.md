@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-25T08:14:00
+modDatetime: 2024-12-16T11:22:26
 title: Life is a Role Playing Game (RPG)
-slug: life-is-a-role-playing-game
 featured: false
 draft: false
 tags:

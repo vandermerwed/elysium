@@ -2,7 +2,6 @@
 pubDatetime: {{date}}T{{time}}:00
 modDatetime: {{date}}T{{time}}:00
 title: Review Template
-slug: post-template
 featured: true
 draft: true
 tags:

@@ -1,7 +1,6 @@
 ---
 pubDatetime: 2023-09-25T16:01:00
 title: Cornerstone Habits
-slug: cornerstone-habits
 featured: false
 draft: true
 tags:

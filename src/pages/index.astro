@@ -39,9 +39,9 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
           <section id="featured">
             <h2>Featured</h2>
             <ul>
-              {featuredPosts.map(({ data, slug }) => (
+              {featuredPosts.map(({ data, id }) => (
                 <Card
-                  href={`/notes/${slug}/`}
+                  href={`/notes/${id}/`}
                   frontmatter={data}
                   secHeading={false}
                 />
@@ -59,10 +59,10 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
           <h2>{featuredPosts.length > 0 && "Recent "}Log Entries</h2>
           <ul>
             {recentPosts.map(
-              ({ data, slug }, index) =>
+              ({ data, id }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
-                    href={`/notes/${slug}/`}
+                    href={`/notes/${id}/`}
                     frontmatter={data}
                     secHeading={false}
                   />
@@ -89,10 +89,10 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
         <section id="fragment-posts">
           <h2>Fragmented Thoughts</h2>
           <ul class="fragment-grid">
-            {fragmentPosts.map(({ data, slug }) =>
+            {fragmentPosts.map(({ data, id }) =>
               (
                 <Card
-                  href={`/notes/${slug}/`}
+                  href={`/notes/${id}/`}
                   frontmatter={data}
                   secHeading={false}
                 />

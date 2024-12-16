@@ -174,6 +174,7 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "content.config.ts",
     "blog/loadout-update-2024-q4.md",
     "blog/loadout-update-2023-q3.md",
     "blog/spaceship-you.md",
@@ -201,7 +202,6 @@
     "projects/astro-elysium.md",
     "projects/roam-research-extension-toggl.md",
     "projects/roam-research-extension-rescue-time.md",
-    "projects/roam-research-extension-exist.md",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "config.ts",
     "blog/year-of-legacy-foundations-2024.mdx",

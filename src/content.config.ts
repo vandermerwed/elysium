@@ -3,7 +3,6 @@ import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: "content_layer",
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
@@ -11,7 +10,6 @@ const blog = defineCollection({
       pubDatetime: z.date(),
       modDatetime: z.date().optional().nullable(),
       title: z.string(),
-      slug: z.string().optional(),
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
       tags: z.array(z.string()).default(["others"]),
@@ -31,7 +29,7 @@ const blog = defineCollection({
       incomingLinks: z
         .array(
           z.object({
-            slug: z.string(),
+            id: z.string(),
             frontmatter: z.object({}).optional(),
           })
         )
@@ -39,7 +37,7 @@ const blog = defineCollection({
       outgoingLinks: z
         .array(
           z.object({
-            slug: z.string(),
+            id: z.string(),
             frontmatter: z.object({}).optional(),
           })
         )
@@ -58,7 +56,6 @@ const blog = defineCollection({
 });
 
 const projects = defineCollection({
-  type: "content_layer",
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
   schema: ({ image }) =>
     z.object({
@@ -66,7 +63,6 @@ const projects = defineCollection({
       pubDatetime: z.date(),
       modDatetime: z.date().optional().nullable(),
       title: z.string(),
-      slug: z.string().optional(),
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
       tags: z.array(z.string()).default(["others"]),
@@ -86,7 +82,7 @@ const projects = defineCollection({
       incomingLinks: z
         .array(
           z.object({
-            slug: z.string(),
+            id: z.string(),
             frontmatter: z.object({}).optional(),
           })
         )
@@ -94,7 +90,7 @@ const projects = defineCollection({
       outgoingLinks: z
         .array(
           z.object({
-            slug: z.string(),
+            id: z.string(),
             frontmatter: z.object({}).optional(),
           })
         )

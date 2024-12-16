@@ -6,9 +6,9 @@ import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
 import NexusScore from "@components/NexusScore";
 import type { CollectionEntry } from "astro:content";
-import { slugifyStr } from "@utils/slugify";
 import Card from "@components/Card";
 import { SITE } from "@config";
+import { render } from 'astro:content';
 
 export interface Props {
   project: CollectionEntry<"projects">;
@@ -20,7 +20,6 @@ const { project } = Astro.props;
 const {
   title,
   author,
-  slug,
   description,
   ogImage,
   canonicalURL,
@@ -32,11 +31,11 @@ const {
   incomingLinks
 } = project.data;
 
-const { Content, remarkPluginFrontmatter } = await project.render();
+const { Content, remarkPluginFrontmatter } = await render(project);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImageUrl ?? `/projects/${slug ?? slugifyStr(title)}.png`,
+  ogImageUrl ?? `/projects/${project.id}.png`,
   Astro.url.origin
 ).href;
 
@@ -70,7 +69,7 @@ const layoutProps = {
   </div>
   <main id="main-content">
     <NexusScore score={remarkPluginFrontmatter.nexusScore} showDescription={true} size="sm" className="m-auto mr-2" />
-    <h1 transition:name={slug} class="post-title mt-2">{title}</h1>
+    <h1 transition:name={project.id} class="post-title mt-2">{title}</h1>
     <Datetime
       showModified={true}
       showTime={false}
@@ -84,7 +83,7 @@ const layoutProps = {
     />
 
     <ul class="tags-container">
-      {tags.map((tag : string) => <Tag tag={slugifyStr(tag)} />)}
+      {tags.map((tag : string) => <Tag tag={tag} />)}
     </ul>
 
     <article id="article" class="prose mx-auto mt-8 max-w-3xl">
@@ -117,10 +116,10 @@ const layoutProps = {
             <h2>Incoming Links</h2>
             <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {
-                incomingLinks.map((value: { slug: string; frontmatter?: {} }, index: number, array: { slug: string; frontmatter?: {} }[]): any => {
-                  const { slug, frontmatter } = value;
+                incomingLinks.map((value: { id: string; frontmatter?: {} }, _index: number, _array: { id: string; frontmatter?: {} }[]): any => {
+                  const { id, frontmatter } = value;
                   return (
-                    <Card href={`/projects/${slug}`} frontmatter={frontmatter ?? {}} showNexusScore={false} />
+                    <Card href={`/projects/${id}`} frontmatter={frontmatter ?? {}} showNexusScore={false} />
                   );
                 })
               }

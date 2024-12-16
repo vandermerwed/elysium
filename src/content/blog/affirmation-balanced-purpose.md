@@ -1,8 +1,7 @@
 ---
 pubDatetime: 2023-09-22T06:09:00
-modDatetime: 2024-11-23T10:54:52
+modDatetime: 2024-12-16T11:22:23
 title: "Affirmation: Balanced Purpose"
-slug: affirmation-balanced-purpose
 featured: false
 draft: false
 tags:

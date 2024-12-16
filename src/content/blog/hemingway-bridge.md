@@ -2,7 +2,6 @@
 pubDatetime: 2024-10-02T13:59:00
 modDatetime: 2024-10-02T13:59:00
 title: Fragment Template
-slug: hemingway-bridge
 featured: false
 draft: true
 tags:

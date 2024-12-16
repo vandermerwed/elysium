@@ -13,8 +13,8 @@ export async function GET() {
     title: SITE.title,
     description: SITE.desc,
     site: SITE.website,
-    items: sortedPosts.map(({ data, body, slug }) => ({
-      link: `notes/${slug}`,
+    items: sortedPosts.map(({ data, body, id }) => ({
+      link: `notes/${id}`,
       title: data.title,
       description: data.description,
       // Note: this will not process components or JSX expressions in MDX files.
