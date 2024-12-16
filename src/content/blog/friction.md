@@ -1,7 +1,6 @@
 ---
 pubDatetime: 2023-09-19T15:40:00
 title: Friction
-slug: friction
 featured: false
 draft: true
 tags:

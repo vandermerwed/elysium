@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2022-10-19T09:22:00
+modDatetime: 2024-12-16T11:22:35
 title: Toggl Extension for Roam Research
-slug: roam-research-extension-toggl
 featured: false
 draft: false
 tags:

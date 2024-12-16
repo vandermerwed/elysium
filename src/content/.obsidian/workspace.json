@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/ai-agency-paradox.md",
+                "file": "blog/nexus-score.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ai-agency-paradox"
+              "title": "nexus-score"
             }
           }
         ]
@@ -93,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "blog/ai-agency-paradox.md",
+                "file": "blog/loadout-update-2024-q4.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for ai-agency-paradox"
+              "title": "Backlinks for loadout-update-2024-q4"
             }
           },
           {
@@ -112,12 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "blog/artificial-intelligence.md",
+                "file": "blog/loadout-update-2024-q4.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from artificial-intelligence"
+              "title": "Outgoing links from loadout-update-2024-q4"
             }
           },
           {
@@ -139,58 +139,70 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/artificial-intelligence.md"
+                "file": "blog/nexus-score.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of artificial-intelligence"
+              "title": "Outline of nexus-score"
+            }
+          },
+          {
+            "id": "e3b272b31cf5d3b8",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 333.5
   },
   "left-ribbon": {
     "hiddenItems": {
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
-    "blog/artificial-intelligence.mdx",
+    "content.config.ts",
+    "blog/loadout-update-2024-q4.md",
+    "blog/loadout-update-2023-q3.md",
+    "blog/spaceship-you.md",
+    "blog/year-of-legacy-foundations-2024.md",
+    "blog/work-walks.md",
+    "blog/trigger-action-planning.md",
+    "blog/time.md",
+    "blog/personal-retreats.md",
+    "blog/maintaining-averages.md",
+    "blog/friction.md",
+    "blog/craftsmanship.md",
+    "blog/cornerstone-habits.md",
     "blog/ai-agency-paradox.md",
+    "blog/artificial-intelligence.mdx",
     "blog/intentionality.md",
     "blog/hemingway-bridge.md",
     "blog/affirmation-bedtime-blueprint.md",
     "_canvas/Public Roadmap.canvas",
-    "blog/friction.md",
     "blog/interstitial-journaling.md",
     "blog/home-base-protocols.md",
-    "blog/loadout-update-2024-q4.md",
-    "blog/loadout-update-2023-q3.md",
     "tags/loadout.md",
     "blog/loadout-update-q4-2023.md",
     "tags/theme.md",
-    "blog/maintaining-averages.md",
     "blog/paying-attention.md",
-    "blog/personal-retreats.md",
-    "blog/spaceship-you.md",
-    "blog/time.md",
-    "blog/trigger-action-planning.md",
     "projects/astro-elysium.md",
     "projects/roam-research-extension-toggl.md",
     "projects/roam-research-extension-rescue-time.md",
-    "projects/roam-research-extension-exist.md",
-    "projects/roam-research-extension-coda.md",
     "_canvas/Roam Extension Architecture Diagram.canvas",
-    "projects/roam-research-toggl-extension.md",
-    "blog/loadout-update-q3-2023.md",
     "config.ts",
     "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas",

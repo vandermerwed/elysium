@@ -1,7 +1,6 @@
 ---
 pubDatetime: 2024-11-23T10:54:54
 title: On Craftsmanship
-slug: craftsmanship
 featured: false
 draft: true
 tags:

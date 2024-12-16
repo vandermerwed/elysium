@@ -1,8 +1,7 @@
 ---
 pubDatetime: 2023-10-12T09:52:00
-modDatetime: 2024-11-23T10:54:53
+modDatetime: 2024-12-16T11:22:29
 title: Visual Representations of Interconnectedness and Depth
-slug: nexus-score
 featured: false
 draft: false
 tags:

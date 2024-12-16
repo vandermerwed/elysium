@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => !data.draft);
 
   const projectResult = projects.map(project => ({
-    params: { slug: project.slug },
+    params: { id: project.id },
     props: { project },
   }));
 

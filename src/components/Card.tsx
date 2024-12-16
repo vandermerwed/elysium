@@ -15,11 +15,11 @@ export default function Card({
   secHeading = true,
   showNexusScore = false,
 }: Props) {
-  const { title, slug, pubDatetime, modDatetime, description, readingTime, nexusScore } =
+  const { title, id, pubDatetime, modDatetime, description, readingTime, nexusScore } =
     frontmatter || {};
 
   const headerProps = {
-    style: { viewTransitionName: slug },
+    style: { viewTransitionName: id },
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 

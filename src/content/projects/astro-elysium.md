@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-26T15:01:00
+modDatetime: 2024-12-16T11:22:34
 title: Astro Elysium
-slug: astro-elysium
 featured: false
 draft: false
 tags:

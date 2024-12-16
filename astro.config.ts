@@ -46,16 +46,16 @@ export default defineConfig({
         // generate url of the linked page.
         // here `slug` would be "Page Name" for wiki link [[Page Name]].
         // TODO: This needs refactoring to be more robust
-        wikiLinkResolver: (slug: string) => {
-          if (slug.startsWith("tags/")) {
-            return [`tags/${slug.replace("tags/", "")}`];
-          } else if (slug.startsWith("projects/")) {
-            return [`projects/${slug.replace("projects/", "")}`];
+        wikiLinkResolver: (id: string) => {
+          if (id.startsWith("tags/")) {
+            return [`tags/${id.replace("tags/", "")}`];
+          } else if (id.startsWith("projects/")) {
+            return [`projects/${id.replace("projects/", "")}`];
           } else {
-            if (slug.endsWith(".mdx")) {
-              slug = slug.replace(".mdx", "");
+            if (id.endsWith(".mdx")) {
+              id = id.replace(".mdx", "");
             }
-            return [`notes/${slug}`];
+            return [`notes/${id}`];
           }
         } 
       }],
@@ -91,6 +91,6 @@ export default defineConfig({
   },
   scopedStyleStrategy: "where",
   experimental: {
-    contentLayer: true,
+    contentIntellisense: true,
   },
 });

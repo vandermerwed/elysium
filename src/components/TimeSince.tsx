@@ -21,7 +21,7 @@ const TimeSince: React.FC<Props> = ({
   decimalPlaces = 9,
   updateInterval = 100,
 }) => {
-  const [timeSince, setTimeSince] = useState<string>('loading...');
+  const [timeSince, setTimeSince] = useState<string>('...');
 
   useEffect(() => {
     setTimeSince(calculateTimeSince(startDateTime, unit, decimalPlaces));

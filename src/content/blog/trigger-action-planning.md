@@ -1,7 +1,7 @@
 ---
 pubDatetime: 2023-09-25T15:27:00
+modDatetime: 2024-12-16T11:22:32
 title: Trigger-Action Planning (TAP)
-slug: trigger-action-planning
 featured: false
 draft: false
 tags:
