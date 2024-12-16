@@ -2,5 +2,8 @@
   "accentColor": "#fb923c",
   "cssTheme": "Minimal",
   "translucency": false,
-  "baseFontSize": 14
+  "baseFontSize": 14,
+  "textFontFamily": "Fira Sans,Calibri",
+  "monospaceFontFamily": "Fira Code,Courier New",
+  "interfaceFontFamily": "Fira Sans,Calibri"
 }
