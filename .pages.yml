@@ -6,16 +6,16 @@ content:
     view:
       fields: [ title, featured ]
     fields:
-    - name: pubDatetime
-      label: Publish Date
-      type: date
-      options:
-        time: true
-    - name: modDatetime
-      label: Modified Date
-      type: date
-      options:
-        time: true
+    # - name: pubDatetime
+    #   label: Publish Date
+    #   type: date
+    #   options:
+    #     time: true
+    # - name: modDatetime
+    #   label: Modified Date
+    #   type: date
+    #   options:
+    #     time: true
     - name: title
       label: Title
       type: string
