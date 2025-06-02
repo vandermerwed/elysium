@@ -1,0 +1,5 @@
+content:
+  - name: blog
+    label: Blog
+    path: src/content/blog
+    type: collection
