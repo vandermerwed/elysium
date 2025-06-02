@@ -41,6 +41,6 @@ content:
       label: AI Usage
       type: select
       options:
-        values: [ none, research, proofreading, editing, code-assistance,  ]
+        values: [ none, research, proofreading, editing, code-assistance, ideation, image-generation, documentation, system-design, data-analysis ]
         multiple: true
     
