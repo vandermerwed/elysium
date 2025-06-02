@@ -5,7 +5,7 @@ content:
     type: collection
     # view:
     #   fields: [ title, featured ]
-    # fields:
+    fields:
     # - name: pubDatetime
     #   label: Publish Date
     #   type: date
