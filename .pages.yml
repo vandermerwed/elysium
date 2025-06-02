@@ -8,6 +8,8 @@ content:
       type: date
     - name: modDatetime
       type: date
-    - name: content
+    - name: title
+      type: string
+    - name: body
       type: rich-text
     
