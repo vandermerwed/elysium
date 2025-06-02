@@ -34,13 +34,13 @@ content:
       type: select
       options:
         values: [ fragment, loadout, note, project, source, theme ]
-    - name: body
-      label: Body
-      type: rich-text
     - name: aiUsage
       label: AI Usage
       type: select
       options:
         values: [ none, research, proofreading, editing, code-assistance, ideation, image-generation, documentation, system-design, data-analysis ]
         multiple: true
+    - name: body
+      label: Body
+      type: rich-text
     
