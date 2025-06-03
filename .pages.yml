@@ -1,7 +1,10 @@
+media:
+  input: src/content/media
+  output: /src/content/media
 content:
   - name: blog
     label: Blog
-    path: 'src/content/blog'
+    path: src/content/blog
     type: collection
     view:
       fields: [ title, featured ]
