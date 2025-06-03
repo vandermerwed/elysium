@@ -12,6 +12,7 @@ content:
       - name: pubDatetime
         label: Publish Date
         type: date
+        default: {{now}}
         # options:
         #   time: true
       - name: modDatetime
