@@ -29,10 +29,10 @@ content:
         label: Draft
         type: boolean
         default: true
-      # - name: tags
-      #   label: Tags
-      #   type: string
-      #   list: true
+      - name: tags
+        label: Tags
+        type: string
+        list: true
       - name: description
         label: Description
         type: text
