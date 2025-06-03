@@ -12,13 +12,15 @@ content:
       - name: pubDatetime
         label: Publish Date
         type: date
-        options:
-          time: true
+        # options:
+        #   time: true
       - name: modDatetime
         label: Modified Date
         type: date
-        options:
-          time: true
+        # hidden: true
+        default: 
+        # options:
+        #   time: true
       - name: title
         label: Title
         type: string
