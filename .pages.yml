@@ -12,14 +12,14 @@ content:
       - name: pubDatetime
         label: Publish Date
         type: date
-        default: {{now}}
+        default: {{ now }}
         # options:
         #   time: true
       - name: modDatetime
         label: Modified Date
         type: date
         # hidden: true
-        default: {{now}}
+        default: {{ now }}
         # options:
         #   time: true
       - name: title
