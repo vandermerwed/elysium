@@ -7,7 +7,7 @@ content:
     path: src/content/blog
     type: collection
     view:
-      fields: [ title, pubDatetime, featured ]
+      fields: [ title, pubDatetime, featured, type ]
     fields:
       - name: pubDatetime
         label: Publish Date
