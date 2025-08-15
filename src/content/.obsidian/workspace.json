@@ -140,7 +140,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/ai-agency-paradox.md",
+                "file": "blog/nexus-score.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -155,8 +155,8 @@
             "state": {
               "type": "git-view",
               "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
             }
           }
         ],
