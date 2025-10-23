@@ -6,7 +6,7 @@ const rootDir = process.cwd();
 const placeholders = new Set(['', '~', 'null', 'NULL', 'undefined', 'pending', 'first']);
 const publishStatusField = 'publishStatus';
 const legacyStatusField = 'status';
-const validStatuses = new Set(['draft', 'ready', 'published']);
+const validStatuses = new Set(['draft', 'ready', 'publish', 'published']);
 
 const targetListRaw = process.env.PUBLISH_TARGETS || '';
 const requestedTargets = targetListRaw
@@ -110,10 +110,16 @@ function findCandidateFiles() {
 
     const needsMigration = Boolean(draftLine) || (!publishStatusLine && Boolean(legacyStatusValue));
     const readyForPublish = statusValue === 'ready';
-    const needsPublishFix =
-      statusValue === 'published' && (!pubLine || placeholders.has(pubValue) || !pubValue.endsWith('Z') || /\.[0-9]{3}Z$/.test(pubValue));
+    
+    // Skip already-published articles with valid pubDatetime unless they need migration
+    const hasValidPubDate = Boolean(pubValue) && !placeholders.has(pubValue) && pubValue.endsWith('Z') && !/\.[0-9]{3}Z$/.test(pubValue);
+    const alreadyPublished = statusValue === 'published' && hasValidPubDate;
+    
+    if (alreadyPublished && !needsMigration) {
+      continue;
+    }
 
-    if (needsMigration || readyForPublish || needsPublishFix) {
+    if (needsMigration || readyForPublish) {
       candidates.push(filePath);
     }
   }
@@ -256,7 +262,9 @@ function processFile(filePath, options) {
   }
 
   let nextStatus = statusValue;
-  if (statusValue === 'ready') {
+  const isReadyToPublish = statusValue === 'ready' || statusValue === 'publish';
+  
+  if (isReadyToPublish) {
     nextStatus = 'published';
   }
 
@@ -271,9 +279,12 @@ function processFile(filePath, options) {
 
   let pubIndex = pubIndexInitial;
   if (statusValue === 'published') {
-    const pubDecision = normaliseTimestamp(existingPub);
-    if (pubDecision.action === 'set') {
-      const newLine = buildLine('pubDatetime', pubDecision.value);
+    // If status was 'ready', always set a new publish date (even if one exists)
+    // This allows republishing by setting status back to 'ready'
+    const shouldSetNewDate = isReadyToPublish || !existingPub || placeholders.has(stripQuotes(existingPub.trim()));
+    
+    if (shouldSetNewDate) {
+      const newLine = buildLine('pubDatetime', isoTimestamp);
       if (pubIndexInitial === -1) {
         lines.push(newLine);
         pubIndex = lines.length - 1;
@@ -282,28 +293,18 @@ function processFile(filePath, options) {
         pubIndex = pubIndexInitial;
       }
       changed = true;
-    } else if (pubDecision.action === 'update') {
-      lines[pubIndexInitial] = buildLine('pubDatetime', pubDecision.value);
-      pubIndex = pubIndexInitial;
-      changed = true;
+    } else {
+      // Normalize existing timestamp format if needed
+      const pubDecision = normaliseTimestamp(existingPub);
+      if (pubDecision.action === 'update') {
+        lines[pubIndexInitial] = buildLine('pubDatetime', pubDecision.value);
+        pubIndex = pubIndexInitial;
+        changed = true;
+      }
     }
   } else if (pubIndexInitial !== -1 && statusValue !== 'published' && forceUpdate) {
     lines.splice(pubIndexInitial, 1);
     pubIndex = -1;
-    changed = true;
-  }
-
-  const modLine = buildLine('modDatetime', isoTimestamp);
-  const modIndex = lookupIndex('modDatetime');
-  if (modIndex === -1) {
-    if (pubIndex !== -1) {
-      lines.splice(pubIndex + 1, 0, modLine);
-    } else {
-      lines.push(modLine);
-    }
-    changed = true;
-  } else if (lines[modIndex] !== modLine) {
-    lines[modIndex] = modLine;
     changed = true;
   }
 
