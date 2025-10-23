@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-25T09:34:00
-modDatetime: 2024-12-16T11:22:28
+pubDatetime: 2023-09-25T09:34:00Z
+modDatetime: 2024-12-16T11:22:28Z
 title: "Maintaining  Averages: A Healthier Alternative to Streaks"
 featured: false
-draft: false
+status: published
 tags:
   - habits
 description: A mindful guide to achieving balanced productivity and sustained well-being.

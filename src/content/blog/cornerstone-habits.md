@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-09-25T16:01:00
+pubDatetime: 2023-09-25T16:01:00Z
+modDatetime: 2023-09-25T16:01:00Z
 title: Cornerstone Habits
 featured: false
-draft: true
+status: draft
 tags:
   - habits
   - protocol

@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-29T10:55:00
-modDatetime: 2024-12-16T11:22:31
+pubDatetime: 2023-09-29T10:55:00Z
+modDatetime: 2024-12-16T11:22:31Z
 title: Personal Retreats
 featured: false
-draft: false
+status: published
 tags:
   - fragment
 description: A short structured getaway to gain the focus and clarity you need to achieve your goals.

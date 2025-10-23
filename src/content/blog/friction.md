@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-09-19T15:40:00
+pubDatetime: 2023-09-19T15:40:00Z
+modDatetime: 2023-09-19T15:40:00Z
 title: Friction
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: On friction

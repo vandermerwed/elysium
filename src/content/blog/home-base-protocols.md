@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-10-01T12:11:00
+pubDatetime: 2023-10-01T12:11:00Z
+modDatetime: 2023-10-01T12:11:00Z
 title: Home Base Protocols
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: Some description text.

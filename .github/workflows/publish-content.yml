@@ -1,0 +1,71 @@
+name: Publish Content
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      paths:
+        description: "Newline or comma separated list of Markdown files to publish"
+        required: false
+        type: string
+      publish_datetime:
+        description: "Override ISO8601 datetime (UTC) for pub/mod fields. Leave blank to use current time."
+        required: false
+        type: string
+      force:
+        description: "Force overwrite existing pubDatetime values"
+        required: false
+        type: boolean
+        default: false
+      branch:
+        description: "Branch to update (defaults to the branch the workflow is run against)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  stamp:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch != '' && inputs.branch || github.ref }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Stamp publish metadata
+        env:
+          PUBLISH_TARGETS: ${{ inputs.paths || '' }}
+          PUBLISH_DATETIME: ${{ inputs.publish_datetime || '' }}
+          PUBLISH_FORCE: ${{ inputs.force || '' }}
+        run: node scripts/publish-content.mjs
+
+      - name: Detect changes
+        id: git_status
+        run: |
+          if git status --short --untracked-files=no | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit changes
+        if: steps.git_status.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: stamp publish datetimes"
+
+      - name: Push changes
+        if: steps.git_status.outputs.changed == 'true'
+        run: git push

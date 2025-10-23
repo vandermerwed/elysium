@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2024-10-20T16:30:00
-modDatetime: 2024-10-20T16:25:00
+pubDatetime: 2024-10-20T16:30:00Z
+modDatetime: 2024-10-20T16:25:00Z
 title: Loadout Update [2024/Q4]
 featured: false
-draft: true
+status: draft
 tags:
   - protocol
   - loadout

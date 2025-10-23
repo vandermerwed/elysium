@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2024-11-23T10:54:54
+pubDatetime: 2024-11-23T10:54:54Z
+modDatetime: 2024-11-23T10:54:54Z
 title: On Craftsmanship
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: On craftsmanship

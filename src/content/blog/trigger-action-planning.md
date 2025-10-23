@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-25T15:27:00
-modDatetime: 2024-12-16T11:22:32
+pubDatetime: 2023-09-25T15:27:00Z
+modDatetime: 2024-12-16T11:22:32Z
 title: Trigger-Action Planning (TAP)
 featured: false
-draft: false
+status: published
 tags:
   - fragment
 description: A research-backed strategy that can help you achieve your goals and improve your habits.

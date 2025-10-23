@@ -12,6 +12,7 @@ const blog = defineCollection({
       title: z.string(),
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
+      publishStatus: z.enum(['draft', 'ready', 'published']).optional(),
       tags: z.array(z.string()).default(["others"]),
       aiUsage: z.array(z.string()).default(["none"]),
       ogImage: image()
@@ -65,6 +66,7 @@ const projects = defineCollection({
       title: z.string(),
       featured: z.boolean().optional(),
       draft: z.boolean().optional(),
+      publishStatus: z.enum(['draft', 'ready', 'published']).optional(),
       tags: z.array(z.string()).default(["others"]),
       aiUsage: z.array(z.string()).default(["none"]),
       ogImage: image()

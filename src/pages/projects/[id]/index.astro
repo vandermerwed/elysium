@@ -8,7 +8,7 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects", ({ data }) => !data.draft);
+  const projects = await getCollection("projects", ({ data }) => !data.status || data.status !== "not started");
 
   const projectResult = projects.map(project => ({
     params: { id: project.id },
