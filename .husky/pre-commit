@@ -11,10 +11,10 @@ while read _ file; do
     echo "$file modDateTime updated"
     if ! echo "$frontmatter" | grep -q '^modDatetime:'; then
       # Add modDatetime if missing after pubDatetime
-      cat $file | sed "/^pubDatetime:.*$/a modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%S")" > tmp
+      cat $file | sed "/^pubDatetime:.*$/a modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")" > tmp
     else
       # Update existing modDatetime
-      cat $file | sed "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%S")/" > tmp
+      cat $file | sed "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" > tmp
     fi
     mv tmp $file
     git add $file
@@ -29,7 +29,7 @@ done
 
 # New files, add/update the pubDatetime
 git diff --cached --name-status | egrep -i "^(A).*\.md$" | while read _ file; do
-  cat $file | sed "/---.*/,/---.*/s/^pubDatetime:.*$/pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%S")/" > tmp
+  cat $file | sed "/---.*/,/---.*/s/^pubDatetime:.*$/pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" > tmp
   mv tmp $file
   git add $file
 done
