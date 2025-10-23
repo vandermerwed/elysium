@@ -13,7 +13,9 @@ if (!SITE.showArchives) {
   return Astro.redirect("/404");
 }
 
-const posts = await getCollection("blog", ({ data }: { data: { draft: boolean } }) => !data.draft);
+// Filter for published posts; rely on Astro content types inferred from the collection schema
+const posts = (await getCollection("blog", (entry) => entry.data.status === "published"))
+  .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
 
 const MonthMap: Record<string, string> = {
   "1": "January",
