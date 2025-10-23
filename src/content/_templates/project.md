@@ -3,7 +3,7 @@ pubDatetime: {{date}}T{{time}}:00Z
 modDatetime: {{date}}T{{time}}:00Z
 title: Post Template
 featured: true
-status: not started
+status: future
 tags:
   - ???
 description: Some description text.
