@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/nexus-score.md",
+                "file": "blog/hemingway-bridge.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "nexus-score"
+              "title": "hemingway-bridge"
             }
           }
         ]
@@ -146,7 +146,7 @@
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of nexus-score"
+              "title": "Outline of ai-agency-paradox"
             }
           },
           {
@@ -155,12 +155,12 @@
             "state": {
               "type": "git-view",
               "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -178,6 +178,19 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
+    "blog/habit-stacking.md",
+    "blog/friction.md",
+    "blog/mastery.md",
+    "media",
+    "blog/ai-agency-paradox.md",
+    "_templates/theme.md",
+    "_templates/source.md",
+    "_templates/project.md",
+    "_templates/person.md",
+    "_templates/note.md",
+    "_templates/loadout.md",
+    "_templates/fragment.md",
+    "blog/nexus-score.md",
     "content.config.ts",
     "blog/loadout-update-2024-q4.md",
     "blog/loadout-update-2023-q3.md",
@@ -188,24 +201,13 @@
     "blog/time.md",
     "blog/personal-retreats.md",
     "blog/maintaining-averages.md",
-    "blog/friction.md",
     "blog/craftsmanship.md",
     "blog/cornerstone-habits.md",
-    "blog/ai-agency-paradox.md",
     "blog/artificial-intelligence.mdx",
     "blog/intentionality.md",
     "blog/hemingway-bridge.md",
     "blog/affirmation-bedtime-blueprint.md",
     "_canvas/Public Roadmap.canvas",
-    "blog/interstitial-journaling.md",
-    "blog/home-base-protocols.md",
-    "tags/loadout.md",
-    "blog/loadout-update-q4-2023.md",
-    "tags/theme.md",
-    "blog/paying-attention.md",
-    "projects/astro-elysium.md",
-    "projects/roam-research-extension-toggl.md",
-    "projects/roam-research-extension-rescue-time.md",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "config.ts",
     "blog/year-of-legacy-foundations-2024.mdx",
@@ -213,8 +215,6 @@
     "_examples/test.mdx",
     "projects",
     "tags",
-    "_templates",
-    "_examples",
-    "blog/2023"
+    "_templates"
   ]
 }
