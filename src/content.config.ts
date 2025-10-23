@@ -11,7 +11,6 @@ const blog = defineCollection({
       modDatetime: z.date().optional().nullable(),
       title: z.string(),
       featured: z.boolean().optional(),
-      draft: z.boolean().optional(),
       publishStatus: z.enum(['draft', 'ready', 'published']).optional(),
       tags: z.array(z.string()).default(["others"]),
       aiUsage: z.array(z.string()).default(["none"]),
@@ -65,8 +64,6 @@ const projects = defineCollection({
       modDatetime: z.date().optional().nullable(),
       title: z.string(),
       featured: z.boolean().optional(),
-      draft: z.boolean().optional(),
-      publishStatus: z.enum(['draft', 'ready', 'published']).optional(),
       tags: z.array(z.string()).default(["others"]),
       aiUsage: z.array(z.string()).default(["none"]),
       ogImage: image()
@@ -78,7 +75,7 @@ const projects = defineCollection({
       description: z.string(),
       canonicalURL: z.string().optional(),
       type: z.string().optional(),
-      status: z.string().optional(),
+      status: z.enum(['future', 'active', 'archived']).optional(),
       readingTime: z.string().optional(),
       wordCount: z.number().default(0),
       incomingLinks: z
