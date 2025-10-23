@@ -12,8 +12,9 @@ content:
       - name: pubDatetime
         label: Publish Date
         type: date
-        # options:
-        #   time: true
+        options:
+          format: yyyy-MM-ddThh:mm:ss # 2025-06-09T13:56:26
+          time: true
       - name: modDatetime
         label: Modified Date
         type: date
