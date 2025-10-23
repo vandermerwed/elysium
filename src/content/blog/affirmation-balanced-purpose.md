@@ -1,6 +1,6 @@
 ---
-pubDatetime: 2023-09-21
-modDatetime: 2024-12-16
+pubDatetime: 2023-09-22T09:00:00
+modDatetime: 2024-12-16T22:23:00
 title: "Affirmation: Balanced Purpose"
 featured: false
 draft: false
