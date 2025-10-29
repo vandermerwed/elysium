@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2024-11-23T10:00:00Z
-modDatetime: 2025-06-09T13:56:26Z
+modDatetime: 2025-10-29T13:34:49Z
 title: AI and the Agency Paradox
 featured: false
 status: published

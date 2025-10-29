@@ -7,19 +7,21 @@ content:
     path: src/content/blog
     type: collection
     view:
-      fields: [ title, pubDatetime, featured, type ]
+      fields: [ title, pubDatetime, modDatetime, featured, type ]
     fields:
       - name: pubDatetime
         label: Publish Date
         type: date
-        # options:
-        #   time: true
+        options:
+          format: yyyy-MM-dd'T'HH:mm:ss'Z'
+          time: true
       - name: modDatetime
         label: Modified Date
         type: date
         # hidden: true
-        # options:
-        #   time: true
+        options:
+          format: yyyy-MM-dd'T'HH:mm:ss'Z'
+          time: true
       - name: title
         label: Title
         type: string
