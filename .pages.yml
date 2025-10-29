@@ -13,14 +13,14 @@ content:
         label: Publish Date
         type: date
         options:
-          format: yyyy-MM-dd'T'HH:mm:ss
+          format: yyyy-MM-dd'T'HH:mm:ss'Z'
           time: true
       - name: modDatetime
         label: Modified Date
         type: date
         # hidden: true
         options:
-          format: yyyy-MM-dd'T'HH:mm:ss
+          format: yyyy-MM-dd'T'HH:mm:ss'Z'
           time: true
       - name: title
         label: Title
