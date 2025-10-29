@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-25T09:33:00
-modDatetime: 2024-12-16T11:22:25
+pubDatetime: 2023-09-25T09:33:00Z
+modDatetime: 2024-12-16T11:22:25Z
 title: "Habit Stacking: A Strategy for Efficient Routine Building"
 featured: false
-draft: false
+status: published
 tags:
   - habits
 description: Habit stacking as a mindful approach to enhancing daily routines. Thoughtfully integrate new habits one step at a time, with examples to guide your journey toward greater well-being and productivity.

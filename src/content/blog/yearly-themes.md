@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-09-19T16:06:00
+pubDatetime: 2023-09-19T16:06:00Z
+modDatetime: 2023-09-19T16:06:00Z
 title: Yearly Themes
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: On yearly themes.

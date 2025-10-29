@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-25T08:14:00
-modDatetime: 2024-12-16T11:22:26
+pubDatetime: 2023-09-25T08:14:00Z
+modDatetime: 2024-12-16T11:22:26Z
 title: Life is a Role Playing Game (RPG)
 featured: false
-draft: false
+status: published
 tags:
   - metaphor
   - productivity

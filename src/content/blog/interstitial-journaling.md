@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-09-26T14:57:00
-title: Fragment Template
+pubDatetime: 2023-09-26T14:57:00Z
+modDatetime: 2023-09-26T14:57:00Z
+title: Interstitial Journaling
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: Some description text.

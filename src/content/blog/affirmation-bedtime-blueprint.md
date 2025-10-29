@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-30T12:08:00
-modDatetime: 2024-12-16T11:22:23
+pubDatetime: 2023-09-30T12:08:00Z
+modDatetime: 2024-12-16T11:22:23Z
 title: "Affirmation: Bedtime Blueprint"
 featured: false
-draft: false
+status: published
 tags:
   - fragment
   - affirmation

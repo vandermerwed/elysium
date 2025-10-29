@@ -1,15 +1,15 @@
 ---
-pubDatetime: 2024-05-11T09:00:00
+pubDatetime: 2024-05-11T09:00:00Z
+modDatetime: 2024-05-11T09:00:00Z
 title: Rescue Time Extension for Roam Research
 featured: false
-draft: true
 tags:
   - roam-research
   - productivity
   - rescue-time
 description: TBD
 type: project
-status: not started
+status: future
 aiUsage:
   - none
 ---

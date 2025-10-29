@@ -15,7 +15,7 @@ const postFilter = (
     ? contentTypes.includes(data.type)
     : true;
 
-  return isContent && !data.draft && (import.meta.env.DEV || isPublishTimePassed);
+  return isContent && data.status && data.status === "published" && (import.meta.env.DEV || isPublishTimePassed);
 };
 
 export default postFilter;

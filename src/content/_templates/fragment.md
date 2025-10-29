@@ -1,9 +1,9 @@
 ---
-pubDatetime: {{date}}T{{time}}:00
-modDatetime: {{date}}T{{time}}:00
+pubDatetime: {{date}}T{{time}}:00Z
+modDatetime: {{date}}T{{time}}:00Z
 title: Fragment Template
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: Some description text.

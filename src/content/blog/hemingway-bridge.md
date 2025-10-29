@@ -1,20 +1,15 @@
 ---
-pubDatetime: 2024-10-02T13:59:00
-modDatetime: 2024-10-02T13:59:00
-title: Fragment Template
+pubDatetime: 2024-10-02T13:59:00Z
+modDatetime: 2024-10-02T13:59:00Z
+title: Hemingway Bridge
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: Some description text.
 type: fragment
 aiUsage:
   - none
-  - research
-  - proofreading
-  - code-assistance
-  - system-design
-  - data-analysis
 ---
 
 References:

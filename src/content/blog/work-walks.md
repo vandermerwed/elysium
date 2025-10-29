@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-25T14:14:00
-modDatetime: 2024-12-16T11:22:32
+pubDatetime: 2023-09-25T14:14:00Z
+modDatetime: 2024-12-16T11:22:32Z
 title: Work Walks
 featured: false
-draft: false
+status: published
 tags:
   - fragment
 description: A timed walk to think through a specific work related problem.
