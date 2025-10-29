@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-22T09:00:00
-modDatetime: 2024-12-16T22:23:00
+pubDatetime: 2023-09-22T06:09:00Z
+modDatetime: 2024-12-16T11:22:23Z
 title: "Affirmation: Balanced Purpose"
 featured: false
-draft: false
+status: published
 tags:
   - fragment
   - affirmation

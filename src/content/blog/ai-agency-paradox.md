@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2024-11-23T10:00:00
-modDatetime: 2024-12-16T11:22:24
+pubDatetime: 2024-11-23T10:00:00Z
+modDatetime: 2025-10-29T13:34:49Z
 title: AI and the Agency Paradox
 featured: false
-draft: false
+status: published
 tags:
   - ai
   - agency
@@ -111,6 +111,7 @@ I'll keep adding to this list as I discover more interesting or thought-provokin
 - [Rach Smith on AI Is for the Idea Guys](https://rachsmith.com/ai-is-for-the-idea-guys/)
 - [Rach Smith on Wanting Better Search](https://rachsmith.com/i-want-good-search/)
 - [Microsoft's Guide to Using Generative AI Responsibly](https://github.com/microsoft/generative-ai-for-beginners/blob/main/03-using-generative-ai-responsibly/README.md)
+- [AI Tools in Society: Impacts on Cognitive Offloading and the Future of Critical Thinking](https://www.mdpi.com/2075-4698/15/1/6)
 
 ## Footnotes
 

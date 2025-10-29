@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-09-25T15:59:00
+pubDatetime: 2023-09-25T15:59:00Z
+modDatetime: 2023-09-25T15:59:00Z
 title: On Focus
 featured: false
-draft: true
+status: draft
 tags:
   - protocol
 description: Some description text.

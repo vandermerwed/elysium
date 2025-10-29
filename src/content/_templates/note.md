@@ -1,9 +1,9 @@
 ---
-pubDatetime: {{date}}T{{time}}:00
-modDatetime: {{date}}T{{time}}:00
+pubDatetime: {{date}}T{{time}}:00Z
+modDatetime: {{date}}T{{time}}:00Z
 title: Note Template
 featured: true
-draft: true
+status: draft
 tags:
   - ???
 description: Some description text.

@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-10-12T09:52:00
-modDatetime: 2024-12-16T11:22:29
+pubDatetime: 2023-10-12T09:52:00Z
+modDatetime: 2024-12-16T11:22:29Z
 title: Visual Representations of Interconnectedness and Depth
 featured: false
-draft: false
+status: published
 tags:
   - astro
   - digital-garden

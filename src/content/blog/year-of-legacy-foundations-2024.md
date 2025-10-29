@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-30T14:00:00
-modDatetime: 2024-12-16T11:22:33
+pubDatetime: 2023-09-30T14:00:00Z
+modDatetime: 2024-12-16T11:22:33Z
 title: "Year of Legacy: Foundations [2024]"
 featured: false
-draft: false
+status: published
 tags:
   - protocol
   - theme

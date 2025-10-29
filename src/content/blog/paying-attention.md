@@ -1,8 +1,9 @@
 ---
-pubDatetime: 2023-09-26T16:46:00
+pubDatetime: 2023-09-26T16:46:00Z
+modDatetime: 2023-09-26T16:46:00Z
 title: Paying Attention
 featured: false
-draft: true
+status: draft
 tags:
   - fragment
 description: Some description text.
