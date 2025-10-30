@@ -50,6 +50,11 @@ const layoutProps = {
   scrollSmooth: true,
 };
 
+const articleClasses = ["prose", "mx-auto", "mt-8", "max-w-3xl"];
+if (remarkPluginFrontmatter.marginNotes) {
+  articleClasses.push("has-margin-notes");
+}
+
 ---
 
 <Layout {...layoutProps}>
@@ -86,7 +91,7 @@ const layoutProps = {
       {tags.map((tag : string) => <Tag tag={tag} />)}
     </ul>
 
-    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
+    <article id="article" class={articleClasses.join(" ")}>
       <Content />
     </article>
 
@@ -150,6 +155,24 @@ const layoutProps = {
 </style>
 
 <script is:inline data-astro-rerun>
+  function applyMarginNoteClass() {
+    const article = document.getElementById("article");
+    if (!article) return;
+    const hasNotes = Boolean(article.querySelector(".margin-sidenote"));
+    article.classList.toggle("has-margin-notes", hasNotes);
+  }
+
+  applyMarginNoteClass();
+
+  window.__applyMarginNoteClass = applyMarginNoteClass;
+
+  if (!window.__marginNoteSwapHandler) {
+    document.addEventListener("astro:after-swap", () => {
+      window.__applyMarginNoteClass?.();
+    });
+    window.__marginNoteSwapHandler = true;
+  }
+
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
@@ -264,6 +287,30 @@ const layoutProps = {
     });
   }
   backToTop();
+
+  // Mobile: tap footnote number to toggle inline note content
+  function attachMobileSidenoteToggles() {
+    const article = document.getElementById("article");
+    if (!article) return;
+    const links = Array.from(article.querySelectorAll('sup.margin-note-sup > a'));
+    for (const link of links) {
+      if (link.dataset.sidenoteBound === "true") continue;
+      link.addEventListener('click', (e) => {
+        const isDesktop = window.matchMedia('(min-width: 60rem)').matches;
+        if (isDesktop) return;
+        e.preventDefault();
+        const sup = link.closest('sup');
+        const note = sup ? sup.nextElementSibling : null;
+        if (note && note.classList.contains('margin-sidenote')) {
+          note.classList.toggle('is-open');
+        }
+      });
+      link.dataset.sidenoteBound = "true";
+    }
+  }
+
+  attachMobileSidenoteToggles();
+  document.addEventListener('astro:after-swap', attachMobileSidenoteToggles);
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>

@@ -23,14 +23,14 @@ const escapeHtml = (value) =>
 export function remarkTufteFootnotes(options = {}) {
   const idPrefix = options.idPrefix ?? DEFAULT_ID_PREFIX;
 
-  return (tree) => {
+  return (tree, file) => {
     const definitionMap = new Map();
 
     visit(tree, "footnoteDefinition", (node, index, parent) => {
       if (!parent || typeof index !== "number") return;
       const key = normalizeIdentifier(node.identifier);
       if (!key) return;
-      definitionMap.set(key, { node, parent, index });
+      definitionMap.set(key, { node, parent, index, convertible: false, used: false });
     });
 
     if (!definitionMap.size) {
@@ -40,7 +40,7 @@ export function remarkTufteFootnotes(options = {}) {
     for (const entry of definitionMap.values()) {
       const children = entry.node.children;
       if (children.length !== 1 || children[0].type !== "paragraph") {
-        return;
+        continue;
       }
 
       const paragraph = children[0];
@@ -50,13 +50,15 @@ export function remarkTufteFootnotes(options = {}) {
         : [];
       const html = toHtml({ type: "root", children: innerChildren }).trim();
       if (!html) {
-        return;
+        continue;
       }
 
       entry.html = html;
+      entry.convertible = true;
     }
 
     const usageCounts = new Map();
+    let convertedAny = false;
 
     visit(tree, "footnoteReference", (node, index, parent) => {
       if (!parent || typeof index !== "number") {
@@ -87,10 +89,14 @@ export function remarkTufteFootnotes(options = {}) {
         type: "html",
         value: `${supHtml}${noteHtml}`,
       });
+
+      entry.used = true;
+      convertedAny = true;
     });
 
     const removals = new Map();
     for (const entry of definitionMap.values()) {
+      if (!entry.used) continue;
       const { parent, index } = entry;
       if (!parent || typeof index !== "number") continue;
       const arr = removals.get(parent) ?? [];
@@ -104,6 +110,17 @@ export function remarkTufteFootnotes(options = {}) {
         .forEach((idx) => {
           parent.children.splice(idx, 1);
         });
+    }
+
+    if (convertedAny) {
+      if (!file) return;
+      file.data = file.data ?? {};
+      file.data.astro = file.data.astro ?? { frontmatter: {} };
+      const frontmatter = file.data.astro.frontmatter ?? {};
+      file.data.astro.frontmatter = {
+        ...frontmatter,
+        marginNotes: true,
+      };
     }
   };
 }

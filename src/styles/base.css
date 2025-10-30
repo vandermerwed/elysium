@@ -175,13 +175,15 @@
     text-decoration: none;
   }
 
+  /* Mobile-first: hide sidenote content; reveal on toggle */
   .prose .margin-sidenote {
-    display: inline;
-    margin-left: 0.35rem;
-    font-size: 0.85rem;
-    line-height: 1.45;
-    color: rgb(var(--color-text-base) / 0.85);
+    display: none;
+    margin: 0.25rem 0 0.35rem 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: rgb(var(--color-text-base) / 0.9);
   }
+  .prose .margin-sidenote.is-open { display: block; }
 
   .prose .margin-sidenote::before {
     content: "[" attr(data-note-label) "] ";
@@ -190,13 +192,12 @@
   }
 
   @media (min-width: 60rem) {
-    #article {
-      --margin-note-width: clamp(12rem, 26vw, 18rem);
-      --margin-note-gap: 2.5rem;
-      padding-right: calc(var(--margin-note-width) + var(--margin-note-gap));
+    #article.has-margin-notes {
+      --margin-note-width: clamp(13rem, 24vw, 18rem);
+      --margin-note-gap: clamp(1.75rem, 5vw, 2.75rem);
     }
 
-    .prose .margin-sidenote {
+    #article.has-margin-notes .margin-sidenote {
       display: block;
       float: right;
       clear: right;
@@ -212,7 +213,7 @@
       position: relative;
     }
 
-    .prose .margin-sidenote::before {
+    #article.has-margin-notes .margin-sidenote::before {
       content: attr(data-note-label);
       position: absolute;
       left: 0;
@@ -220,6 +221,10 @@
       font-size: 0.75rem;
       font-weight: 600;
       color: rgb(var(--color-accent));
+    }
+
+    #article.has-margin-notes sup.margin-note-sup > a {
+      pointer-events: none;
     }
   }
 
