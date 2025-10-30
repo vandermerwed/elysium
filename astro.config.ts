@@ -10,6 +10,7 @@ import { getPermalinks } from "./src/plugins/wiki-link/getPermalinks.ts";
 import rehypeExternalLinks from 'rehype-external-links';
 import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs';
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
+import { remarkTufteFootnotes } from "./src/plugins/remark-tufte-footnotes.mjs";
 // import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
@@ -60,6 +61,7 @@ export default defineConfig({
         } 
       }],
       remarkNexusScore,
+      remarkTufteFootnotes,
     ],
     rehypePlugins: [
       [

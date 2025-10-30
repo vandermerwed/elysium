@@ -162,6 +162,77 @@
     @apply hidden;
   }
 
+  .prose sup.margin-note-sup {
+    font-size: 0.75rem;
+    line-height: 0;
+  }
+
+  .prose sup.margin-note-sup > a {
+    @apply text-skin-base no-underline;
+  }
+
+  .prose .margin-note-ref {
+    text-decoration: none;
+  }
+
+  .prose .margin-sidenote {
+    display: inline;
+    margin-left: 0.35rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: rgb(var(--color-text-base) / 0.85);
+  }
+
+  .prose .margin-sidenote::before {
+    content: "[" attr(data-note-label) "] ";
+    font-weight: 600;
+    color: rgb(var(--color-accent));
+  }
+
+  @media (min-width: 60rem) {
+    #article {
+      --margin-note-width: clamp(12rem, 26vw, 18rem);
+      --margin-note-gap: 2.5rem;
+      padding-right: calc(var(--margin-note-width) + var(--margin-note-gap));
+    }
+
+    .prose .margin-sidenote {
+      display: block;
+      float: right;
+      clear: right;
+      width: var(--margin-note-width);
+      margin-right: calc(-1 * (var(--margin-note-width) + var(--margin-note-gap)));
+      margin-top: 0.15rem;
+      margin-bottom: 0.6rem;
+      margin-left: 0;
+      padding-left: 1.5rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: rgb(var(--color-text-base) / 0.85);
+      position: relative;
+    }
+
+    .prose .margin-sidenote::before {
+      content: attr(data-note-label);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgb(var(--color-accent));
+    }
+  }
+
+  @media print {
+    #article {
+      padding-right: 0;
+    }
+
+    .prose .margin-sidenote {
+      display: inline;
+    }
+  }
+
   /* Scrollbar Styles */
   html { overflow-y: scroll; }
   ::-webkit-scrollbar { @apply w-3; }
