@@ -17,18 +17,19 @@ export function attachMobileSidenoteToggles() {
   const article = document.getElementById("article");
   if (!article) return;
   const breakpoint = getComputedStyle(document.documentElement)
-    .getPropertyValue('--breakpoint-margin-notes').trim();
-  const links = Array.from(article.querySelectorAll('sup.margin-note-sup > a'));
+    .getPropertyValue("--breakpoint-margin-notes")
+    .trim();
+  const links = Array.from(article.querySelectorAll("sup.margin-note-sup > a"));
   for (const link of links) {
     if ((link as HTMLElement).dataset.sidenoteBound === "true") continue;
-    link.addEventListener('click', (e) => {
+    link.addEventListener("click", e => {
       const isDesktop = window.matchMedia(`(min-width: ${breakpoint})`).matches;
       if (isDesktop) return;
       e.preventDefault();
-      const sup = link.closest('sup');
+      const sup = link.closest("sup");
       const note = sup ? sup.nextElementSibling : null;
-      if (note && note.classList.contains('margin-sidenote')) {
-        note.classList.toggle('is-open');
+      if (note && note.classList.contains("margin-sidenote")) {
+        note.classList.toggle("is-open");
       }
     });
     (link as HTMLElement).dataset.sidenoteBound = "true";
