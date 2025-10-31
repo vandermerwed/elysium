@@ -79,7 +79,7 @@ export function remarkTufteFootnotes(options = {}) {
       const uniqueSuffix = count + 1;
       usageCounts.set(key, uniqueSuffix);
 
-      const label = escapeHtml(node.label || node.identifier || uniqueSuffix);
+      const label = escapeHtml(node.label || node.identifier || String(uniqueSuffix));
       const slugBase = slugify(key) || "note";
       const noteId = `${idPrefix}-${slugBase}-${uniqueSuffix}`;
       const supHtml = `
