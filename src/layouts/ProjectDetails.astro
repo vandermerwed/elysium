@@ -155,24 +155,6 @@ if (remarkPluginFrontmatter.marginNotes) {
 </style>
 
 <script is:inline data-astro-rerun>
-  function applyMarginNoteClass() {
-    const article = document.getElementById("article");
-    if (!article) return;
-    const hasNotes = Boolean(article.querySelector(".margin-sidenote"));
-    article.classList.toggle("has-margin-notes", hasNotes);
-  }
-
-  applyMarginNoteClass();
-
-  window.__applyMarginNoteClass = applyMarginNoteClass;
-
-  if (!window.__marginNoteSwapHandler) {
-    document.addEventListener("astro:after-swap", () => {
-      window.__applyMarginNoteClass?.();
-    });
-    window.__marginNoteSwapHandler = true;
-  }
-
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
