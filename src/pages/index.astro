@@ -38,7 +38,7 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
     {
       featuredPosts.length > 0 && (
         <>
-          <section id="featured">
+          <section class="featured" id="featured">
             <h2>Featured</h2>
             <ul>
               {featuredPosts.map(({ data, id }) => (
@@ -58,7 +58,7 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
 
     {
       recentPosts.length > 0 && (
-        <section id="fragment-posts">
+        <section class="featured" id="fragment-posts">
           <h2>{featuredPosts.length > 0 && "Recent "}Log Entries</h2>
           <ul>
             {recentPosts.map(
@@ -91,7 +91,7 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
     {
       fragmentPosts.length > 0 && (
         <>
-          <section id="thoughts">
+          <section class="featured" id="thoughts">
             <h2>Thoughts</h2>
             <ul>
               {fragmentPosts.map(({ data, id }) => (
@@ -161,14 +161,10 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
   }
 
   /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts,
-  #fragment-posts {
+  .featured {
     @apply pb-6 pt-12;
   }
-  #featured h2,
-  #recent-posts h2,
-  #fragment-posts h2 {
+  .featured h2 {
     @apply text-3xl font-semibold tracking-wide;
   }
   .all-posts-btn-wrapper {
