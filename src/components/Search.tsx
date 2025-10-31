@@ -112,6 +112,7 @@ export default function SearchBar({ searchList }: Props) {
               href={`/notes/${item.id}/`}
               frontmatter={item.data}
               key={`${refIndex}-${item.id}`}
+              showNexusScore={true}
             />
           ))}
       </ul>

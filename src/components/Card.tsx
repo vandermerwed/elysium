@@ -7,30 +7,49 @@ export interface Props {
   frontmatter?: CollectionEntry<"blog">["data"];
   secHeading?: boolean;
   showNexusScore?: boolean;
+  nexusScore?: string;
 }
+
+const nexusScorePattern = /^(?:R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
+
+const isValidNexusScore = (value?: string): value is string =>
+  typeof value === "string" && nexusScorePattern.test(value);
 
 export default function Card({
   href,
   frontmatter,
   secHeading = true,
   showNexusScore = false,
+  nexusScore,
 }: Props) {
-  const { title, id, pubDatetime, modDatetime, description, readingTime, nexusScore } =
-    frontmatter || {};
+  const {
+    title,
+    pubDatetime,
+    modDatetime,
+    description,
+    readingTime,
+    nexusScore: frontmatterNexusScore,
+  } = frontmatter || {};
+
+  const transitionId = (frontmatter as { id?: string } | undefined)?.id;
+
+  const resolvedNexusScore = isValidNexusScore(nexusScore)
+    ? nexusScore
+    : isValidNexusScore(frontmatterNexusScore)
+      ? frontmatterNexusScore
+      : undefined;
 
   const headerProps = {
-    style: { viewTransitionName: id },
+    style: { viewTransitionName: transitionId },
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 
   return (
     <li className="my-6">
       <div className="inline-flex">
-        {showNexusScore ? (
-          <NexusScore score={nexusScore} className="m-auto mr-2" />
-        ) : (
-          <></>
-        )}
+        {showNexusScore && resolvedNexusScore ? (
+          <NexusScore score={resolvedNexusScore} className="m-auto mr-2" />
+        ) : null}
         <a
           href={href}
           className="inline-block text-2xl font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"

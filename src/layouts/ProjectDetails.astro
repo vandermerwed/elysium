@@ -124,7 +124,7 @@ if (remarkPluginFrontmatter.marginNotes) {
                 incomingLinks.map((value: { id: string; frontmatter?: {} }, _index: number, _array: { id: string; frontmatter?: {} }[]): any => {
                   const { id, frontmatter } = value;
                   return (
-                    <Card href={`/projects/${id}`} frontmatter={frontmatter ?? {}} showNexusScore={false} />
+                    <Card href={`/projects/${id}`} frontmatter={frontmatter ?? {}} showNexusScore={true} />
                   );
                 })
               }
