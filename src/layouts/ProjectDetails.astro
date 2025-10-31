@@ -270,12 +270,6 @@ if (remarkPluginFrontmatter.marginNotes) {
   }
   backToTop();
 
-  // Mobile: tap footnote number to toggle inline note content
-  import { attachMobileSidenoteToggles } from "../../utils/dom";
-
-  attachMobileSidenoteToggles();
-  document.addEventListener('astro:after-swap', attachMobileSidenoteToggles);
-
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })

@@ -276,25 +276,6 @@ if (remarkPluginFrontmatter.marginNotes) {
 </style>
 
 <script is:inline data-astro-rerun>
-  import {
-    applyMarginNoteClass,
-    attachMobileSidenoteToggles,
-  } from "../../utils/dom";
-
-  applyMarginNoteClass();
-
-  window.__applyMarginNoteClass = applyMarginNoteClass;
-
-  if (!window.__marginNoteSwapHandler) {
-    document.addEventListener("astro:after-swap", () => {
-      window.__applyMarginNoteClass?.();
-    });
-    window.__marginNoteSwapHandler = true;
-  }
-
-  // Mobile: tap footnote number to toggle inline note content
-  attachMobileSidenoteToggles();
-  document.addEventListener("astro:after-swap", attachMobileSidenoteToggles);
 
   /** Create a progress indicator
    *  at the top */
