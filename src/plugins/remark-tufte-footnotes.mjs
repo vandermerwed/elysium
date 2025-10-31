@@ -83,15 +83,24 @@ export function remarkTufteFootnotes(options = {}) {
       const slugBase = slugify(key) || "note";
       const noteId = `${idPrefix}-${slugBase}-${uniqueSuffix}`;
       const supHtml = `
-        <sup id="${noteId}-ref" class="margin-note-sup">
-          <a
-            href="#${noteId}"
-            class="footnote-ref margin-note-ref"
-            aria-describedby="${noteId}"
-          >${label}</a>
-        </sup>
-      `.trim();
-      const noteHtml = `<span class="margin-sidenote" id="${noteId}" data-note-label="${label}" role="note">${entry.html}</span>`;
+<sup id="${noteId}-ref" class="margin-note-sup">
+  <a
+    href="#${noteId}"
+    class="footnote-ref margin-note-ref"
+    aria-describedby="${noteId}"
+  >${label}</a>
+</sup>
+`.trim();
+      const noteHtml = `
+<span
+  class="margin-sidenote"
+  id="${noteId}"
+  data-note-label="${label}"
+  role="note"
+>
+  ${entry.html}
+</span>
+`.trim();
 
       parent.children.splice(index, 1, {
         type: "html",
