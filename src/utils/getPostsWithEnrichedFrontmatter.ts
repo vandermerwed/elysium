@@ -10,9 +10,17 @@ const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
         posts.map(async post => {
             const { remarkPluginFrontmatter } = await render(post);
 
+            // Only include keys from remarkPluginFrontmatter that exist in post.data
+            const filteredFrontmatter = remarkPluginFrontmatter
+                ? Object.fromEntries(
+                    Object.entries(remarkPluginFrontmatter).filter(([key]) =>
+                        key in post.data
+                    )
+                )
+                : {};
             const enrichedData: CollectionEntry<T>["data"] = {
                 ...post.data,
-                ...(remarkPluginFrontmatter ?? {}),
+                ...filteredFrontmatter,
             };
 
             const enrichedPost: CollectionEntry<T> = {
