@@ -1,16 +1,36 @@
+import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
-const getPostsWithEnrichedFrontmatter = async <T extends "blog" | "projects">(posts: CollectionEntry<T>[]) => {
+type CollectionName = "blog" | "projects";
 
-    // loop over posts and call render functio nthen update return collection
-    return posts.map(post => {
-        const { Content, remarkPluginFrontmatter } = post.render();
+const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
+    posts: CollectionEntry<T>[]
+) => {
+    return Promise.all(
+        posts.map(async post => {
+            const { remarkPluginFrontmatter } = await render(post);
 
-        // resolve promise
-        // console.log("remarkPluginFrontmatter: ", remarkPluginFrontmatter);
+            // Only include keys from remarkPluginFrontmatter that exist in post.data
+            const filteredFrontmatter = remarkPluginFrontmatter
+                ? Object.fromEntries(
+                    Object.entries(remarkPluginFrontmatter).filter(([key]) =>
+                        key in post.data
+                    )
+                )
+                : {};
+            const enrichedData: CollectionEntry<T>["data"] = {
+                ...post.data,
+                ...filteredFrontmatter,
+            };
 
-        return post;
-    }) as CollectionEntry<T>[];
+            const enrichedPost: CollectionEntry<T> = {
+                ...post,
+                data: enrichedData,
+            };
+
+            return enrichedPost;
+        })
+    );
 };
 
 export default getPostsWithEnrichedFrontmatter;
