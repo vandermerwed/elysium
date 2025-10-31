@@ -9,7 +9,7 @@ import Card from "@components/Card";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 import AidaNotice from "@components/AidaNotice.astro";
-import { type CollectionEntry, render } from 'astro:content';
+import { type CollectionEntry, render } from "astro:content";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -29,16 +29,14 @@ const {
   tags,
   editPost,
   type,
-  aiUsage
+  aiUsage,
 } = post.data;
 
 const { Content, remarkPluginFrontmatter } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
-const ogUrl = new URL(
-  ogImageUrl ?? `/notes/${post.id}.png`,
-  Astro.url.origin
-).href;
+const ogUrl = new URL(ogImageUrl ?? `/notes/${post.id}.png`, Astro.url.origin)
+  .href;
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -86,7 +84,12 @@ if (remarkPluginFrontmatter.marginNotes) {
     </button>
   </div>
   <main id="main-content">
-    <NexusScore score={remarkPluginFrontmatter.nexusScore} showDescription={true} size="sm" className="m-auto mr-2" />
+    <NexusScore
+      score={remarkPluginFrontmatter.nexusScore}
+      showDescription={true}
+      size="sm"
+      className="m-auto mr-2"
+    />
     <h1 transition:name={post.id} class="post-title mt-2">{title}</h1>
     <Datetime
       showModified={true}
@@ -101,31 +104,36 @@ if (remarkPluginFrontmatter.marginNotes) {
     />
 
     <ul class="tags-container">
-      {tags.map((tag : string) => <Tag tag={tag} />)}
+      {tags.map((tag: string) => <Tag tag={tag} />)}
     </ul>
 
     <article id="article" class={articleClasses.join(" ")}>
       {
-        type === "fragment" &&
-        <div class="fragment-notice">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-alert-triangle scale-100 inline-block h-6 w-6"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 9v4"></path>
-            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
-            <path d="M12 16h.01"></path>
-          </svg>
-          <span class="italic"><b>Fragment in Flux:</b> This fragment is currently unstable and undergoing updates.</span>
-        </div>
+        type === "fragment" && (
+          <div class="fragment-notice">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-alert-triangle scale-100 inline-block h-6 w-6"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 9v4" />
+              <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+              <path d="M12 16h.01" />
+            </svg>
+            <span class="italic">
+              <b>Fragment in Flux:</b> This fragment is currently unstable and
+              undergoing updates.
+            </span>
+          </div>
+        )
       }
       <Content />
     </article>
@@ -214,25 +222,37 @@ if (remarkPluginFrontmatter.marginNotes) {
       }
     </div>
     {
-      (remarkPluginFrontmatter.incomingLinks && remarkPluginFrontmatter.incomingLinks.length > 0) &&
-        <div>
-          <hr class="my-6 border-solid border-skin-line-muted" />
-          <div class="incoming-links-container">
-            <br>
-            <h2>Incoming Links</h2>
-            <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {
-                remarkPluginFrontmatter.incomingLinks.map((value: { id: string; frontmatter?: object }, _index: number, _array: { id: string; frontmatter?: {} }[]): any => {
-                  const { id, frontmatter } = value;
-                  return (
-                    frontmatter && <Card href={`/notes/${id}`} frontmatter={remarkPluginFrontmatter} showNexusScore={false} />
-                  );
-                })
-              }
-            </ul>
+      remarkPluginFrontmatter.incomingLinks &&
+        remarkPluginFrontmatter.incomingLinks.length > 0 && (
+          <div>
+            <hr class="my-6 border-solid border-skin-line-muted" />
+            <div class="incoming-links-container">
+              <br />
+              <h2>Incoming Links</h2>
+              <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                {remarkPluginFrontmatter.incomingLinks.map(
+                  (
+                    value: { id: string; frontmatter?: object },
+                    _index: number,
+                    _array: { id: string; frontmatter?: {} }[]
+                  ): any => {
+                    const { id, frontmatter } = value;
+                    return (
+                      frontmatter && (
+                        <Card
+                          href={`/notes/${id}`}
+                          frontmatter={remarkPluginFrontmatter}
+                          showNexusScore={false}
+                        />
+                      )
+                    );
+                  }
+                )}
+              </ul>
+            </div>
           </div>
-        </div>
-      }
+        )
+    }
   </main>
   <Footer />
 </Layout>
@@ -256,49 +276,6 @@ if (remarkPluginFrontmatter.marginNotes) {
 </style>
 
 <script is:inline data-astro-rerun>
-  function applyMarginNoteClass() {
-    const article = document.getElementById("article");
-    if (!article) return;
-    const hasNotes = Boolean(article.querySelector(".margin-sidenote"));
-    article.classList.toggle("has-margin-notes", hasNotes);
-  }
-
-  applyMarginNoteClass();
-
-  window.__applyMarginNoteClass = applyMarginNoteClass;
-
-  if (!window.__marginNoteSwapHandler) {
-    document.addEventListener("astro:after-swap", () => {
-      window.__applyMarginNoteClass?.();
-    });
-    window.__marginNoteSwapHandler = true;
-  }
-
-  // Mobile: tap footnote number to toggle inline note content
-  function attachMobileSidenoteToggles() {
-    const article = document.getElementById("article");
-    if (!article) return;
-    const breakpoint = getComputedStyle(document.documentElement)
-      .getPropertyValue('--breakpoint-margin-notes').trim();
-    const links = Array.from(article.querySelectorAll('sup.margin-note-sup > a'));
-    for (const link of links) {
-      if (link.dataset.sidenoteBound === "true") continue;
-      link.addEventListener('click', (e) => {
-        const isDesktop = window.matchMedia(`(min-width: ${breakpoint})`).matches;
-        if (isDesktop) return;
-        e.preventDefault();
-        const sup = link.closest('sup');
-        const note = sup ? sup.nextElementSibling : null;
-        if (note && note.classList.contains('margin-sidenote')) {
-          note.classList.toggle('is-open');
-        }
-      });
-      link.dataset.sidenoteBound = "true";
-    }
-  }
-
-  attachMobileSidenoteToggles();
-  document.addEventListener('astro:after-swap', attachMobileSidenoteToggles);
 
   /** Create a progress indicator
    *  at the top */
