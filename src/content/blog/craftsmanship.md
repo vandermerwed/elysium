@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2024-11-23T10:54:54Z
+pubDatetime: 2025-10-31T16:49:40Z
 modDatetime: 2024-11-23T10:54:54Z
 title: On Craftsmanship
 featured: false
-status: release
+status: published
 tags:
   - fragment
 description: On craftsmanship

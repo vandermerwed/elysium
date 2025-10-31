@@ -1,9 +1,9 @@
 ---
-pubDatetime: 2023-09-26T14:57:00Z
+pubDatetime: 2025-10-31T16:49:40Z
 modDatetime: 2023-09-26T14:57:00Z
 title: Interstitial Journaling
 featured: false
-status: release
+status: published
 tags:
   - fragment
 description: Thoughts on interstitial journaling
