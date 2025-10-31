@@ -3,7 +3,7 @@ pubDatetime: 2024-11-23T10:54:54Z
 modDatetime: 2024-11-23T10:54:54Z
 title: On Craftsmanship
 featured: false
-status: draft
+status: reslease
 tags:
   - fragment
 description: On craftsmanship

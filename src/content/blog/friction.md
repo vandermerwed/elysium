@@ -3,7 +3,7 @@ pubDatetime: 2023-09-19T15:40:00Z
 modDatetime: 2023-09-19T15:40:00Z
 title: Friction
 featured: false
-status: draft
+status: release
 tags:
   - fragment
 description: On friction

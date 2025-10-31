@@ -3,10 +3,10 @@ pubDatetime: 2023-09-26T14:57:00Z
 modDatetime: 2023-09-26T14:57:00Z
 title: Interstitial Journaling
 featured: false
-status: draft
+status: release
 tags:
   - fragment
-description: Some description text.
+description: Thoughts on interstitial journaling
 type: fragment
 aiUsage:
   - none
