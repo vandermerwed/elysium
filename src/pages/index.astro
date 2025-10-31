@@ -7,9 +7,11 @@ import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import { getSortedPosts } from "@utils/getSortedPosts";
+import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { SITE } from "@config";
 
-const posts = await getCollection("blog");
+const basePosts = await getCollection("blog");
+const posts = await getPostsWithEnrichedFrontmatter<"blog">(basePosts);
 
 const sortedPosts = getSortedPosts(posts, SITE.blogContentTypes);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
@@ -44,6 +46,7 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
                   href={`/notes/${id}/`}
                   frontmatter={data}
                   secHeading={false}
+                  showNexusScore={true}
                 />
               ))}
             </ul>
@@ -65,6 +68,7 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
                     href={`/notes/${id}/`}
                     frontmatter={data}
                     secHeading={false}
+                    showNexusScore={true}
                   />
                 )
             )}
@@ -86,6 +90,27 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
 
     {
       fragmentPosts.length > 0 && (
+        <>
+          <section id="thoughts">
+            <h2>Thoughts</h2>
+            <ul>
+              {fragmentPosts.map(({ data, id }) => (
+                <Card
+                  href={`/notes/${id}/`}
+                  frontmatter={data}
+                  secHeading={false}
+                  showNexusScore={true}
+                />
+              ))}
+            </ul>
+          </section>
+          {recentPosts.length > 0 && <Hr />}
+        </>
+      )
+    }
+
+    <!-- {
+      fragmentPosts.length > 0 && (
         <section id="fragment-posts">
           <h2>Fragmented Thoughts</h2>
           <ul class="fragment-grid">
@@ -95,13 +120,14 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
                   href={`/notes/${id}/`}
                   frontmatter={data}
                   secHeading={false}
+                  showNexusScore={true}
                 />
               )
           )}
           </ul>
         </section>
       )
-    }
+    } -->
   </main>
 
   <Footer />
