@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2024-11-23T10:00:00Z
-modDatetime: 2025-10-29T13:34:49Z
+modDatetime: 2025-10-31T13:57:41Z
 title: AI and the Agency Paradox
 featured: false
 status: published
@@ -26,7 +26,7 @@ aiUsage:
 
 > Caffeine equips us to cope with the world caffeine helped us to create.
 
-&mdash; Michael Pollan, <cite>Caffeine: How Caffeine Created the Modern World</cite> [^1]
+&mdash; Michael Pollan, <cite>[Caffeine: How Caffeine Created the Modern World](https://www.goodreads.com/book/show/52300107-caffeine)</cite>
 
 <br />
 
@@ -85,8 +85,10 @@ While we've witnessed transformative innovations before, like the invention of e
 The accessibility and rapid advancement of AI have changed the game.
 It is embedding itself into every sector at an alarming rate, as evidenced by all the [sparkles ✨](https://bigmedium.com/ideas/your-sparkles-are-fizzling.html) popping up in almost every software tool we use.
 
-AI mimics intelligence by speaking well, but speaking well is not the same as thinking well. We often fall for this with humans too. [^2]
+AI mimics intelligence by speaking well, but speaking well is not the same as thinking well. We often fall for this with humans too. [^1]
 Throughout history, there are countless examples where people were misled by confident charlatans that spoke well.
+
+[^1]: Josh Clark, [Exploring the AI Solution Space](https://bigmedium.com/ideas/links/exploring-the-ai-solution-space-jorge-arango.html)
 
 <br />
 
@@ -95,7 +97,7 @@ Throughout history, there are countless examples where people were misled by con
 > And the fact that the AI contract looks so similar to a human one makes it easy for you to take its provenance for granted.
 > That is, the better the outcome looks to your non-specialist eyes, the more likely you are to give up your agency.
 
-&mdash; Jorge Arango, <cite>Exploring the AI Solution Space</cite> [^3]
+&mdash; Jorge Arango, <cite>[Exploring the AI Solution Space](https://jarango.com/2024/10/01/exploring-the-ai-solution-space/)</cite>
 
 <br />
 
@@ -112,9 +114,3 @@ I'll keep adding to this list as I discover more interesting or thought-provokin
 - [Rach Smith on Wanting Better Search](https://rachsmith.com/i-want-good-search/)
 - [Microsoft's Guide to Using Generative AI Responsibly](https://github.com/microsoft/generative-ai-for-beginners/blob/main/03-using-generative-ai-responsibly/README.md)
 - [AI Tools in Society: Impacts on Cognitive Offloading and the Future of Critical Thinking](https://www.mdpi.com/2075-4698/15/1/6)
-
-## Footnotes
-
-[^1]: Michael Pollan, [Caffeine: How Caffeine Created the Modern World](https://www.goodreads.com/book/show/52300107-caffeine)
-[^2]: Josh Clark, [Exploring the AI Solution Space](https://bigmedium.com/ideas/links/exploring-the-ai-solution-space-jorge-arango.html)
-[^3]: Jorge Arango, [Exploring the AI Solution Space](https://jarango.com/2024/10/01/exploring-the-ai-solution-space/)
