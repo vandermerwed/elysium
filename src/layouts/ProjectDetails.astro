@@ -271,25 +271,7 @@ if (remarkPluginFrontmatter.marginNotes) {
   backToTop();
 
   // Mobile: tap footnote number to toggle inline note content
-  function attachMobileSidenoteToggles() {
-    const article = document.getElementById("article");
-    if (!article) return;
-    const links = Array.from(article.querySelectorAll('sup.margin-note-sup > a'));
-    for (const link of links) {
-      if (link.dataset.sidenoteBound === "true") continue;
-      link.addEventListener('click', (e) => {
-        const isDesktop = window.matchMedia('(min-width: 60rem)').matches;
-        if (isDesktop) return;
-        e.preventDefault();
-        const sup = link.closest('sup');
-        const note = sup ? sup.nextElementSibling : null;
-        if (note && note.classList.contains('margin-sidenote')) {
-          note.classList.toggle('is-open');
-        }
-      });
-      link.dataset.sidenoteBound = "true";
-    }
-  }
+  import { attachMobileSidenoteToggles } from "../../utils/dom";
 
   attachMobileSidenoteToggles();
   document.addEventListener('astro:after-swap', attachMobileSidenoteToggles);
