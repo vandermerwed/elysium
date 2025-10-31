@@ -3,17 +3,25 @@ import { SITE } from "@config";
 import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
+import type { Props as HeaderProps } from "@components/Header.astro";
 import Layout from "./Layout.astro";
 
 export interface Props {
   frontmatter: {
     title: string;
     description?: string;
-    id: string;
+    id?: HeaderProps["activeNav"];
+    marginNotes?: boolean;
+  };
+  remarkPluginFrontmatter?: {
+    marginNotes?: boolean;
   };
 }
 
-const { frontmatter } = Astro.props;
+const { frontmatter, remarkPluginFrontmatter } = Astro.props;
+const hasMarginNotes =
+  Boolean(frontmatter.marginNotes) ||
+  Boolean(remarkPluginFrontmatter?.marginNotes);
 ---
 
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
@@ -22,7 +30,12 @@ const { frontmatter } = Astro.props;
   <main id="main-content">
     <section id={frontmatter.id} class="prose mb-28 max-w-3xl prose-img:border-0">
       <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
-      <slot />
+      <article
+        id="article"
+        class:list={{ "has-margin-notes": hasMarginNotes }}
+      >
+        <slot />
+      </article>
     </section>
   </main>
   <Footer />

@@ -50,6 +50,11 @@ const layoutProps = {
   scrollSmooth: true,
 };
 
+const articleClasses = ["prose", "mx-auto", "mt-8", "max-w-3xl"];
+if (remarkPluginFrontmatter.marginNotes) {
+  articleClasses.push("has-margin-notes");
+}
+
 ---
 
 <Layout {...layoutProps}>
@@ -86,7 +91,7 @@ const layoutProps = {
       {tags.map((tag : string) => <Tag tag={tag} />)}
     </ul>
 
-    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
+    <article id="article" class={articleClasses.join(" ")}>
       <Content />
     </article>
 

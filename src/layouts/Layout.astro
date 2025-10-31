@@ -2,6 +2,7 @@
 import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
+import marginNotesScript from "../scripts/margin-notes.ts?url";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -142,3 +143,5 @@ const structuredData = {
     <slot />
   </body>
 </html>
+
+<script type="module" src={marginNotesScript}></script>
