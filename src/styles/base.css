@@ -37,6 +37,9 @@
     --color-card-muted: var(--light-card-muted);
     --color-border: var(--light-border);
     --color-border-muted: var(--light-border-muted);
+
+    /* Layout breakpoints */
+    --breakpoint-margin-notes: 60rem;
   }
 
   html[data-theme="dark"] {
@@ -191,6 +194,7 @@
     color: rgb(var(--color-accent));
   }
 
+  /* Breakpoint value matches --breakpoint-margin-notes custom property */
   @media (min-width: 60rem) {
     #article.has-margin-notes {
       --margin-note-width: clamp(13rem, 24vw, 18rem);
