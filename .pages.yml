@@ -2,8 +2,8 @@ media:
   input: src/content/media
   output: /src/content/media
 content:
-  - name: blog
-    label: Blog
+  - name: notes
+    label: Notes
     path: src/content/blog
     filename: '{primary}.md'
     type: collection
