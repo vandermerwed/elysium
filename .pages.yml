@@ -30,8 +30,9 @@ content:
         type: boolean
       - name: draft
         label: Draft
-        type: boolean
-        default: true
+        type: select
+        options:
+          values: [ draft, release, published ]
       - name: tags
         label: Tags
         type: string
