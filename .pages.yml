@@ -28,8 +28,8 @@ content:
       - name: featured
         label: Featured
         type: boolean
-      - name: draft
-        label: Draft
+      - name: status
+        label: Status
         type: select
         options:
           values: [ draft, release, published ]
