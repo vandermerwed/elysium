@@ -11,14 +11,13 @@
             "id": "646ce574b4a4090a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
-                "file": "blog/hemingway-bridge.md",
-                "mode": "source",
-                "source": false
+                "file": "library.base",
+                "viewName": "Table"
               },
-              "icon": "lucide-file",
-              "title": "hemingway-bridge"
+              "icon": "lucide-table",
+              "title": "library"
             }
           }
         ]
@@ -179,11 +178,19 @@
   },
   "active": "646ce574b4a4090a",
   "lastOpenFiles": [
-    "blog/habit-stacking.md",
-    "blog/friction.md",
-    "blog/mastery.md",
+    "Untitled.md",
+    "notes/affirmation-bedtime-blueprint.md",
+    "library.base",
+    "projects/roam-research-extension-exist.md",
+    "library",
+    "loadout",
+    "themes",
+    "notes/hemingway-bridge.md",
+    "notes/habit-stacking.md",
+    "notes/friction.md",
+    "notes/mastery.md",
     "media",
-    "blog/ai-agency-paradox.md",
+    "notes/ai-agency-paradox.md",
     "_templates/theme.md",
     "_templates/source.md",
     "_templates/project.md",
@@ -191,31 +198,23 @@
     "_templates/note.md",
     "_templates/loadout.md",
     "_templates/fragment.md",
-    "blog/nexus-score.md",
+    "notes/nexus-score.md",
     "content.config.ts",
-    "blog/loadout-update-2024-q4.md",
-    "blog/loadout-update-2023-q3.md",
-    "blog/spaceship-you.md",
-    "blog/year-of-legacy-foundations-2024.md",
-    "blog/work-walks.md",
-    "blog/trigger-action-planning.md",
-    "blog/time.md",
-    "blog/personal-retreats.md",
-    "blog/maintaining-averages.md",
-    "blog/craftsmanship.md",
-    "blog/cornerstone-habits.md",
+    "loadout/loadout-update-2024-q4.md",
+    "loadout/loadout-update-2023-q3.md",
+    "notes/spaceship-you.md",
+    "themes/year-of-legacy-foundations-2024.md",
+    "notes/work-walks.md",
+    "notes/trigger-action-planning.md",
+    "notes/time.md",
+    "notes/personal-retreats.md",
+    "notes/maintaining-averages.md",
+    "notes/craftsmanship.md",
     "blog/artificial-intelligence.mdx",
-    "blog/intentionality.md",
-    "blog/hemingway-bridge.md",
-    "blog/affirmation-bedtime-blueprint.md",
     "_canvas/Public Roadmap.canvas",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "config.ts",
     "blog/year-of-legacy-foundations-2024.mdx",
-    "_canvas",
-    "_examples/test.mdx",
-    "projects",
-    "tags",
-    "_templates"
+    "_canvas"
   ]
 }

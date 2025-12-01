@@ -2,7 +2,7 @@ import { SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
 
 const postFilter = (
-  post: CollectionEntry<"blog">,
+  post: CollectionEntry<"notes">,
   contentTypes?: readonly string[]
 ): boolean => {
   const { data } = post;

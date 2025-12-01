@@ -8,8 +8,8 @@ interface DatetimesProps {
 }
 
 interface EditPostProps {
-  editPost?: CollectionEntry<"blog">["data"]["editPost"];
-  postId?: CollectionEntry<"blog">["id"];
+  editPost?: CollectionEntry<"notes">["data"]["editPost"];
+  postId?: CollectionEntry<"notes">["id"];
 }
 
 interface Props extends DatetimesProps, EditPostProps {

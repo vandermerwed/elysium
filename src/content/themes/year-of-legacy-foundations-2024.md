@@ -25,7 +25,7 @@ You might be wondering why I've chosen September for this update, especially whe
 
 ## My past ~~Themes~~ Campaigns:
 
-I won’t go into too much detail on these past themes. Maybe one day I’ll update them from my old notes. For now, you’ll need to settle for a high-level [[life-is-a-role-playing-game|RPG-themed]] summary:
+I won’t go into too much detail on these past themes. Maybe one day I’ll update them from my old notes. For now, you’ll need to settle for a high-level [[../notes/life-is-a-role-playing-game|RPG-themed]] summary:
 
 ### **[2018]** Year of Action
 
@@ -130,7 +130,7 @@ Some plans we have for this quest are:
 **Start doing**
 
 - Regular dates with my wife where we can discuss and refine our Home Base Protocols
-- Evening [[affirmation-bedtime-blueprint|affirmations]] with my children
+- Evening [[../notes/affirmation-bedtime-blueprint|affirmations]] with my children
 - Regular walks in nature with family
 
 #### Quest Rewards
@@ -167,7 +167,7 @@ My cardio and endurance is currently solid, but there's room for improvement in 
    - **Keep Doing**:
      - 3 jogs per week
    - **Start Doing**:
-     - [[maintaining-averages|Maintain average]] of 30 pushups per day
+     - [[../notes/maintaining-averages|Maintain average]] of 30 pushups per day
      - Jog longer distances 1-2 times per week
      - Strength/Core training 3-4 times per week
 2. **Mental Health**
@@ -192,10 +192,10 @@ My cardio and endurance is currently solid, but there's room for improvement in 
      - Block distracting sites (Rescue Time)
    - **Start Doing**:
      - Write & publish more
-     - [[habit-stacking|Habit Stacking]]
-     - Daily [[affirmation-balanced-purpose|Balanced Purpose Affirmation]] reflection
+     - [[../notes/habit-stacking|Habit Stacking]]
+     - Daily [[../notes/affirmation-balanced-purpose|Balanced Purpose Affirmation]] reflection
      - Measure outcomes, not time spent
-     - [[work-walks|Work Walks]]
+     - [[../notes/work-walks|Work Walks]]
 
 #### Quest Rewards
 
@@ -216,7 +216,7 @@ The following quests are tailored to level intentionality, consistency, focus an
 - Use tools to limit social media and other distractions
 - Audit and streamline current workflows every quarter
 - Use automation where possible
-- Install [[trigger-action-planning|Trigger Action Plans (TAPs)]]
+- Install [[../notes/trigger-action-planning|Trigger Action Plans (TAPs)]]
 
 **Quest Rewards:**
 

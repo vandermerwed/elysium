@@ -3,7 +3,7 @@
 
 declare namespace App {
     interface Locals {
-        incomingLinks: CollectionEntry<"blog">[],
-        outgoingLinks: CollectionEntry<"blog">[]
+        incomingLinks: CollectionEntry<"notes">[],
+        outgoingLinks: CollectionEntry<"notes">[]
     }
 }

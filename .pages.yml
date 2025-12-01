@@ -2,9 +2,9 @@ media:
   input: src/content/media
   output: /src/content/media
 content:
-  - name: blog
-    label: Blog
-    path: src/content/blog
+  - name: notes
+    label: Notes
+    path: src/content/notes
     type: collection
     view:
       fields: [ title, pubDatetime, modDatetime, featured, type ]

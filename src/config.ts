@@ -5,17 +5,18 @@ export const SITE: Site = {
   author: "Daniel van der Merwe",
   profile: "https://danielvandermerwe.com/",
   desc: "Embark on a cosmic journey with Captain Daniel aboard the Elysium. Navigate through sectors dedicated to productivity, technology, and the quantified self, as he traverses life's many challenges and discoveries.",
-  title: "Elysium Chronicles",
+  title: "Daniel van der Merwe",
+  logo: "logo.png",
   ogImage: "og.png",
   lightAndDarkMode: true,
-  blogContentTypes: ["note", "loadout", "theme"],
+  noteContentTypes: ["note", "loadout", "theme"],
   postPerIndex: 5,
   fragmentsPerIndex: 6,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
-  showArchives: true,
+  showArchives: false,
   editPost: {
-    url: "https://github.com/vandermerwed/elysium/edit/main/src/content/blog",
+    url: "https://github.com/vandermerwed/elysium/edit/main/src/content/notes",
     text: "Suggest Changes",
     appendFilePath: true,
     disabled: true
@@ -28,10 +29,10 @@ export const LOCALE = {
 } as const;
 
 export const LOGO_IMAGE = {
-  enable: false,
+  enable: true,
   svg: true,
-  width: 216,
-  height: 46,
+  width: 36,
+  height: 36,
 };
 
 export const SOCIALS: SocialObjects = [
@@ -66,7 +67,7 @@ export const SOCIALS: SocialObjects = [
     active: false,
   },
   {
-    name: "Twitter",
+    name: "X",
     href: "https://x.com/vandermerwed",
     linkTitle: `${SITE.author} on X`,
     active: true,
@@ -154,5 +155,11 @@ export const SOCIALS: SocialObjects = [
     href: "https://github.com/satnaing/astro-paper",
     linkTitle: `${SITE.title} on Mastodon`,
     active: false,
+  },
+  {
+    name: "Bluesky",
+    href: "https://bsky.app/profile/danielvandermerwe.com",
+    linkTitle: `${SITE.title} on Bluesky`,
+    active: true,
   },
 ];

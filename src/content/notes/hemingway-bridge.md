@@ -3,7 +3,7 @@ pubDatetime: 2024-10-02T13:59:00Z
 modDatetime: 2024-10-02T13:59:00Z
 title: Hemingway Bridge
 featured: false
-status: draft
+status:
 tags:
   - fragment
 description: Some description text.

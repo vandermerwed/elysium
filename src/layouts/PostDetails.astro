@@ -12,8 +12,8 @@ import AidaNotice from "@components/AidaNotice.astro";
 import { type CollectionEntry, render } from "astro:content";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog" | "projects">[];
+  post: CollectionEntry<"notes">;
+  posts: CollectionEntry<"notes" | "projects">[];
 }
 
 const { post, posts } = Astro.props;

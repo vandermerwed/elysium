@@ -13,7 +13,7 @@ Here’s a summary of the different ways you can contribute:
 - [Opening a new issue](#open-a-new-issue)
 - [Submitting PRs](#feature-requests)
   - [Solving an existing issue](#solving-an-issue)
-  - [Making changes to a blog post](#making-changes-to-a-blog-post)
+  - [Making changes to a note](#making-changes-to-a-note)
 - [Helping others by answering issues/discussions](#helping-with-github-issuesdiscussions)
 - [Reviewing existing PRs](#reviewing-existing-prs)
 - [Starting a discussion](#starting-a-discussion)
@@ -36,9 +36,9 @@ If you have an idea for a new feature or enhancement that could improve AstroPap
 
 Browse through the existing issues to find one that interests you. You can use labels to filter the issues. See the [Label](https://github.com/satnaing/astro-paper/labels) section for more information.
 
-### Making Changes to a Blog Post
+### Making Changes to a Note
 
-For small changes like typos, syntax fixes, or broken links, click the "Suggest Changes" link below the title of any blog post. This will take you to the .md file, where you can make your changes and submit a pull request for review. For more significant changes to a blog post, it’s recommended to open a new issue or discussion first.
+For small changes like typos, syntax fixes, or broken links, click the "Suggest Changes" link below the title of any note. This will take you to the .md file, where you can make your changes and submit a pull request for review. For more significant changes to a note, it’s recommended to open a new issue or discussion first.
 
 ## Helping with GitHub Issues/Discussions
 

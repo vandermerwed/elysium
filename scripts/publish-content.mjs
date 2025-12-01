@@ -68,10 +68,10 @@ function normaliseStatus(value) {
 }
 
 function findCandidateFiles() {
-  // Limit default scanning to only the blog content folder
+  // Limit default scanning to only the note content folder
   // Previously this scanned the entire src/content tree.
   // Explicit targets via PUBLISH_TARGETS remain unaffected.
-  const contentDir = path.join(rootDir, 'src', 'content', 'blog');
+  const contentDir = path.join(rootDir, 'src', 'content', 'notes');
   if (!fs.existsSync(contentDir)) {
     return [];
   }

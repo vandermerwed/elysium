@@ -48,8 +48,8 @@ Inside of Elysium, you'll see the following folders and files:
 │   ├── content/
 │   │   |  _templates/
 │   │   |  .obsidian/
-│   │   |  blog/
-│   │   |    └── some-blog-posts.md
+│   │   |  notes/
+│   │   |    └── some-note.md
 │   │   |  projects/
 │   │   └── config.ts
 │   ├── layouts/
@@ -67,15 +67,15 @@ Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page
 
 Any static assets, like images, can be placed in the `public/` directory.
 
-All Obsidian Templates are stored in `src/content/blog` directory.
+All Obsidian Templates are stored in `src/content/notes` directory.
 
-All blog posts are stored in `src/content/blog` directory.
+All notes are stored in `src/content/note` directory.
 
 All project posts are stored in `src/content/projects` directory.
 
 ## 📖 Documentation
 
-Documentation can be read in two formats\_ _markdown_ & _blog post_.
+Documentation can be read in two formats\_ _markdown_ & _note_.
 
 ## 💻 Tech Stack
 

@@ -6,9 +6,10 @@ export type Site = {
   profile: string;
   desc: string;
   title: string;
+  logo: string;
   ogImage?: string;
   lightAndDarkMode: boolean;
-  blogContentTypes: string[];
+  noteContentTypes: string[];
   postPerIndex: number;
   fragmentsPerIndex: number;
   postPerPage: number;

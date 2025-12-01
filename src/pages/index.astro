@@ -10,10 +10,10 @@ import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { SITE } from "@config";
 
-const basePosts = await getCollection("blog");
-const posts = await getPostsWithEnrichedFrontmatter<"blog">(basePosts);
+const basePosts = await getCollection("notes");
+const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts);
 
-const sortedPosts = getSortedPosts(posts, SITE.blogContentTypes);
+const sortedPosts = getSortedPosts(posts, SITE.noteContentTypes);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.random()).slice(0, SITE.fragmentsPerIndex);
