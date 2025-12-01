@@ -3,7 +3,7 @@ media:
   output: /src/content/media
 content:
   - name: notes
-    label: Blog
+    label: Notes
     path: src/content/blog
     filename: '{primary}.md'
     type: collection
