@@ -8,17 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "646ce574b4a4090a",
+            "id": "dc9312bc62f187c8",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/hemingway-bridge.md",
-                "mode": "source",
-                "source": false
+                "file": "tags/loadout.md",
+                "mode": "preview",
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "hemingway-bridge"
+              "title": "loadout"
             }
           }
         ]
@@ -177,13 +177,16 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "646ce574b4a4090a",
+  "active": "dc9312bc62f187c8",
   "lastOpenFiles": [
+    "tags/theme.md",
+    "tags/loadout.md",
+    "blog/ai-agency-paradox.md",
+    "blog/hemingway-bridge.md",
     "blog/habit-stacking.md",
     "blog/friction.md",
     "blog/mastery.md",
     "media",
-    "blog/ai-agency-paradox.md",
     "_templates/theme.md",
     "_templates/source.md",
     "_templates/project.md",
@@ -205,9 +208,6 @@
     "blog/craftsmanship.md",
     "blog/cornerstone-habits.md",
     "blog/artificial-intelligence.mdx",
-    "blog/intentionality.md",
-    "blog/hemingway-bridge.md",
-    "blog/affirmation-bedtime-blueprint.md",
     "_canvas/Public Roadmap.canvas",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "config.ts",
