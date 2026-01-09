@@ -1,17 +1,20 @@
 ---
 pubDatetime: {{date}}T{{time}}:00Z
 modDatetime: {{date}}T{{time}}:00Z
-title: Loadout Template
-featured: true
+title: Loadout Update [20??/Q?]
+featured: false
 status: draft
 tags:
-  - protocol loadout
-description: Some description text.
+  - protocol
+  - loadout
+description: Hardware, software, and systems I'm currently using, testing, or have recently changed.
 type: loadout
 ---
 
-Loadout Review
+## Currently Using
 
-- Unequipped
-- Equipped
-- Field Testing
+## Recently Added
+
+## Removed
+
+## Testing

@@ -1,23 +1,14 @@
 ---
 pubDatetime: {{date}}T{{time}}:00Z
 modDatetime: {{date}}T{{time}}:00Z
-title: Note Template
-featured: true
+title: Note Title
+featured: false
 status: draft
 tags:
   - ???
-description: Some description text.
+description: Brief description of this note.
 type: note
 ---
 
-**Communication Satellite Launch**:
-
-- **Fragment**: "Orbit Calculated"
-- **Draft**: "Satellite Assembled"
-- **Complete**: "Signal Operational"
-
-Might be cool to have a note transition between these states:
-
-- Calculating Orbit
-- Assembling Satellite
-- Signal Operational
+<!-- Note maturity progresses organically through the nexus score system -->
+<!-- As you link to/from this note and add content, it will naturally evolve -->

@@ -7,21 +7,19 @@ status: published
 tags:
   - protocol
   - loadout
-description: The first ever Loadout Update. An in-depth examination of the Elysium's current protocols, hardware, and software configurations.
+description: The first ever Loadout Update. An in-depth look at the hardware, software, and systems I'm currently using.
 type: loadout
 aiUsage:
   - proofreading
 ---
 
-Welcome, to the first ever Loadout Update. In keeping with the Sci-fi RPG theme these updates will cover any updates to the Elysium's loadout. _I'm still not sure if I'm the ship or the captain of the ship, but we'll figure it out as we go!_
+This is the first of what I hope will be regular updates on the tools and systems I use. Inspired by [Julian Lehr](https://twitter.com/julianlehr)'s [Inventory Updates](https://julian.digital/2020/10/11/inventory-update-q4-20/) and [Jacob Pretorius](https://jcpretorius.com/)'s [Everyday Stack](https://jcpretorius.com/post/2020/every-day-stack-updates-q3-2020/), this covers hardware, software, and systems I'm currently using, testing, or have recently changed.
 
-Big thanks to [Julian Lehr](https://twitter.com/julianlehr) for their [Inventory Update](https://julian.digital/2020/10/11/inventory-update-q4-20/) posts and [Jacob Pretorius](https://jcpretorius.com/) for his [Everyday Stack Updates](https://jcpretorius.com/post/2020/every-day-stack-updates-q3-2020/) that inspired me to emulate the same format.
-
-Let's get into it. I plan on splitting these updates into three sections: Equipped, Unequipped, and Field Testing. For this first update the "Equipped" section will be rather long so I'll also add a "Newly Equipped" section to distinguish recent changes.
+I've split this into four sections: Currently Using, Recently Added, Removed, and Testing. For this first update the "Currently Using" section will be rather long, so I've separated out recent additions to make changes easier to spot.
 
 ---
 
-## Equipped
+## Currently Using
 
 ### Hardware
 
@@ -71,19 +69,19 @@ Let's get into it. I plan on splitting these updates into three sections: Equipp
 - [22Seven](https://www.22seven.com/): Finance tracker app. Syncs with all of my accounts, even loyalty schemes and crypto exchange and allows me to categories and split transactions them. Also keeps track of budgets and shows "nudges" based on spending trends. Only available in South Africa.
 - [Chat GPT](https://openai.com/chatgpt): I've been using Chat GPT since January 2023 and got a paid subscription around July. I think it is a very powerful companion when used responsibly in specific scenarios.
 
-## Newly Equipped
+## Recently Added
 
 - [Microsoft To Do](https://todo.microsoft.com/): Add task, check off task. Nothing more, nothing less. I still use iOS Reminders for location based reminders every now and then when I need them, or remember to use them. Works well on iOS and Windows. Completely free.
 - [Duolingo](https://www.duolingo.com/): Used this a very long time ago but stopped because, life... I have a knack for languages and I think it's a shame that I only know two. I've started learning Japanese again, because I actually enjoy watching anime quite a lot and not having to read English subtitles would be pretty amazing. English dubs are usually pretty awful in my experience. I'm also picking up Irish because of an upcoming trip to Ireland, and it would be a pretty cool party trick to speak Irish when I've had a few whiskeys.
 - [MX Master 3S](https://www.logitech.com/en-za/products/mice/mx-master-3s.910-006559.html): Hands down the best mouse I've ever owned. Excellent build quality and combined with the [Logi Options+](https://www.logitech.com/en-za/software/logi-options-plus.html) software it makes this a productivity powerhouse.
 - **Quarterly Personal Retreats**: I've done two of these now this year and it's been great. I'm still figuring out the format of these retreats. My thoughts on the topic will be collected in [[../notes/personal-retreats|this note]].
 
-## Unequipped
+## Removed
 
-- **CoolerMaster Sentinel Advance**: After 10 years the right click button stopped working. It served me well over the years. My new MX Master S3 is replacing this. > Press F to Pay Respects.
+- **CoolerMaster Sentinel Advance**: After 10 years the right click button stopped working. It served me well over the years. My new MX Master S3 is replacing this.
 - [Todoist](https://todoist.com/): I honestly only used it for NLP task adding and recurring tasks which Microsoft To Do can do for free. There is no reason for me to keep using it.
 
-## Field Testing
+## Testing
 
 - [Morgen Calendar](https://www.morgen.so/):
   - **Purpose**: I use it for time blocking, calendar management and scheduling tasks on my calendar. It can also manage booking links so people can book meetings with you but we currently use Calendly for work and it works well. The iOS app seems solid so far although the widgets can do with some love. It's actively being worked on and has a [public roadmap](https://www.morgen.so/roadmap).
@@ -103,8 +101,4 @@ Let's get into it. I plan on splitting these updates into three sections: Equipp
 
 ---
 
-That's it for the Elysium's 2023 Q3 loadout update. Whether I'm captaining the ship or _am_ the ship, I'm navigating the digital seas with some top-notch gear and software. There are a few items I'm testing out, some long-time companions, and even a couple of newcomers. As the quarters roll on, expect to see more shifts in the line-up as technology evolves and as my needs change. Who knows, the next quarter might just see some game-changing additions or heartbreaking goodbyes.
-
-Until then, may your tech serve you well and your upgrades be plentiful. Stay tuned for the next loadout update. Safe travels through the digital cosmos!
-
-`Wire.endTransmission()`
+That's it for Q3 2023. Some of these tools have been with me for years, others are new additions, and a few are on trial. As my work and life change, so will these tools. I'll update this quarterly as things shift.

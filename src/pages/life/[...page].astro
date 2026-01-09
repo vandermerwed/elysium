@@ -7,8 +7,8 @@ import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const basePosts = await getCollection("notes", ({ data }) => data.status && data.status === "published");
-  const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts);
+  const basePosts = await getCollection("life", ({ data }) => data.status && data.status === "published");
+  const posts = await getPostsWithEnrichedFrontmatter<"life">(basePosts);
 
   return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
@@ -16,4 +16,10 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 ---
 
-<Posts {page} />
+<Posts
+  {page}
+  activeNav="life"
+  pageTitle="Life"
+  pageDesc="Personal updates, yearly themes, and tools."
+  basePath="life"
+/>

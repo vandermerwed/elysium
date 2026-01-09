@@ -9,20 +9,26 @@ import { SITE } from "@config";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
+type CollectionName = "notes" | "writing" | "life" | "projects";
+
 export interface Props {
-  page: Page<CollectionEntry<"notes">>;
+  page: Page<CollectionEntry<CollectionName>>;
+  activeNav?: "notes" | "writing" | "life" | "projects";
+  pageTitle?: string;
+  pageDesc?: string;
+  basePath?: string;
 }
 
-const { page } = Astro.props;
+const { page, activeNav = "notes", pageTitle = "Notes", pageDesc = "All the notes I've posted.", basePath = "notes" } = Astro.props;
 ---
 
-<Layout title={`Notes | ${SITE.title}`}>
-  <Header activeNav="notes" />
-  <Main pageTitle="Notes" pageDesc="All the notes I've posted.">
+<Layout title={`${pageTitle} | ${SITE.title}`}>
+  <Header activeNav={activeNav} />
+  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
     <ul>
       {
         page.data.map(({ data, id }) => (
-          <Card href={`/notes/${id}/`} frontmatter={data} showNexusScore={true} />
+          <Card href={`/${basePath}/${id}/`} frontmatter={data} showNexusScore={true} />
         ))
       }
     </ul>

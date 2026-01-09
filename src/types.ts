@@ -9,7 +9,7 @@ export type Site = {
   logo: string;
   ogImage?: string;
   lightAndDarkMode: boolean;
-  noteContentTypes: string[];
+  noteContentTypes?: string[];
   postPerIndex: number;
   fragmentsPerIndex: number;
   postPerPage: number;
