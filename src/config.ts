@@ -4,19 +4,18 @@ export const SITE: Site = {
   website: "https://danielvandermerwe.com/",
   author: "Daniel van der Merwe",
   profile: "https://danielvandermerwe.com/",
-  desc: "Embark on a cosmic journey with Captain Daniel aboard the Elysium. Navigate through sectors dedicated to productivity, technology, and the quantified self, as he traverses life's many challenges and discoveries.",
+  desc: "Daniel van der Merwe's home base for practical notes on mindful productivity, tools for thought, and software patterns that survive contact with reality.",
   title: "Daniel van der Merwe",
   logo: "logo.png",
   ogImage: "og.png",
   lightAndDarkMode: true,
-  noteContentTypes: ["note", "loadout", "theme"],
   postPerIndex: 5,
   fragmentsPerIndex: 6,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: false,
   editPost: {
-    url: "https://github.com/vandermerwed/elysium/edit/main/src/content/notes",
+    url: "https://github.com/vandermerwed/elysium/edit/main/src/content",
     text: "Suggest Changes",
     appendFilePath: true,
     disabled: true
