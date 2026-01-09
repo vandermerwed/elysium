@@ -69,7 +69,7 @@ Any static assets, like images, can be placed in the `public/` directory.
 
 All Obsidian Templates are stored in `src/content/notes` directory.
 
-All notes are stored in `src/content/note` directory.
+All notes are stored in `src/content/notes` directory.
 
 All project posts are stored in `src/content/projects` directory.
 
