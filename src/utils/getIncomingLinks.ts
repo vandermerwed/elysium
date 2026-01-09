@@ -1,7 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 
-const getIncomingLinks = (allPosts: CollectionEntry<"blog">[], currentId: string) => {
-    const incomingLinks: CollectionEntry<"blog">[] = [];
+const getIncomingLinks = (allPosts: CollectionEntry<"notes">[], currentId: string) => {
+    const incomingLinks: CollectionEntry<"notes">[] = [];
     allPosts.forEach((post) => {
         const content = post.body;
         const referencedPosts = content.match(/(?<=\[\[)(.*?)(?=\]\])/g);

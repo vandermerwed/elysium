@@ -11,7 +11,7 @@
             "id": "dc9312bc62f187c8",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
                 "file": "blog/cornerstone-habits.md",
                 "mode": "source",
@@ -179,14 +179,6 @@
   },
   "active": "dc9312bc62f187c8",
   "lastOpenFiles": [
-    "blog/productivity.md",
-    "blog/hemingway-bridge.md",
-    "blog/agreement.md",
-    "blog/agency.md",
-    "blog/200-weeks.md",
-    "blog/habit-stacking.md",
-    "blog/friction.md",
-    "blog/mastery.md",
     "media",
     "_templates/theme.md",
     "_templates/source.md",
@@ -195,26 +187,11 @@
     "_templates/note.md",
     "_templates/loadout.md",
     "_templates/fragment.md",
-    "blog/nexus-score.md",
+    "notes/nexus-score.md",
     "content.config.ts",
-    "blog/loadout-update-2024-q4.md",
-    "blog/loadout-update-2023-q3.md",
-    "blog/spaceship-you.md",
-    "blog/year-of-legacy-foundations-2024.md",
-    "blog/work-walks.md",
-    "blog/trigger-action-planning.md",
-    "blog/time.md",
-    "blog/personal-retreats.md",
-    "blog/maintaining-averages.md",
-    "blog/artificial-intelligence.mdx",
     "_canvas/Public Roadmap.canvas",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "config.ts",
-    "blog/year-of-legacy-foundations-2024.mdx",
-    "_canvas",
-    "_examples/test.mdx",
-    "projects",
-    "tags",
-    "_templates"
+    "_canvas"
   ]
 }

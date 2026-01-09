@@ -26,7 +26,7 @@ const iconScoreRanges: IconScoreRanges = {
   T_Integrated: [68, Infinity],
 };
 
-const getNexusScore = (post: CollectionEntry<"blog" | "projects">) => {
+const getNexusScore = (post: CollectionEntry<"notes" | "projects">) => {
   const incomingLinkCount = post.data.incomingLinks.length;
   const outgoingLinkCount = post.data.outgoingLinks.length;
   const externalResourceCount = post.data.externalLinks.length;

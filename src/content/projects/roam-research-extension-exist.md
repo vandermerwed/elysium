@@ -6,7 +6,6 @@ featured: false
 tags:
   - roam-research
   - productivity
-  - exist
 description: TBD
 type: project
 status: future

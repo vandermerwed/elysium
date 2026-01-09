@@ -14,7 +14,7 @@ if (!SITE.showArchives) {
 }
 
 // Filter for published posts; rely on Astro content types inferred from the collection schema
-const posts = (await getCollection("blog", (entry) => entry.data.status === "published"))
+const posts = (await getCollection("notes", (entry) => entry.data.status === "published"))
   .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
 
 const MonthMap: Record<string, string> = {

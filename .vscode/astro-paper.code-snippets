@@ -15,9 +15,9 @@
       "description: $8",
       "---",
     ],
-    "description": "Adds the frontmatter block for the AstroPaper Blog post"
+    "description": "Adds the frontmatter block for a note"
   },
-  "Blog Template": {
+  "Note Template": {
     "scope": "markdown",
     "prefix": "template",
     "body": [
@@ -29,6 +29,6 @@
       "",
       "## ${3: heading 1}",
     ],
-    "description": "Adds the template for the AstroPaper Blog post. You will need to trigger the snippet modal on the 'frontmatter' line to insert the other snipper."
+    "description": "Adds the template for the note. You will need to trigger the snippet modal on the 'frontmatter' line to insert the other snipper."
   }
 }

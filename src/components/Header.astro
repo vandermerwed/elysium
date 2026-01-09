@@ -17,12 +17,18 @@ const { activeNav } = Astro.props;
       <a href="/" class="logo whitespace-nowrap">
         {
           LOGO_IMAGE.enable ? (
-            <img
-              src={`/assets/${LOGO_IMAGE.svg ? "logo.svg" : "logo.png"}`}
-              alt={SITE.title}
-              width={LOGO_IMAGE.width}
-              height={LOGO_IMAGE.height}
-            />
+            // <img
+            //   src={`/assets/${LOGO_IMAGE.svg ? "logo.svg" : "logo.png"}`}
+            //   alt={SITE.title}
+            //   width={LOGO_IMAGE.width}
+            //   height={LOGO_IMAGE.height}
+            // />
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rocket" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3"></path>
+              <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3"></path>
+              <path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+            </svg>
           ) : (
             SITE.title
           )
@@ -169,6 +175,9 @@ const { activeNav } = Astro.props;
   .logo {
     @apply absolute py-1 text-xl font-mono uppercase font-semibold sm:static sm:text-2xl;
   }
+  .logo svg {
+    @apply h-6 w-6 scale-125 sm:scale-100 hover:-rotate-12 hover:text-skin-accent;
+  }
   .hamburger-menu {
     @apply self-end p-2 sm:hidden;
   }
@@ -212,7 +221,7 @@ const { activeNav } = Astro.props;
     @apply p-3 sm:p-1;
   }
   #theme-btn svg {
-    @apply scale-125 hover:rotate-12 sm:scale-100;
+    @apply scale-125 sm:scale-100;
   }
 
   .menu-icon line {

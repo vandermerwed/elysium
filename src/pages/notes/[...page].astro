@@ -7,10 +7,10 @@ import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const basePosts = await getCollection("blog", ({ data }) => data.status && data.status === "published");
-  const posts = await getPostsWithEnrichedFrontmatter<"blog">(basePosts);
+  const basePosts = await getCollection("notes", ({ data }) => data.status && data.status === "published");
+  const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts);
   
-  return paginate(getSortedPosts(posts, SITE.blogContentTypes), { pageSize: SITE.postPerPage });
+  return paginate(getSortedPosts(posts, SITE.noteContentTypes), { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;

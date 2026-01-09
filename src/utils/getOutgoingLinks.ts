@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 
-const getOutgoingLinks = (post: CollectionEntry<"blog">) => {
+const getOutgoingLinks = (post: CollectionEntry<"notes">) => {
     if(!post) return [];
 
     const content = post.body;

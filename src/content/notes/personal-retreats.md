@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2023-09-29T10:55:00Z
-modDatetime: 2026-01-09T03:59:12Z
+modDatetime: 2026-01-09T04:04:01Z
 title: Personal Retreats
 featured: false
 status: published

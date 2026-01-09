@@ -7,8 +7,8 @@ import MarkdownIt from 'markdown-it';
 const parser = new MarkdownIt();
 
 export async function GET() {
-  const posts = await getCollection("blog");
-  const sortedPosts = getSortedPosts(posts, SITE.blogContentTypes);
+  const posts = await getCollection("notes");
+  const sortedPosts = getSortedPosts(posts, SITE.noteContentTypes);
   return rss({
     title: SITE.title,
     description: SITE.desc,

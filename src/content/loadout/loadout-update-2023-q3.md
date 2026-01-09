@@ -38,7 +38,7 @@ Let's get into it. I plan on splitting these updates into three sections: Equipp
 ### Software
 
 - [Obsidian](https://obsidian.md/): Where I write the content for [[projects/astro-elysium|this website]].
-- [Roam Research](https://roamresearch.com/): My magic junkyard. This is where I keep my [[interstitial-journaling|Interstitial Journal]], fleeting notes and daily highlights.
+- [Roam Research](https://roamresearch.com/): My magic junkyard. This is where I keep my [[../notes/interstitial-journaling|Interstitial Journal]], fleeting notes and daily highlights.
 - [VS Code](https://code.visualstudio.com/): My go to IDE for frontend code. This website was written in VS Code.
 - [Visual Studio](https://visualstudio.microsoft.com/): My go to IDE for backend, mostly .NET C#, code.
 - [Insomnia](https://insomnia.rest/): REST client. I know everyone uses [Postman](https://www.postman.com/), and from time to time I'm forced to, but I prefer Insomnia. It's clean, simple and does what it says on the tin.
@@ -76,7 +76,7 @@ Let's get into it. I plan on splitting these updates into three sections: Equipp
 - [Microsoft To Do](https://todo.microsoft.com/): Add task, check off task. Nothing more, nothing less. I still use iOS Reminders for location based reminders every now and then when I need them, or remember to use them. Works well on iOS and Windows. Completely free.
 - [Duolingo](https://www.duolingo.com/): Used this a very long time ago but stopped because, life... I have a knack for languages and I think it's a shame that I only know two. I've started learning Japanese again, because I actually enjoy watching anime quite a lot and not having to read English subtitles would be pretty amazing. English dubs are usually pretty awful in my experience. I'm also picking up Irish because of an upcoming trip to Ireland, and it would be a pretty cool party trick to speak Irish when I've had a few whiskeys.
 - [MX Master 3S](https://www.logitech.com/en-za/products/mice/mx-master-3s.910-006559.html): Hands down the best mouse I've ever owned. Excellent build quality and combined with the [Logi Options+](https://www.logitech.com/en-za/software/logi-options-plus.html) software it makes this a productivity powerhouse.
-- **Quarterly Personal Retreats**: I've done two of these now this year and it's been great. I'm still figuring out the format of these retreats. My thoughts on the topic will be collected in [[personal-retreats|this note]].
+- **Quarterly Personal Retreats**: I've done two of these now this year and it's been great. I'm still figuring out the format of these retreats. My thoughts on the topic will be collected in [[../notes/personal-retreats|this note]].
 
 ## Unequipped
 

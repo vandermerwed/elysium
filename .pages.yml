@@ -4,7 +4,7 @@ media:
 content:
   - name: notes
     label: Notes
-    path: src/content/blog
+    path: src/content/notes
     filename: '{primary}.md'
     type: collection
     view:
