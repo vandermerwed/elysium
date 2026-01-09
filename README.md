@@ -140,4 +140,4 @@ Licensed under the MIT License, Copyright © 2023
 
 Made with 🤍 by [Daniel van der Merwe](https://danielvandermerwe.com)
 
-Big thanks to [Sat Naing](https://satnaing.dev) for creating [Astro Paper](https://github.com/satnaing/astro-paper`) which this theme is based on.
+Big thanks to [Sat Naing](https://satnaing.dev) for creating [Astro Paper](https://github.com/satnaing/astro-paper) which this theme is based on.

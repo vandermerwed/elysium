@@ -5,9 +5,10 @@ content:
   - name: notes
     label: Notes
     path: src/content/notes
+    filename: '{primary}.md'
     type: collection
     view:
-      fields: [ title, pubDatetime, modDatetime, featured, type ]
+      fields: [ title, pubDatetime, modDatetime, featured, type, status ]
     fields:
       - name: pubDatetime
         label: Publish Date
@@ -28,10 +29,11 @@ content:
       - name: featured
         label: Featured
         type: boolean
-      - name: draft
-        label: Draft
-        type: boolean
-        default: true
+      - name: status
+        label: Status
+        type: select
+        options:
+          values: [ draft, release, published ]
       - name: tags
         label: Tags
         type: string

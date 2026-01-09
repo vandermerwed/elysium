@@ -6,7 +6,7 @@ const rootDir = process.cwd();
 const placeholders = new Set(['', '~', 'null', 'NULL', 'undefined', 'pending', 'first']);
 const publishStatusField = 'publishStatus';
 const legacyStatusField = 'status';
-const validStatuses = new Set(['draft', 'ready', 'publish', 'published']);
+const validStatuses = new Set(['draft', 'ready', 'release', 'publish', 'published']);
 
 const targetListRaw = process.env.PUBLISH_TARGETS || '';
 const requestedTargets = targetListRaw
@@ -109,7 +109,7 @@ function findCandidateFiles() {
     const pubValue = pubLine ? extractValue(pubLine) : '';
 
     const needsMigration = Boolean(draftLine) || (!publishStatusLine && Boolean(legacyStatusValue));
-    const readyForPublish = statusValue === 'ready';
+    const readyForPublish = statusValue === 'ready' || statusValue === 'release' || statusValue === 'publish';
     
     // Skip already-published articles with valid pubDatetime unless they need migration
     const hasValidPubDate = Boolean(pubValue) && !placeholders.has(pubValue) && pubValue.endsWith('Z') && !/\.[0-9]{3}Z$/.test(pubValue);
@@ -262,7 +262,7 @@ function processFile(filePath, options) {
   }
 
   let nextStatus = statusValue;
-  const isReadyToPublish = statusValue === 'ready' || statusValue === 'publish';
+  const isReadyToPublish = statusValue === 'ready' || statusValue === 'publish' || statusValue === 'release';
   
   if (isReadyToPublish) {
     nextStatus = 'published';

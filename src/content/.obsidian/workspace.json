@@ -8,16 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "646ce574b4a4090a",
+            "id": "dc9312bc62f187c8",
             "type": "leaf",
             "state": {
               "type": "bases",
               "state": {
-                "file": "library.base",
-                "viewName": "Table"
+                "file": "blog/cornerstone-habits.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "library"
+              "icon": "lucide-file",
+              "title": "cornerstone-habits"
             }
           }
         ]
@@ -176,21 +177,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "646ce574b4a4090a",
+  "active": "dc9312bc62f187c8",
   "lastOpenFiles": [
-    "Untitled.md",
-    "notes/affirmation-bedtime-blueprint.md",
-    "library.base",
-    "projects/roam-research-extension-exist.md",
-    "library",
-    "loadout",
-    "themes",
-    "notes/hemingway-bridge.md",
-    "notes/habit-stacking.md",
-    "notes/friction.md",
-    "notes/mastery.md",
     "media",
-    "notes/ai-agency-paradox.md",
     "_templates/theme.md",
     "_templates/source.md",
     "_templates/project.md",
@@ -200,21 +189,9 @@
     "_templates/fragment.md",
     "notes/nexus-score.md",
     "content.config.ts",
-    "loadout/loadout-update-2024-q4.md",
-    "loadout/loadout-update-2023-q3.md",
-    "notes/spaceship-you.md",
-    "themes/year-of-legacy-foundations-2024.md",
-    "notes/work-walks.md",
-    "notes/trigger-action-planning.md",
-    "notes/time.md",
-    "notes/personal-retreats.md",
-    "notes/maintaining-averages.md",
-    "notes/craftsmanship.md",
-    "blog/artificial-intelligence.mdx",
     "_canvas/Public Roadmap.canvas",
     "_canvas/Roam Extension Architecture Diagram.canvas",
     "config.ts",
-    "blog/year-of-legacy-foundations-2024.mdx",
     "_canvas"
   ]
 }

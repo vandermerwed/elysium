@@ -22,7 +22,7 @@ const notes = defineCollection({
       description: z.string(),
       canonicalURL: z.string().optional(),
       type: z.string().optional(),
-      status: z.enum(['draft', 'ready', 'published']).optional(),
+      status: z.enum(['draft', 'ready', 'release', 'published']).optional(),
       readingTime: z.string().optional(),
       wordCount: z.number().default(0),
       incomingLinks: z
