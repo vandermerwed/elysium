@@ -9,17 +9,25 @@ import { SITE } from "@config";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
-type CollectionName = "notes" | "writing" | "life" | "projects";
+type CollectionName = "notes" | "writing" | "journal" | "projects";
 
 export interface Props {
   page: Page<CollectionEntry<CollectionName>>;
-  activeNav?: "notes" | "writing" | "life" | "projects";
+  activeNav?: "notes" | "writing" | "journal" | "projects";
   pageTitle?: string;
   pageDesc?: string;
   basePath?: string;
+  showNexusScore?: boolean;
 }
 
-const { page, activeNav = "notes", pageTitle = "Notes", pageDesc = "All the notes I've posted.", basePath = "notes" } = Astro.props;
+const {
+  page,
+  activeNav = "notes",
+  pageTitle = "Notes",
+  pageDesc = "All the notes I've posted.",
+  basePath = "notes",
+  showNexusScore = basePath === "notes",
+} = Astro.props;
 ---
 
 <Layout title={`${pageTitle} | ${SITE.title}`}>
@@ -27,9 +35,17 @@ const { page, activeNav = "notes", pageTitle = "Notes", pageDesc = "All the note
   <Main pageTitle={pageTitle} pageDesc={pageDesc}>
     <ul>
       {
-        page.data.map(({ data, id }) => (
-          <Card href={`/${basePath}/${id}/`} frontmatter={data} showNexusScore={true} />
-        ))
+        page.data.map(({ data, id }) => {
+          const resolvedType = data.type ?? (basePath === "writing" ? "essay" : basePath === "journal" ? "journal" : basePath === "notes" ? "note" : data.type);
+          return (
+            <Card
+              href={`/${basePath}/${id}/`}
+              frontmatter={{ ...data, type: resolvedType }}
+              showNexusScore={showNexusScore}
+              contentType={resolvedType}
+            />
+          );
+        })
       }
     </ul>
   </Main>

@@ -5,11 +5,11 @@ import { getSortedPosts } from "@utils/getSortedPosts";
 import getIncomingLinks from "@utils/getIncomingLinks";
 
 export interface Props {
-  post: CollectionEntry<"writing">;
+  post: CollectionEntry<"journal">;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("writing", ({ data }) => data.status && data.status === "published");
+  const posts = await getCollection("journal", ({ data }) => data.status && data.status === "published");
 
   const postResult = posts.map(post => ({
     params: { id: post.id },
@@ -21,13 +21,13 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-const posts = await getCollection("writing");
+const posts = await getCollection("journal");
 const sortedPosts = getSortedPosts(posts);
 const notePosts = await getCollection("notes");
-const journalPosts = await getCollection("journal");
+const writingPosts = await getCollection("writing");
 const projectPosts = await getCollection("projects");
-const backlinkSources = [...posts, ...notePosts, ...journalPosts, ...projectPosts];
-const incomingLinks = getIncomingLinks(backlinkSources, post.id, "writing");
+const backlinkSources = [...posts, ...notePosts, ...writingPosts, ...projectPosts];
+const incomingLinks = getIncomingLinks(backlinkSources, post.id, "journal");
 const backlinks = incomingLinks.map(entry => {
   const entryType = entry.data.type ??
     (entry.collection === "writing" ? "essay" : entry.collection === "journal" ? "journal" : entry.collection === "projects" ? "project" : "note");
@@ -41,4 +41,4 @@ const backlinks = incomingLinks.map(entry => {
 });
 ---
 
-<PostDetails post={post} posts={sortedPosts} basePath="writing" activeNav="writing" backlinks={backlinks} />
+<PostDetails post={post} posts={sortedPosts} basePath="journal" activeNav="journal" backlinks={backlinks} />

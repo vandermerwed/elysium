@@ -1,8 +1,8 @@
 ---
-import { SITE } from "@config";
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
+import getIncomingLinks from "@utils/getIncomingLinks";
 
 export interface Props {
   post: CollectionEntry<"notes">;
@@ -23,6 +23,22 @@ const { post } = Astro.props;
 
 const posts = await getCollection("notes");
 const sortedPosts = getSortedPosts(posts);
+const writingPosts = await getCollection("writing");
+const journalPosts = await getCollection("journal");
+const projectPosts = await getCollection("projects");
+const backlinkSources = [...posts, ...writingPosts, ...journalPosts, ...projectPosts];
+const incomingLinks = getIncomingLinks(backlinkSources, post.id, "notes");
+const backlinks = incomingLinks.map(entry => {
+  const entryType = entry.data.type ??
+    (entry.collection === "writing" ? "essay" : entry.collection === "journal" ? "journal" : entry.collection === "projects" ? "project" : "note");
+  const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
+  return {
+    title: entry.data.title,
+    url: `/${entryBasePath}/${entry.id}/`,
+    type: entryType,
+    description: entry.data.description,
+  };
+});
 ---
 
-<PostDetails post={post} posts={sortedPosts} />
+<PostDetails post={post} posts={sortedPosts} basePath="notes" activeNav="writing" backlinks={backlinks} />

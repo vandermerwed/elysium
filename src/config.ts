@@ -13,7 +13,7 @@ export const SITE: Site = {
   fragmentsPerIndex: 6,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
-  showArchives: false,
+  showArchives: true,
   editPost: {
     url: "https://github.com/vandermerwed/elysium/edit/main/src/content",
     text: "Suggest Changes",
@@ -35,6 +35,12 @@ export const LOGO_IMAGE = {
 };
 
 export const SOCIALS: SocialObjects = [
+  {
+    name: "Mail",
+    href: "mailto:daniel@danielvandermerwe.com",
+    linkTitle: `Send an email to ${SITE.title}`,
+    active: true,
+  },
   {
     name: "Github",
     href: "https://github.com/vandermerwed",
@@ -60,16 +66,10 @@ export const SOCIALS: SocialObjects = [
     active: true,
   },
   {
-    name: "Mail",
-    href: "mailto:yourmail@gmail.com",
-    linkTitle: `Send an email to ${SITE.title}`,
-    active: false,
-  },
-  {
     name: "X",
     href: "https://x.com/vandermerwed",
     linkTitle: `${SITE.author} on X`,
-    active: true,
+    active: false,
   },
   {
     name: "Twitch",

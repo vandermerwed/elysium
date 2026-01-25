@@ -53,7 +53,7 @@ This year was about taking control, understanding the bigger picture, and being 
 
 ### **[2022 - 2023]** No theme
 
-**Outcome: —**
+**Outcome: N/A**
 
 If I had to retroactively choose themes for these years, they would be the "Years of Survival." They were tough but essential for learning what I needed for the next theme.
 
@@ -202,7 +202,7 @@ These practices focus on intentionality, consistency, focus and efficiency:
 
 The Year of Legacy: Foundations presents an exciting yet challenging theme. With clear objectives across finance, family, and personal mastery, I'm focused on building systems that will compound over time. My family and I are committed to making progress in each of these areas. There's no guaranteed success, but I'm committed to showing up consistently and learning as I go.
 
-While the three core foundations are important, it's often the smaller daily practices that create momentum. Building intentionality, consistency, focus, and efficiency—these are the habits that enable everything else. It's not just the big decisions but also the small daily choices, the consistent effort, and the support systems you build that make the difference.
+While the three core foundations are important, it's often the smaller daily practices that create momentum. Building intentionality, consistency, focus, and efficiency. These are the habits that enable everything else. It's not just the big decisions but also the small daily choices, the consistent effort, and the support systems you build that make the difference.
 
 > Assessment, Assembly, Action.
 > Whatever your task, you do three things.

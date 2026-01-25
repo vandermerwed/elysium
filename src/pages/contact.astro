@@ -1,0 +1,61 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { SITE } from "@config";
+
+const contactMethods = [
+  {
+    type: "Email",
+    handle: "hi@danielvandermerwe.com",
+    url: "mailto:hi@danielvandermerwe.com",
+    context: "Best for: project inquiries, collaborations, or introductions.",
+  },
+  {
+    type: "GitHub",
+    handle: "@vandermerwed",
+    url: "https://github.com/vandermerwed",
+    context: "Best for: code, issues, and open-source discussions.",
+  },
+  {
+    type: "LinkedIn",
+    handle: "Daniel van der Merwe",
+    url: "https://www.linkedin.com/in/vandermerwed",
+    context: "Best for: professional context and networking.",
+  },
+  {
+    type: "Bluesky",
+    handle: "@danielvandermerwe.com",
+    url: "https://bsky.app/profile/danielvandermerwe.com",
+    context: "Best for: quick notes and updates.",
+  },
+];
+---
+
+<Layout title={`Contact | ${SITE.title}`}>
+  <Header />
+  <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12">
+    <h1 class="text-4xl font-semibold text-skin-accent">Get in Touch</h1>
+    <p class="mt-2 text-skin-base/80">Interested in connecting? Here’s how to reach me.</p>
+
+    <div class="mt-8 grid grid-cols-1 gap-6">
+      {contactMethods.map(method => (
+        <article class="rounded-md border border-skin-line p-6">
+          <h2 class="text-xl font-semibold">{method.type}</h2>
+          <a class="mt-2 inline-flex text-skin-accent underline" href={method.url}>
+            {method.handle}
+          </a>
+          <p class="mt-2 text-sm text-skin-base/80">{method.context}</p>
+        </article>
+      ))}
+    </div>
+
+    <section class="mt-10 rounded-md border border-skin-line p-6">
+      <h2 class="text-xl font-semibold">Response Time</h2>
+      <p class="mt-2 text-sm text-skin-base/80">
+        I typically respond within a few days. Feel free to follow up if you don’t hear back.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>

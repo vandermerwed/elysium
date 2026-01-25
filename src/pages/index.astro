@@ -6,11 +6,11 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
+import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { SITE } from "@config";
 
-// Load all collections
 const baseNotes = await getCollection("notes", ({ data }) => data.status && data.status === "published");
 const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes);
 const sortedNotes = getSortedPosts(notes);
@@ -19,14 +19,17 @@ const baseWriting = await getCollection("writing", ({ data }) => data.status && 
 const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting);
 const sortedWriting = getSortedPosts(writing);
 
-const baseLife = await getCollection("life", ({ data }) => data.status && data.status === "published");
-const life = await getPostsWithEnrichedFrontmatter<"life">(baseLife);
-const sortedLife = getSortedPosts(life);
+const baseJournal = await getCollection("journal", ({ data }) => data.status && data.status === "published");
+const journal = await getPostsWithEnrichedFrontmatter<"journal">(baseJournal);
+const sortedJournal = getSortedPosts(journal);
 
-// Get recent items from each section
-const recentNotes = sortedNotes.slice(0, SITE.postPerIndex);
-const recentWriting = sortedWriting.slice(0, SITE.postPerIndex);
-const recentLife = sortedLife.slice(0, SITE.postPerIndex);
+const projects = getSortedProjects(await getCollection("projects"));
+
+const latestWriting = sortedWriting.slice(0, SITE.postPerIndex);
+const latestJournal = sortedJournal.slice(0, SITE.postPerIndex);
+const latestNotes = sortedNotes.slice(0, SITE.postPerIndex);
+const recentExplorations = getSortedPosts(notes, ["exploration"]).slice(0, 4);
+const recentProjects = projects.slice(0, 3);
 
 ---
 
@@ -34,34 +37,35 @@ const recentLife = sortedLife.slice(0, SITE.postPerIndex);
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1 class="mr-2"><span class="text-skin-accent">Daniel</span> van der Merwe</h1>
-      <h2>Technical Director. Builder. Systems Thinker.</h2>
+      <h1 class="mr-2"><span class="text-skin-accent">Daniel</span><br />van der Merwe</h1>
+      <h2>Builder and systems thinker.</h2>
       <p>
-        I'm a partner at Rokkit200, where we develop and consult on Optimizely solutions. Outside of that, I'm always iterating on systems that help me think clearly, stay focused, and show up properly for the people and commitments in my life.
+        By day, I’m Technical Director at <a class="external-link" href="https://rokkit200.co" target="_blank" rel="noopener noreferrer">Rokkit200</a>. Outside of work, I explore ideas, build tools for myself, and document what I’m learning.
       </p>
       <p>
-        This site is my home base for practical notes on mindful productivity, tools for thought, and software patterns. You'll find experiments I'm running, frameworks I'm refining, and patterns I use across work and personal life.
+        This is my personal digital space for side projects, experiments, and thinking. It’s not a portfolio, it’s where I tinker, iterate, and share the parts that might be useful to others.
       </p>
     </section>
 
     {
-      recentWriting.length > 0 && (
+      latestWriting.length > 0 && (
         <>
-          <section class="featured" id="writing">
-            <h2>Recent Writing</h2>
+          <section class="featured" id="latest-writing">
+            <h2>Latest Writing</h2>
+            <p class="section-desc">Long-form essays and polished thinking.</p>
             <ul>
-              {recentWriting.map(({ data, id }) => (
+              {latestWriting.map(({ data, id }) => (
                 <Card
                   href={`/writing/${id}/`}
                   frontmatter={data}
                   secHeading={false}
-                  showNexusScore={true}
+                  showNexusScore={false}
                 />
               ))}
             </ul>
           </section>
           <div class="all-posts-btn-wrapper">
-            <LinkButton href="/writing">
+            <LinkButton href="/writing/">
               All Writing
               <svg xmlns="http://www.w3.org/2000/svg"
                 ><path
@@ -76,23 +80,60 @@ const recentLife = sortedLife.slice(0, SITE.postPerIndex);
     }
 
     {
-      recentNotes.length > 0 && (
+      latestJournal.length > 0 && (
         <>
-          <section class="featured" id="notes">
-            <h2>Recent Notes</h2>
+          <section class="featured" id="latest-journal">
+            <h2>Journal</h2>
+            <p class="section-desc">Personal updates, yearly themes, and tools.</p>
             <ul>
-              {recentNotes.map(({ data, id }) => (
+              {latestJournal.map(({ data, id }) => (
                 <Card
-                  href={`/notes/${id}/`}
+                  href={`/journal/${id}/`}
                   frontmatter={data}
                   secHeading={false}
-                  showNexusScore={true}
+                  showNexusScore={false}
                 />
               ))}
             </ul>
           </section>
           <div class="all-posts-btn-wrapper">
-            <LinkButton href="/notes">
+            <LinkButton href="/journal/">
+              All Journal
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+          <Hr />
+        </>
+      )
+    }
+
+    {
+      latestNotes.length > 0 && (
+        <>
+          <section class="featured" id="latest-notes">
+            <h2>Latest Notes</h2>
+            <p class="section-desc">In-progress thoughts from the digital garden.</p>
+            <ul>
+              {latestNotes.map(({ data, id }) => {
+                const resolvedType = data.type ?? "note";
+                return (
+                <Card
+                  href={`/notes/${id}/`}
+                  frontmatter={{ ...data, type: resolvedType }}
+                  secHeading={false}
+                  showNexusScore={true}
+                  contentType={resolvedType}
+                />
+              );
+              })}
+            </ul>
+          </section>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/notes/">
               All Notes
               <svg xmlns="http://www.w3.org/2000/svg"
                 ><path
@@ -107,24 +148,26 @@ const recentLife = sortedLife.slice(0, SITE.postPerIndex);
     }
 
     {
-      recentLife.length > 0 && (
+      recentExplorations.length > 0 && (
         <>
-          <section class="featured" id="life">
-            <h2>Recent Life</h2>
+          <section class="featured" id="recent-explorations">
+            <h2>Recent Explorations</h2>
+            <p class="section-desc">Notes with embedded prototypes and experiments.</p>
             <ul>
-              {recentLife.map(({ data, id }) => (
+              {recentExplorations.map(({ data, id }) => (
                 <Card
-                  href={`/life/${id}/`}
-                  frontmatter={data}
+                  href={`/notes/${id}/`}
+                  frontmatter={{ ...data, type: "exploration" }}
                   secHeading={false}
                   showNexusScore={true}
+                  contentType="exploration"
                 />
               ))}
             </ul>
           </section>
           <div class="all-posts-btn-wrapper">
-            <LinkButton href="/life">
-              All Life
+            <LinkButton href="/notes/?type=exploration">
+              All Explorations
               <svg xmlns="http://www.w3.org/2000/svg"
                 ><path
                   d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
@@ -132,7 +175,38 @@ const recentLife = sortedLife.slice(0, SITE.postPerIndex);
               </svg>
             </LinkButton>
           </div>
+          <Hr />
         </>
+      )
+    }
+
+    {
+      recentProjects.length > 0 && (
+        <section class="featured" id="recent-projects">
+          <h2>Projects</h2>
+          <p class="section-desc">Active, stable, and archived work.</p>
+          <ul>
+            {recentProjects.map(({ data, id }) => (
+              <Card
+                href={`/projects/${id}/`}
+                frontmatter={{ ...data, type: "project" }}
+                secHeading={false}
+                showNexusScore={false}
+                contentType="project"
+              />
+            ))}
+          </ul>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/projects/">
+              All Projects
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+        </section>
       )
     }
   </main>
@@ -173,6 +247,9 @@ const recentLife = sortedLife.slice(0, SITE.postPerIndex);
   }
   .featured h2 {
     @apply text-3xl font-semibold tracking-wide;
+  }
+  .section-desc {
+    @apply mt-2 text-sm text-skin-base/80;
   }
   .all-posts-btn-wrapper {
     @apply my-8 text-center;

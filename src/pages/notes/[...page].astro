@@ -1,6 +1,12 @@
 ---
 import { SITE } from "@config";
-import Posts from "@layouts/Posts.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Pagination from "@components/Pagination.astro";
+import Card from "@components/Card";
+import ContentTypeFilter from "@components/ContentTypeFilter.astro";
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
@@ -16,4 +22,32 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 ---
 
-<Posts {page} />
+<Layout title={`Notes | ${SITE.title}`}>
+  <Header activeNav="writing" />
+  <Main pageTitle="Notes" pageDesc="Shorter notes, quick findings, and in-progress thoughts.">
+    <p class="text-sm text-skin-base/80 not-italic">
+      Notes are my digital garden. Ideas that grow over time.
+      If you’re curious about where that comes from, start with
+      <a href="/notes/digital-gardens/"> the history of digital gardens</a>.
+    </p>
+    <ContentTypeFilter types={["all", "note", "exploration", "fragment"]} targetId="notes-list" />
+    <ul id="notes-list">
+      {page.data.map(({ data, id }) => {
+        const resolvedType = data.type ?? "note";
+        return (
+          <Card
+            href={`/notes/${id}/`}
+            frontmatter={{ ...data, type: resolvedType }}
+            secHeading={false}
+            showNexusScore={true}
+            contentType={resolvedType}
+          />
+        );
+      })}
+    </ul>
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

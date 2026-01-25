@@ -1,8 +1,10 @@
 import { SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
 
+type CollectionName = "notes" | "writing" | "journal" | "projects";
+
 const postFilter = (
-  post: CollectionEntry<"notes">,
+  post: CollectionEntry<CollectionName>,
   contentTypes?: readonly string[]
 ): boolean => {
   const { data } = post;

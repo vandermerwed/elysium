@@ -1,7 +1,7 @@
 import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
-type CollectionName = "notes" | "writing" | "life" | "projects";
+type CollectionName = "notes" | "writing" | "journal" | "projects";
 
 const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
     posts: CollectionEntry<T>[]

@@ -10,7 +10,7 @@ export async function GET() {
   // Get all collections
   const notes = await getCollection("notes", ({ data }) => data.status && data.status === "published");
   const writing = await getCollection("writing", ({ data }) => data.status && data.status === "published");
-  const life = await getCollection("life", ({ data }) => data.status && data.status === "published");
+  const journal = await getCollection("journal", ({ data }) => data.status && data.status === "published");
 
   // Map each collection to RSS items with correct links
   const notesItems = notes.map(({ data, body, id }) => ({
@@ -31,8 +31,8 @@ export async function GET() {
     pubDate: new Date(data.pubDatetime),
   }));
 
-  const lifeItems = life.map(({ data, body, id }) => ({
-    link: `life/${id}`,
+  const journalItems = journal.map(({ data, body, id }) => ({
+    link: `journal/${id}`,
     title: data.title,
     description: data.description,
     content: sanitizeHtml(parser.render(body)),
@@ -41,7 +41,7 @@ export async function GET() {
   }));
 
   // Combine and sort all items by date
-  const allItems = [...notesItems, ...writingItems, ...lifeItems].sort(
+  const allItems = [...notesItems, ...writingItems, ...journalItems].sort(
     (a, b) => b.pubDate.valueOf() - a.pubDate.valueOf()
   );
 

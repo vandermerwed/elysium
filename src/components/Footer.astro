@@ -1,8 +1,15 @@
 ---
 import Hr from "./Hr.astro";
-import Socials from "./Socials.astro";
+import Socials from "@components/Socials.astro";
 
 const currentYear = new Date().getFullYear();
+
+const contactDescriptions = {
+  Mail: "Projects, introductions, or longer threads.",
+  Github: "Code, issues, and open-source discussion.",
+  LinkedIn: "Professional context and networking.",
+  Bluesky: "Short updates and quick replies.",
+};
 
 export interface Props {
   noMarginTop?: boolean;
@@ -14,13 +21,18 @@ const { noMarginTop = false } = Astro.props;
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
   <Hr noPadding />
   <div class="footer-wrapper">
-    <Socials centered />
-    <div class="copyright-wrapper">
-      <span>Copyright &#169; {currentYear}</span>
-      <span class="separator">&nbsp;|&nbsp;</span>
-      <span>All rights reserved.</span>
-      <span class="separator">&nbsp;|&nbsp;</span>
-      <span>Daniel van der Merwe</span>
+    <div class="footer-left">
+      <span>© {currentYear}, Daniel van der Merwe</span>
+    </div>
+    <div class="footer-right">
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/changelog/">Changelog</a>
+        <a href="https://github.com/vandermerwed/elysium" rel="noreferrer">Source</a>
+        <!-- <a href="/rss.xml">RSS</a> -->
+        <a href="/tags/">Tags</a>
+        <a href="/archives/">Archives</a>
+      </nav>
+      <Socials className="footer-contact-icons" descriptions={contactDescriptions} />
     </div>
   </div>
 </footer>
@@ -30,18 +42,21 @@ const { noMarginTop = false } = Astro.props;
     @apply w-full;
   }
   .footer-wrapper {
-    @apply flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4;
+    @apply flex flex-col items-center justify-between gap-4 py-6 sm:flex-row sm:items-start sm:py-4;
   }
-  .link-button {
-    @apply my-1 p-2 hover:rotate-6;
+  .footer-left {
+    @apply text-sm text-skin-base/80;
   }
-  .link-button svg {
-    @apply scale-125;
+  .footer-right {
+    @apply flex flex-col items-center gap-3 sm:items-end;
   }
-  .copyright-wrapper {
-    @apply my-2 flex flex-col items-center whitespace-nowrap sm:flex-row;
+  .footer-nav {
+    @apply flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm;
   }
-  .separator {
-    @apply hidden sm:inline;
+  .footer-nav a {
+    @apply hover:text-skin-accent;
+  }
+  .footer-contact-icons {
+    @apply flex flex-wrap items-center justify-center gap-2;
   }
 </style>

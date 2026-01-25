@@ -1,0 +1,38 @@
+---
+export interface Props {
+  url: string;
+  type: "v0" | "codepen" | "figma" | "custom";
+  title?: string;
+}
+
+const { url, type, title } = Astro.props;
+---
+
+<div class="prototype-embed">
+  {title && <h3>{title}</h3>}
+  {type === "custom" ? (
+    <a href={url} target="_blank" rel="noreferrer">View Prototype →</a>
+  ) : (
+    <iframe
+      src={url}
+      title={title ?? "Prototype"}
+      loading="lazy"
+      allow="fullscreen; clipboard-write"
+    />
+  )}
+</div>
+
+<style>
+  .prototype-embed {
+    @apply my-8 rounded-lg border border-skin-line p-4;
+  }
+  .prototype-embed h3 {
+    @apply mb-4 text-lg font-semibold;
+  }
+  .prototype-embed iframe {
+    @apply h-96 w-full rounded-md border border-skin-line;
+  }
+  .prototype-embed a {
+    @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;
+  }
+</style>

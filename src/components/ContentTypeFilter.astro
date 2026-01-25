@@ -1,0 +1,82 @@
+---
+export interface Props {
+  types: string[];
+  targetId?: string;
+}
+
+const { types, targetId = "writing-list" } = Astro.props;
+---
+
+<div class="content-type-filter" data-filter-target={targetId}>
+  {types.map(type => (
+    <button
+      type="button"
+      class="filter-button"
+      data-filter-button={type}
+      aria-pressed={type === "all" ? "true" : "false"}
+    >
+      {type === "all" ? "All" : type.charAt(0).toUpperCase() + type.slice(1)}
+    </button>
+  ))}
+</div>
+
+<style>
+  .content-type-filter {
+    @apply my-6 flex flex-wrap gap-2;
+  }
+  .filter-button {
+    @apply rounded-full border border-skin-line px-3 py-1 text-sm uppercase tracking-wide hover:text-skin-accent;
+  }
+  .filter-button.is-active {
+    @apply border-skin-accent text-skin-accent;
+  }
+</style>
+
+<script is:inline>
+  const filterContainer = document.querySelector(".content-type-filter");
+  const targetId = filterContainer?.getAttribute("data-filter-target");
+  const target = targetId ? document.getElementById(targetId) : null;
+  const items = target?.querySelectorAll("[data-content-type]") ?? [];
+
+  const setActiveButton = (type) => {
+    filterContainer?.querySelectorAll("[data-filter-button]").forEach((button) => {
+      const isActive = button.getAttribute("data-filter-button") === type;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  };
+
+  const applyFilter = (type) => {
+    items.forEach((item) => {
+      const itemType = item.getAttribute("data-content-type") || "";
+      const shouldShow = type === "all" || itemType === type;
+      item.classList.toggle("hidden", !shouldShow);
+    });
+    setActiveButton(type);
+  };
+
+  const getInitialType = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("type") || "all";
+  };
+
+  const updateUrl = (type) => {
+    const url = new URL(window.location.href);
+    if (type === "all") {
+      url.searchParams.delete("type");
+    } else {
+      url.searchParams.set("type", type);
+    }
+    window.history.replaceState({}, "", url);
+  };
+
+  applyFilter(getInitialType());
+
+  filterContainer?.addEventListener("click", (event) => {
+    const targetButton = event.target.closest("[data-filter-button]");
+    if (!targetButton) return;
+    const type = targetButton.getAttribute("data-filter-button") || "all";
+    applyFilter(type);
+    updateUrl(type);
+  });
+</script>

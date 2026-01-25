@@ -2,13 +2,14 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import ProjectDetails from "@layouts/ProjectDetails.astro";
 import { getSortedProjects } from "@utils/getSortedProjects";
+import getIncomingLinks from "@utils/getIncomingLinks";
 
 export interface Props {
   project: CollectionEntry<"projects">;
 }
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects", ({ data }) => !data.status || data.status === "active");
+  const projects = await getCollection("projects");
 
   const projectResult = projects.map(project => ({
     params: { id: project.id },
@@ -22,6 +23,22 @@ const { project } = Astro.props;
 
 const projects = await getCollection("projects");
 const sortedProjects = getSortedProjects(projects);
+const notes = await getCollection("notes");
+const writing = await getCollection("writing");
+const journal = await getCollection("journal");
+const backlinkSources = [...notes, ...writing, ...journal, ...projects];
+const incomingLinks = getIncomingLinks(backlinkSources, project.id, "projects");
+const backlinks = incomingLinks.map(entry => {
+  const entryType = entry.data.type ??
+    (entry.collection === "writing" ? "essay" : entry.collection === "journal" ? "journal" : entry.collection === "projects" ? "project" : "note");
+  const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
+  return {
+    title: entry.data.title,
+    url: `/${entryBasePath}/${entry.id}/`,
+    type: entryType,
+    description: entry.data.description,
+  };
+});
 ---
 
-<ProjectDetails project={project} projects={sortedProjects} />
+<ProjectDetails project={project} projects={sortedProjects} backlinks={backlinks} />

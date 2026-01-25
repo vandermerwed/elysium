@@ -5,18 +5,27 @@ import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
 import NexusScore from "@components/NexusScore";
-import Card from "@components/Card";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 import AidaNotice from "@components/AidaNotice.astro";
+import EmbedPrototype from "@components/EmbedPrototype.astro";
+import Backlinks from "@components/Backlinks.astro";
 import { type CollectionEntry, render } from "astro:content";
 
 export interface Props {
-  post: CollectionEntry<"notes">;
-  posts: CollectionEntry<"notes" | "projects">[];
+  post: CollectionEntry<"notes" | "writing" | "journal">;
+  posts: CollectionEntry<"notes" | "writing" | "journal" | "projects">[];
+  basePath?: string;
+  activeNav?: "writing" | "projects" | "about" | "search" | "notes" | "journal";
+  backlinks?: Array<{
+    title: string;
+    url: string;
+    type?: string;
+    description?: string;
+  }>;
 }
 
-const { post, posts } = Astro.props;
+const { post, posts, basePath = "notes", activeNav, backlinks = [] } = Astro.props;
 
 const {
   title,
@@ -29,14 +38,24 @@ const {
   tags,
   editPost,
   type,
+  inspiration,
+  prototypeUrl,
+  prototypeType,
   aiUsage,
 } = post.data;
 
 const { Content, remarkPluginFrontmatter } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
-const ogUrl = new URL(ogImageUrl ?? `/notes/${post.id}.png`, Astro.url.origin)
+const ogUrl = new URL(ogImageUrl ?? `/${basePath}/${post.id}.png`, Astro.url.origin)
   .href;
+
+const resolvedType = basePath === "writing"
+  ? undefined
+  : type ?? (basePath === "journal" ? "journal" : "note");
+const resolvedTypeLabel = resolvedType
+  ? resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)
+  : undefined;
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -69,7 +88,7 @@ if (remarkPluginFrontmatter.marginNotes) {
 ---
 
 <Layout {...layoutProps}>
-  <Header />
+  <Header activeNav={activeNav} />
 
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
@@ -84,13 +103,20 @@ if (remarkPluginFrontmatter.marginNotes) {
     </button>
   </div>
   <main id="main-content">
-    <NexusScore
-      score={remarkPluginFrontmatter.nexusScore}
-      showDescription={true}
-      size="sm"
-      className="m-auto mr-2"
-    />
-    <h1 transition:name={post.id} class="post-title mt-2">{title}</h1>
+    {basePath === "notes" && (
+      <NexusScore
+        score={remarkPluginFrontmatter.nexusScore}
+        showDescription={true}
+        size="sm"
+        className="m-auto mr-2"
+      />
+    )}
+    <div class="flex flex-wrap items-center gap-3">
+      <h1 transition:name={post.id} class="post-title mt-2">{title}</h1>
+      {resolvedTypeLabel && (
+        <span class="type-badge">{resolvedTypeLabel}</span>
+      )}
+    </div>
     <Datetime
       showModified={true}
       showTime={false}
@@ -107,9 +133,21 @@ if (remarkPluginFrontmatter.marginNotes) {
       {tags.map((tag: string) => <Tag tag={tag} />)}
     </ul>
 
+    {inspiration && (
+      <section class="inspiration">
+        <h2>Inspiration</h2>
+        <p>
+          <a href={inspiration.url} target="_blank" rel="noreferrer">
+            {inspiration.title}
+          </a>
+          {inspiration.author && <span> — {inspiration.author}</span>}
+        </p>
+      </section>
+    )}
+
     <article id="article" class={articleClasses.join(" ")}>
       {
-        type === "fragment" && (
+        String(type) === "fragment" && (
           <div class="fragment-notice">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -137,6 +175,14 @@ if (remarkPluginFrontmatter.marginNotes) {
       }
       <Content />
     </article>
+
+    {prototypeUrl && prototypeType && (
+      <EmbedPrototype
+        url={prototypeUrl}
+        type={prototypeType}
+        title={`Prototype: ${title}`}
+      />
+    )}
 
     <div>
       <AidaNotice aiUsage={aiUsage} />
@@ -167,7 +213,7 @@ if (remarkPluginFrontmatter.marginNotes) {
       {
         prevPost && (
           <a
-            href={`/notes/${prevPost.id}`}
+            href={`/${basePath}/${prevPost.id}`}
             class="flex w-full gap-1 hover:opacity-75"
           >
             <svg
@@ -195,7 +241,7 @@ if (remarkPluginFrontmatter.marginNotes) {
       {
         nextPost && (
           <a
-            href={`/notes/${nextPost.id}`}
+            href={`/${basePath}/${nextPost.id}`}
             class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
@@ -221,38 +267,12 @@ if (remarkPluginFrontmatter.marginNotes) {
         )
       }
     </div>
-    {
-      remarkPluginFrontmatter.incomingLinks &&
-        remarkPluginFrontmatter.incomingLinks.length > 0 && (
-          <div>
-            <hr class="my-6 border-solid border-skin-line-muted" />
-            <div class="incoming-links-container">
-              <br />
-              <h2>Incoming Links</h2>
-              <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {remarkPluginFrontmatter.incomingLinks.map(
-                  (
-                    value: { id: string; frontmatter?: object },
-                    _index: number,
-                    _array: { id: string; frontmatter?: {} }[]
-                  ): any => {
-                    const { id, frontmatter } = value;
-                    return (
-                      frontmatter && (
-                        <Card
-                          href={`/notes/${id}`}
-                          frontmatter={remarkPluginFrontmatter}
-                          showNexusScore={true}
-                        />
-                      )
-                    );
-                  }
-                )}
-              </ul>
-            </div>
-          </div>
-        )
-    }
+    {backlinks.length > 0 && (
+      <>
+        <hr class="my-6 border-solid border-skin-line-muted" />
+        <Backlinks backlinks={backlinks} />
+      </>
+    )}
   </main>
   <Footer />
 </Layout>
@@ -272,6 +292,18 @@ if (remarkPluginFrontmatter.marginNotes) {
   }
   .fragment-notice {
     @apply flex text-skin-base items-center space-x-2 opacity-80 pb-4 rounded-md;
+  }
+  .type-badge {
+    @apply rounded-full border border-skin-line px-3 py-1 text-xs uppercase tracking-wide text-skin-base;
+  }
+  .inspiration {
+    @apply my-8 rounded-md border border-skin-line p-4;
+  }
+  .inspiration h2 {
+    @apply mb-2 text-lg font-semibold;
+  }
+  .inspiration a {
+    @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;
   }
 </style>
 

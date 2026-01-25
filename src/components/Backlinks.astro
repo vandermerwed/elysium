@@ -1,0 +1,60 @@
+---
+export interface Props {
+  backlinks: Array<{
+    title: string;
+    url: string;
+    type?: string;
+    description?: string;
+  }>;
+  title?: string;
+}
+
+const { backlinks, title = "Referenced By" } = Astro.props;
+const formatTypeLabel = (value?: string) => {
+  if (!value) return undefined;
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};
+---
+
+{backlinks && backlinks.length > 0 && (
+  <section class="backlinks">
+    <h2>{title}</h2>
+    <ul>
+      {backlinks.map(link => (
+        <li>
+          <a href={link.url}>
+            {link.type && (
+              <span class="type-badge">{formatTypeLabel(link.type)}</span>
+            )}
+            {link.title}
+          </a>
+          {link.description && <p class="excerpt">{link.description}</p>}
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .backlinks {
+    @apply my-8;
+  }
+  .backlinks h2 {
+    @apply mb-4 text-2xl font-semibold;
+  }
+  .backlinks ul {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+  .backlinks li {
+    @apply rounded-md border border-skin-line p-4;
+  }
+  .backlinks a {
+    @apply flex flex-col gap-2 text-skin-accent hover:underline;
+  }
+  .type-badge {
+    @apply w-fit rounded-full border border-skin-line px-2 py-0.5 text-xs uppercase tracking-wide text-skin-base;
+  }
+  .excerpt {
+    @apply text-sm text-skin-base/80;
+  }
+</style>

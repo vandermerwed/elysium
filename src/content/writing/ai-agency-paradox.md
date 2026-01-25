@@ -11,7 +11,7 @@ tags:
   - technology
   - ethics
 description: Artificial Intelligence is everywhere. A look at how it's reshaping our world, the risks to agency, and how I plan to use it responsibly.
-type: note
+type: essay
 aiUsage:
   - code-assistance
   - research

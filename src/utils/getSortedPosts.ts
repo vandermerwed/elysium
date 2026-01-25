@@ -1,12 +1,12 @@
 import type { CollectionEntry } from "astro:content";
 import postFilter from "./postFilter";
 
-type CollectionName = "notes" | "writing" | "life" | "projects";
+type CollectionName = "notes" | "writing" | "journal" | "projects";
 
 const getSortedPosts = <T extends CollectionName>(
   posts: CollectionEntry<T>[],
   contentTypes?: readonly string[]
-) => {
+): CollectionEntry<T>[] => {
   return posts
     .filter(post => postFilter(post, contentTypes))
     .sort(

@@ -2,12 +2,15 @@ import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
 import NexusScore from "./NexusScore";
 
+type ContentCollection = "notes" | "writing" | "journal" | "projects";
+
 export interface Props {
   href?: string;
-  frontmatter?: CollectionEntry<"notes">["data"];
+  frontmatter?: CollectionEntry<ContentCollection>["data"];
   secHeading?: boolean;
   showNexusScore?: boolean;
   nexusScore?: string;
+  contentType?: string;
 }
 
 const nexusScorePattern = /^(?:R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
@@ -21,6 +24,7 @@ export default function Card({
   secHeading = true,
   showNexusScore = false,
   nexusScore,
+  contentType,
 }: Props) {
   const {
     title,
@@ -28,6 +32,7 @@ export default function Card({
     modDatetime,
     description,
     readingTime,
+    type,
     nexusScore: frontmatterNexusScore,
   } = frontmatter || {};
 
@@ -44,8 +49,21 @@ export default function Card({
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 
+  const formatTypeLabel = (value?: string) => {
+    if (!value) return undefined;
+    if (value === "essay") return "Essay";
+    if (value === "note") return "Note";
+    if (value === "journal") return "Journal";
+    if (value === "exploration") return "Exploration";
+    if (value === "project") return "Project";
+    if (value === "fragment") return "Fragment";
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
+
+  const typeLabel = formatTypeLabel(type);
+
   return (
-    <li className="my-6">
+    <li className="my-6" data-content-type={contentType}>
       <div className="inline-flex">
         {showNexusScore && resolvedNexusScore ? (
           <NexusScore score={resolvedNexusScore} className="m-auto mr-2" />
@@ -61,13 +79,21 @@ export default function Card({
           )}
         </a>
       </div>
-      <Datetime
-        hideIcon={true}
-        showModified={true}
-        pubDatetime={pubDatetime ?? ""}
-        modDatetime={modDatetime}
-        showTime={false}
-        readingTime={readingTime}  />
+      {pubDatetime && (
+        <Datetime
+          hideIcon={true}
+          showModified={true}
+          pubDatetime={pubDatetime}
+          modDatetime={modDatetime}
+          showTime={false}
+          readingTime={readingTime}
+        />
+      )}
+      {typeLabel && (
+        <span className="mt-1 inline-flex w-fit rounded-full border border-skin-line px-2 py-0.5 text-xs uppercase tracking-wide">
+          {typeLabel}
+        </span>
+      )}
       <p className="mt-4">{description}</p>
     </li>
   );

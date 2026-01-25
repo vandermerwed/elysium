@@ -129,6 +129,14 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
 
         if (isEmbed) {
             const [isSupportedFormat, format] = isSupportedFileFormat(target);
+            if (isSupportedFormat && format !== "pdf") {
+                const normalizedTarget = target.replace(/\\/g, "/");
+                wikiLink.type = "image";
+                wikiLink.url = normalizedTarget;
+                wikiLink.alt = displayName;
+                delete wikiLink.data;
+                return;
+            }
             if (!isSupportedFormat) {
                 // Temporarily render note transclusion as a regular wiki link
                 if (!format) {

@@ -11,14 +11,26 @@
             "id": "dc9312bc62f187c8",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "blog/cornerstone-habits.md",
+                "file": "notes/ai-hud-exploration.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "cornerstone-habits"
+              "title": "ai-hud-exploration"
+            }
+          },
+          {
+            "id": "d38ba55e94bd738b",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.11.5"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.11.5"
             }
           }
         ]
@@ -179,7 +191,9 @@
   },
   "active": "dc9312bc62f187c8",
   "lastOpenFiles": [
+    "media/v0-ai-hud-design.vercel.app_.png",
     "media",
+    "v0-ai-hud-design.vercel.app_.png",
     "_templates/theme.md",
     "_templates/source.md",
     "_templates/project.md",

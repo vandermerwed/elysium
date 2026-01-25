@@ -1,0 +1,52 @@
+---
+export interface Props {
+  version: string;
+  title: string;
+  date: Date;
+  description: string;
+  changes?: string[];
+}
+
+const { version, title, date, description, changes } = Astro.props;
+---
+
+<article class="changelog-item">
+  <header>
+    <span class="version">{version}</span>
+    <h2>{title}</h2>
+    <time datetime={date.toISOString()}>{date.toLocaleDateString()}</time>
+  </header>
+
+  <div class="description">
+    <p>{description}</p>
+  </div>
+
+  {changes && changes.length > 0 && (
+    <ul class="changes">
+      {changes.map(change => (
+        <li>{change}</li>
+      ))}
+    </ul>
+  )}
+</article>
+
+<style>
+  .changelog-item {
+    @apply my-8 rounded-md border border-skin-line p-6;
+  }
+  .changelog-item header {
+    @apply mb-4 flex flex-col gap-1;
+  }
+  .changelog-item h2 {
+    @apply text-2xl font-semibold;
+  }
+  .version {
+    @apply text-xs uppercase tracking-wide text-skin-base/70;
+  }
+  .description {
+    @apply text-skin-base/90;
+  }
+  .changes {
+    @apply mt-4 list-disc space-y-2 pl-4 text-sm;
+  }
+</style>

@@ -1,10 +1,9 @@
 ---
 import type { Page } from "astro";
 import LinkButton from "./LinkButton.astro";
-import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-  page: Page<CollectionEntry<"notes">>;
+  page: Page<any>;
 }
 
 const { page } = Astro.props;
