@@ -14,7 +14,7 @@ type: exploration
 prototypeUrl: https://v0-ai-hud-design.vercel.app
 prototypeType: v0
 inspiration:
-  title: Enough AI copilots — we need AI HUDs
+  title: Enough AI copilots! We need AI HUDs
   url: https://www.geoffreylitt.com/2025/07/27/enough-ai-copilots-we-need-ai-huds
   author: Geoffrey Litt
 aiUsage:
