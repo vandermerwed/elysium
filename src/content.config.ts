@@ -2,18 +2,13 @@ import { SITE } from "@config";
 import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
+// Content status - draft/ready/release used by deploy script, published is live
 const contentStatusEnum = z.enum(["draft", "ready", "release", "published"]);
 const projectStatusEnum = z.enum(["active", "stable", "archived"]);
-const contentTypeEnum = z.enum([
-  "project",
-  "exploration",
-  "essay",
-  "note",
-  "journal",
-  "loadout",
-  "theme",
-  "fragment",
-]);
+
+// Collection-specific types (folder determines main classification)
+const notesTypeEnum = z.enum(["exploration"]); // Expandable for future note types
+const journalTypeEnum = z.enum(["loadout", "theme"]); // Sub-types for journal entries
 
 const baseContentSchema = ({ image }: { image: any }) =>
   z.object({
@@ -32,7 +27,6 @@ const baseContentSchema = ({ image }: { image: any }) =>
       .optional(),
     description: z.string(),
     canonicalURL: z.string().optional(),
-    type: contentTypeEnum.optional(),
     status: contentStatusEnum.optional(),
     readingTime: z.string().optional(),
     wordCount: z.number().default(0),
@@ -73,24 +67,29 @@ const baseContentSchema = ({ image }: { image: any }) =>
       .optional(),
   });
 
-const createContentSchema = (statusEnum: z.ZodEnum<any>) => {
-  return ({ image }: { image: any }) =>
-    baseContentSchema({ image }).extend({ status: statusEnum.optional() });
-};
-
+// Notes: Digital garden content - NexusScore handles progression automatically
+// Type field for special UI treatment (e.g., explorations with prototypes)
 const notes = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/notes" }),
-  schema: createContentSchema(contentStatusEnum),
+  schema: ({ image }: { image: any }) =>
+    baseContentSchema({ image }).extend({
+      type: notesTypeEnum.optional(), // exploration, or omit for regular notes
+    }),
 });
 
+// Writing: Published articles - no type/progression needed
 const writing = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/writing" }),
-  schema: createContentSchema(contentStatusEnum),
+  schema: baseContentSchema,
 });
 
+// Journal: Life stuff - optional sub-type for loadouts, themes, etc.
 const journal = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/journal" }),
-  schema: createContentSchema(contentStatusEnum),
+  schema: ({ image }: { image: any }) =>
+    baseContentSchema({ image }).extend({
+      type: journalTypeEnum.optional(), // loadout, theme, or omit for general journal
+    }),
 });
 
 const projects = defineCollection({

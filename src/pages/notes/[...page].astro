@@ -30,20 +30,17 @@ const { page } = Astro.props;
       If you’re curious about where that comes from, start with
       <a href="/notes/digital-gardens/"> the history of digital gardens</a>.
     </p>
-    <ContentTypeFilter types={["all", "note", "exploration", "fragment"]} targetId="notes-list" />
+    <ContentTypeFilter types={["all", "exploration"]} targetId="notes-list" />
     <ul id="notes-list">
-      {page.data.map(({ data, id }) => {
-        const resolvedType = data.type ?? "note";
-        return (
-          <Card
-            href={`/notes/${id}/`}
-            frontmatter={{ ...data, type: resolvedType }}
-            secHeading={false}
-            showNexusScore={true}
-            contentType={resolvedType}
-          />
-        );
-      })}
+      {page.data.map(({ data, id }) => (
+        <Card
+          href={`/notes/${id}/`}
+          frontmatter={data}
+          secHeading={false}
+          showNexusScore={true}
+          contentType={data.type || "notes"}
+        />
+      ))}
     </ul>
   </Main>
 

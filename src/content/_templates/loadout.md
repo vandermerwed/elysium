@@ -9,6 +9,8 @@ tags:
   - loadout
 description: Hardware, software, and systems I'm currently using, testing, or have recently changed.
 type: loadout
+aiUsage:
+  - none
 ---
 
 ## Currently Using

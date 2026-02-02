@@ -12,10 +12,12 @@ const postFilter = (
     Date.now() >
     new Date(data.pubDatetime).getTime() - SITE.scheduledPostMargin;
 
-  // Determine if content should be included
-  const isContent = Array.isArray(contentTypes) && data.type
-    ? contentTypes.includes(data.type)
-    : true;
+  // Determine if content should be included based on type field
+  let isContent = true;
+  if (Array.isArray(contentTypes) && contentTypes.length > 0) {
+    // Check type field (notes: exploration, journal: loadout/theme)
+    isContent = data.type ? contentTypes.includes(data.type) : false;
+  }
 
   return isContent && data.status && data.status === "published" && (import.meta.env.DEV || isPublishTimePassed);
 };

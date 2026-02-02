@@ -10,7 +10,6 @@ tags:
   - writing
   - history
 description: A short overview of the digital garden metaphor and why it fits this notes section.
-type: note
 aiUsage:
   - none
 ---

@@ -7,7 +7,6 @@ status: published
 tags:
   - fragment
 description: On craftsmanship
-type: fragment
 aiUsage:
   - none
 ---

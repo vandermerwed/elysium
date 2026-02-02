@@ -29,13 +29,11 @@ const projectPosts = await getCollection("projects");
 const backlinkSources = [...posts, ...notePosts, ...writingPosts, ...projectPosts];
 const incomingLinks = getIncomingLinks(backlinkSources, post.id, "journal");
 const backlinks = incomingLinks.map(entry => {
-  const entryType = entry.data.type ??
-    (entry.collection === "writing" ? "essay" : entry.collection === "journal" ? "journal" : entry.collection === "projects" ? "project" : "note");
   const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
   return {
     title: entry.data.title,
     url: `/${entryBasePath}/${entry.id}/`,
-    type: entryType,
+    type: entry.data.type, // exploration, loadout, theme, or undefined
     description: entry.data.description,
   };
 });

@@ -8,7 +8,6 @@ tags:
   - productivity
   - coda
 description: TBD
-type: project
 aiUsage:
   - none
 ---

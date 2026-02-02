@@ -118,18 +118,15 @@ const recentProjects = projects.slice(0, 3);
             <h2>Latest Notes</h2>
             <p class="section-desc">In-progress thoughts from the digital garden.</p>
             <ul>
-              {latestNotes.map(({ data, id }) => {
-                const resolvedType = data.type ?? "note";
-                return (
+              {latestNotes.map(({ data, id }) => (
                 <Card
                   href={`/notes/${id}/`}
-                  frontmatter={{ ...data, type: resolvedType }}
+                  frontmatter={data}
                   secHeading={false}
                   showNexusScore={true}
-                  contentType={resolvedType}
+                  contentType="notes"
                 />
-              );
-              })}
+              ))}
             </ul>
           </section>
           <div class="all-posts-btn-wrapper">
@@ -189,10 +186,10 @@ const recentProjects = projects.slice(0, 3);
             {recentProjects.map(({ data, id }) => (
               <Card
                 href={`/projects/${id}/`}
-                frontmatter={{ ...data, type: "project" }}
+                frontmatter={data}
                 secHeading={false}
                 showNexusScore={false}
-                contentType="project"
+                contentType="projects"
               />
             ))}
           </ul>

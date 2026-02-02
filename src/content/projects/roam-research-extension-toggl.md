@@ -14,7 +14,6 @@ tags:
   - roam-research
   - productivity
 description: Toggl Track Extension for Roam Research allows you to track time in Toggl Track and pull timers into your Roam Research database.
-type: project
 aiUsage:
   - none
 ---

@@ -8,7 +8,6 @@ tags:
   - productivity
   - rescue-time
 description: TBD
-type: project
 aiUsage:
   - none
 ---

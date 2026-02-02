@@ -7,7 +7,6 @@ status: published
 tags:
   - fragment
 description: Thoughts on interstitial journaling
-type: fragment
 aiUsage:
   - none
 ---

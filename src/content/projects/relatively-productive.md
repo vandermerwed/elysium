@@ -6,7 +6,6 @@ endDate: 2021-03-21T00:00:00Z
 tags:
   - podcast
 description: A podcast about productivity with Jacob Pretorius.
-type: project
 links:
   website: https://relativelyproductive.com/
   spotify: https://open.spotify.com/show/1PLyALsrt2UbfSvyEccbcW

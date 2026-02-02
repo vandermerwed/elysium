@@ -49,15 +49,14 @@ export default function Card({
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 
+  // Only show badges for special types (exploration, loadout, theme)
+  // Regular content is identified by its folder, not a type badge
   const formatTypeLabel = (value?: string) => {
     if (!value) return undefined;
-    if (value === "essay") return "Essay";
-    if (value === "note") return "Note";
-    if (value === "journal") return "Journal";
     if (value === "exploration") return "Exploration";
-    if (value === "project") return "Project";
-    if (value === "fragment") return "Fragment";
-    return value.charAt(0).toUpperCase() + value.slice(1);
+    if (value === "loadout") return "Loadout";
+    if (value === "theme") return "Theme";
+    return undefined; // Don't show badges for other types
   };
 
   const typeLabel = formatTypeLabel(type);

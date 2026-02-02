@@ -7,7 +7,6 @@ status: published
 tags:
   - fragment
 description: On mastery
-type: fragment
 aiUsage:
   - none
 ---

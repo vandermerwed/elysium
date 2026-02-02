@@ -7,7 +7,6 @@ tags:
   - roam-research
   - productivity
 description: TBD
-type: project
 aiUsage:
   - none
 ---

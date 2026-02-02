@@ -7,7 +7,6 @@ status: draft
 tags:
   - protocol
 description: Some description text.
-type: fragment
 aiUsage:
   - none
 ---

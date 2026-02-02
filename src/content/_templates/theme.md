@@ -9,4 +9,6 @@ tags:
   - theme
 description: My yearly theme for 20?? focusing on [key areas/goals].
 type: theme
+aiUsage:
+  - none
 ---

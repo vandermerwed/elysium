@@ -7,7 +7,6 @@ status: published
 tags:
   - fragment
 description: A timed walk to think through a specific work related problem.
-type: fragment
 aiUsage:
   - content-generation
 ---

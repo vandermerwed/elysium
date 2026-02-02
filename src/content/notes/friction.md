@@ -7,7 +7,6 @@ status: published
 tags:
   - fragment
 description: On friction
-type: fragment
 aiUsage:
   - none
 ---

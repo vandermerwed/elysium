@@ -7,7 +7,6 @@ status: published
 tags:
   - habits
 description: A mindful guide to achieving balanced productivity and sustained well-being.
-type: fragment
 aiUsage:
   - none
 ---

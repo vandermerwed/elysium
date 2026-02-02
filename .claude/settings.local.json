@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Projects\\\\Elysium\\\\Code\\\\elysium\\\\src\\\\content\" -Recurse -Directory)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Projects\\\\Elysium\\\\Code\\\\elysium\\\\src\\\\content\" -Recurse -File -Filter \"*.md*\")",
+      "Bash(Select-Object FullName, Name)"
+    ]
+  }
+}

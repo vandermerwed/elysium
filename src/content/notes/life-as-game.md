@@ -9,7 +9,6 @@ tags:
   - systems
   - thinking-tools
 description: Using game mechanics as a lens for understanding personal growth and systematic progress.
-type: fragment
 aiUsage:
   - content-generation
 ---

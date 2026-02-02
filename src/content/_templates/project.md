@@ -1,13 +1,13 @@
 ---
-pubDatetime: {{date}}T{{time}}:00Z
-modDatetime: {{date}}T{{time}}:00Z
 title: Project Title
-featured: false
-status: future
+startDate: {{date}}T{{time}}:00Z
+status: active
 tags:
   - project
 description: Brief project description.
-type: project
+aiUsage:
+  - none
+modDatetime: 2026-02-02T05:11:28Z
 ---
 
-<!-- Project status can be: future, active, archived -->
+<!-- Project status can be: active, stable, archived -->

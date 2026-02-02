@@ -9,7 +9,6 @@ tags:
   - discipline
   - pact
 description: Reflections on jogging three times per week for 200 weeks.
-type: note
 aiUsage:
   - none
 ---

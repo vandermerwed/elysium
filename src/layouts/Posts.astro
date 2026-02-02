@@ -35,17 +35,14 @@ const {
   <Main pageTitle={pageTitle} pageDesc={pageDesc}>
     <ul>
       {
-        page.data.map(({ data, id }) => {
-          const resolvedType = data.type ?? (basePath === "writing" ? "essay" : basePath === "journal" ? "journal" : basePath === "notes" ? "note" : data.type);
-          return (
-            <Card
-              href={`/${basePath}/${id}/`}
-              frontmatter={{ ...data, type: resolvedType }}
-              showNexusScore={showNexusScore}
-              contentType={resolvedType}
-            />
-          );
-        })
+        page.data.map(({ data, id }) => (
+          <Card
+            href={`/${basePath}/${id}/`}
+            frontmatter={data}
+            showNexusScore={showNexusScore}
+            contentType={basePath}
+          />
+        ))
       }
     </ul>
   </Main>

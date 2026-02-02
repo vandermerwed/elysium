@@ -8,7 +8,6 @@ tags:
   - habits
   - protocol
 description: Some description text.
-type: fragment
 aiUsage:
   - none
 ---
