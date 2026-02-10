@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2026-02-07T09:52:00
-modDatetime: 2026-02-10T07:58:30Z
+modDatetime: 2026-02-10T13:21:52Z
 title: You Have to Care
 featured: false
 status: published
@@ -41,7 +41,7 @@ These posts can maybe help you discover a niche you didn't know you're intereste
 
 The best way to build for a niche, as always, is to get involved, do the work and solve your own problems. Chances are you're not the only one frustrated by the problem.
 
-Which raises the question — what will I do?
+Which raises the question. What will I do?
 
 I have declared [systems bankruptcy](https://bradfrost.com/blog/post/declaring-systems-bankruptcy/) [^3] and I'm re-evaluating all of the tools I use to get work done. If Roam Research makes the cut I'll return in full force and contribute meaningfully to the community again. If it doesn't, I will transfer ownership of the extension to an active developer in the community. Reach out to me if this is you. All that I ask is that you care.
 

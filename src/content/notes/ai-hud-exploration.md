@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2026-01-25T07:26:00Z
-modDatetime: 2026-01-25T08:52:59Z
+modDatetime: 2026-02-10T13:21:51Z
 title: AI HUD Exploration
 description: A quick exploration of a HUD-style AI assistant for knowledge work.
 featured: false
@@ -34,4 +34,4 @@ What I’m testing here:
 
 Prototype link: https://v0-ai-hud-design.vercel.app
 
-If you want the thinking behind it, read Geoffrey Litt’s post above — it’s the spark for this sketch.
+If you want the thinking behind it, read Geoffrey Litt’s post above. It’s the spark for this sketch.
