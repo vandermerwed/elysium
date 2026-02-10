@@ -1,5 +1,22 @@
 export const changelog = [
   {
+    version: "2.1.0",
+    title: "Projects, Content & Homepage Refresh",
+    date: new Date("2026-02-10"),
+    description:
+      "Overhauled projects layout with status grouping, refactored content types and templates, and enhanced the homepage with cycling words and improved wiki links.",
+    changes: [
+      "Refactored projects layout with active, stable, and archived grouping",
+      "Enhanced project cards with dates, categories, and links",
+      "Added backlinks and content type filter components",
+      "Refactored content types and removed deprecated templates",
+      "Added homepage cycling words for dynamic presentation",
+      "Improved wiki link title resolution",
+      "Refined nexus score calculation for new data structure",
+      "Added new notes and writing content",
+    ],
+  },
+  {
     version: "2.0.0",
     title: "Content Restructuring",
     date: new Date("2026-01-24"),
