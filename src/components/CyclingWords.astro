@@ -299,7 +299,26 @@ const scrambleData = normalizedWords.map(([word, suffix]) => ({ word, suffix }))
     }
   }
 
-  document.querySelectorAll(".cycling-words--scramble").forEach((el) => {
-    new ScrambleText(el as HTMLElement);
-  });
+  const instances: ScrambleText[] = [];
+
+  function initScramble() {
+    document.querySelectorAll(".cycling-words--scramble").forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      if (!(htmlEl as any)._scramble) {
+        const instance = new ScrambleText(htmlEl);
+        (htmlEl as any)._scramble = instance;
+        instances.push(instance);
+      }
+    });
+  }
+
+  function cleanupScramble() {
+    instances.forEach((inst) => inst.destroy());
+    instances.length = 0;
+  }
+
+  // Re-init on every navigation (including initial load)
+  document.addEventListener("astro:page-load", initScramble);
+  // Clean up timers before page swap to prevent leaks
+  document.addEventListener("astro:before-swap", cleanupScramble);
 </script>
