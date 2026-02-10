@@ -1,5 +1,5 @@
 ---
-pubDatetime: 2024-12-16T11:22:00
+pubDatetime: 2024-12-16T11:22:00Z
 modDatetime: 2026-02-10T07:58:28Z
 title: Progressive Taring
 featured: false
