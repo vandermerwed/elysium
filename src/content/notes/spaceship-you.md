@@ -7,7 +7,6 @@ status: draft
 tags:
   - fragment
 description: Keep the core spinning. Complete the mission. Come back better than before. See you on Earth, Captain.
-type: fragment
 aiUsage:
   - none
 ---

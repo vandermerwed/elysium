@@ -1,21 +1,49 @@
 import type { CollectionEntry } from "astro:content";
 
-const getIncomingLinks = (allPosts: CollectionEntry<"notes">[], currentId: string) => {
-    const incomingLinks: CollectionEntry<"notes">[] = [];
-    allPosts.forEach((post) => {
+type CollectionName = "notes" | "writing" | "journal" | "projects";
+
+const normalizeReference = (reference: string) =>
+    reference
+        .split("|")[0]
+        .replace(/\\/g, "/")
+        .replace(/^(\.\.\/)+/, "")
+        .replace(/^\.\//, "")
+        .replace(/\.mdx?$/, "")
+        .replace(/^\//, "")
+        .trim();
+
+const buildReferenceCandidates = (basePath: string, currentId: string) => {
+    const normalizedBase = basePath.replace(/^\//, "").replace(/\/$/, "");
+    return new Set([
+        currentId,
+        `${normalizedBase}/${currentId}`,
+        `/${normalizedBase}/${currentId}`,
+    ]);
+};
+
+const getIncomingLinks = (
+    allPosts: CollectionEntry<CollectionName>[],
+    currentId: string,
+    basePath: string
+) => {
+    const incomingLinks: CollectionEntry<CollectionName>[] = [];
+    const candidates = buildReferenceCandidates(basePath, currentId);
+
+    allPosts.forEach(post => {
         const content = post.body;
+        if (!content) return;
         const referencedPosts = content.match(/(?<=\[\[)(.*?)(?=\]\])/g);
-        // split each item on pipe and only return the first part
-        if (referencedPosts) {
-            referencedPosts.forEach((item, index) => {
-                referencedPosts[index] = item.split("|")[0].replace(".mdx", "");
-            });
-        }
-        if (referencedPosts && referencedPosts.includes(currentId)) {
-            incomingLinks.push(post);
-        }
+        if (!referencedPosts) return;
+
+        const normalizedReferences = referencedPosts.map(normalizeReference);
+        const isReferenced = normalizedReferences.some(reference =>
+            candidates.has(reference)
+        );
+
+        if (isReferenced) incomingLinks.push(post);
     });
-    return incomingLinks;    
+
+    return incomingLinks;
 };
 
 export default getIncomingLinks;

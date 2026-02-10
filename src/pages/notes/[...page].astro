@@ -1,6 +1,12 @@
 ---
 import { SITE } from "@config";
-import Posts from "@layouts/Posts.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Pagination from "@components/Pagination.astro";
+import Card from "@components/Card";
+import ContentTypeFilter from "@components/ContentTypeFilter.astro";
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
@@ -9,11 +15,36 @@ import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmat
 export const getStaticPaths = (async ({ paginate }) => {
   const basePosts = await getCollection("notes", ({ data }) => data.status && data.status === "published");
   const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts);
-  
-  return paginate(getSortedPosts(posts, SITE.noteContentTypes), { pageSize: SITE.postPerPage });
+
+  return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
 ---
 
-<Posts {page} />
+<Layout title={`Notes | ${SITE.title}`}>
+  <Header activeNav="notes" />
+  <Main pageTitle="Notes" pageDesc="Shorter notes, quick findings, and in-progress thoughts.">
+    <p class="text-sm text-skin-base/80 not-italic">
+      Notes are my digital garden. Ideas that grow over time.
+      If you’re curious about where that comes from, start with
+      <a href="/notes/digital-gardens/"> the history of digital gardens</a>.
+    </p>
+    <ContentTypeFilter types={["all", "exploration"]} targetId="notes-list" />
+    <ul id="notes-list">
+      {page.data.map(({ data, id }) => (
+        <Card
+          href={`/notes/${id}/`}
+          frontmatter={data}
+          secHeading={false}
+          showNexusScore={true}
+          contentType={data.type || "notes"}
+        />
+      ))}
+    </ul>
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

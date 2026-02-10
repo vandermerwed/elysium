@@ -8,7 +8,6 @@ tags:
   - astro
   - digital-garden
 description: "Nexus Score: A system for evaluating and visually representing notes in a digital garden based on connectedness and content depth."
-type: note
 aiUsage:
   - research
   - proofreading

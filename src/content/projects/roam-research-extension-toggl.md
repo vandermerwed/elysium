@@ -1,15 +1,19 @@
 ---
-pubDatetime: 2022-10-19T09:22:00Z
-modDatetime: 2024-12-16T11:22:35Z
 title: Toggl Extension for Roam Research
-featured: false
+status: stable
+startDate: 2022-07-31T03:45:00Z
+links:
+  github: https://github.com/vandermerwed/roam-depot-toggl-track
+techStack:
+  - javascript
+category:
+  - open-source
+  - tool
 tags:
   - toggl
   - roam-research
   - productivity
 description: Toggl Track Extension for Roam Research allows you to track time in Toggl Track and pull timers into your Roam Research database.
-type: project
-status: active
 aiUsage:
   - none
 ---

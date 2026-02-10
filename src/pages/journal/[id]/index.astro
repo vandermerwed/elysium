@@ -1,0 +1,42 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import PostDetails from "@layouts/PostDetails.astro";
+import { getSortedPosts } from "@utils/getSortedPosts";
+import getIncomingLinks from "@utils/getIncomingLinks";
+
+export interface Props {
+  post: CollectionEntry<"journal">;
+}
+
+export async function getStaticPaths() {
+  const posts = await getCollection("journal", ({ data }) => data.status && data.status === "published" || data.status === "release");
+
+  const postResult = posts.map(post => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+
+  return postResult;
+}
+
+const { post } = Astro.props;
+
+const posts = await getCollection("journal");
+const sortedPosts = getSortedPosts(posts);
+const notePosts = await getCollection("notes");
+const writingPosts = await getCollection("writing");
+const projectPosts = await getCollection("projects");
+const backlinkSources = [...posts, ...notePosts, ...writingPosts, ...projectPosts];
+const incomingLinks = getIncomingLinks(backlinkSources, post.id, "journal");
+const backlinks = incomingLinks.map(entry => {
+  const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
+  return {
+    title: entry.data.title,
+    url: `/${entryBasePath}/${entry.id}/`,
+    type: entry.data.type, // exploration, loadout, theme, or undefined
+    description: entry.data.description,
+  };
+});
+---
+
+<PostDetails post={post} posts={sortedPosts} basePath="journal" activeNav="journal" backlinks={backlinks} />

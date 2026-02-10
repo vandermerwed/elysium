@@ -7,7 +7,6 @@ status: draft
 tags:
   - fragment
 description: Some thoughts on intentionality.
-type: fragment
 aiUsage:
   - none
 ---

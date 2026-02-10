@@ -6,17 +6,31 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
+import CyclingWords from "@components/CyclingWords.astro";
+import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { SITE } from "@config";
 
-const basePosts = await getCollection("notes");
-const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts);
+const baseNotes = await getCollection("notes", ({ data }) => data.status && data.status === "published" || data.status === "release");
+const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes);
+const sortedNotes = getSortedPosts(notes);
 
-const sortedPosts = getSortedPosts(posts, SITE.noteContentTypes);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.random()).slice(0, SITE.fragmentsPerIndex);
+const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published" || data.status === "release");
+const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting);
+const sortedWriting = getSortedPosts(writing);
+
+const baseJournal = await getCollection("journal", ({ data }) => data.status && data.status === "published" || data.status === "release");
+const journal = await getPostsWithEnrichedFrontmatter<"journal">(baseJournal);
+const sortedJournal = getSortedPosts(journal);
+
+const projects = getSortedProjects(await getCollection("projects"));
+
+const latestWriting = sortedWriting.slice(0, SITE.postPerIndex);
+const latestJournal = sortedJournal.slice(0, SITE.postPerIndex);
+const latestNotes = sortedNotes.slice(0, SITE.postPerIndex);
+const recentExplorations = getSortedPosts(notes, ["exploration"]).slice(0, 4);
+const recentProjects = projects.slice(0, 3);
 
 ---
 
@@ -24,110 +38,184 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1 class="mr-2">Welcome Aboard the <span class="text-skin-accent">Elysium</span></h1>
-      <h2>Hello, I'm Daniel, Captain of the Elysium.</h2>
-      <p>
-        The Elysium is a vessel dedicated to the exploration of mindful productivity, technology, and personal growth.
-      </p>
-      <p>
-        <br/>
-        <pre class="sm:text-md">&gt; Prepare for hyperdrive in 3... 2... 1...</pre>
-      </p>
+      <h1 class="mr-2"><span class="text-skin-accent">Daniel</span><br />van der Merwe</h1>
+      <h2>
+        <CyclingWords 
+          words={[
+            ["thinks", "in systems"],
+            ["automates", "the boring"],
+            ["builds", "for others"],
+            ["tinkers", "relentlessly"],
+            ["writes", "to think"],
+            ["learns", "in public"],
+            ["cares", "about craft"],
+            ["cares", "about people"],
+            ["shows", "up"],
+          ]} 
+          style="scramble" 
+        />
+      </h2>
     </section>
 
     {
-      featuredPosts.length > 0 && (
+      latestWriting.length > 0 && (
         <>
-          <section class="featured" id="featured">
-            <h2>Featured</h2>
+          <section class="featured" id="latest-writing">
+            <h2>Latest Writing</h2>
+            <p class="section-desc">Long-form essays and polished thinking.</p>
             <ul>
-              {featuredPosts.map(({ data, id }) => (
+              {latestWriting.map(({ data, id }) => (
                 <Card
-                  href={`/notes/${id}/`}
+                  href={`/writing/${id}/`}
                   frontmatter={data}
                   secHeading={false}
-                  showNexusScore={true}
+                  showNexusScore={false}
                 />
               ))}
             </ul>
           </section>
-          {recentPosts.length > 0 && <Hr />}
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/writing/">
+              All Writing
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+          <Hr />
         </>
       )
     }
 
     {
-      recentPosts.length > 0 && (
-        <section class="featured" id="fragment-posts">
-          <h2>{featuredPosts.length > 0 && "Recent "}Log Entries</h2>
+      latestJournal.length > 0 && (
+        <>
+          <section class="featured" id="latest-journal">
+            <h2>Journal</h2>
+            <p class="section-desc">Personal updates, yearly themes, and tools.</p>
+            <ul>
+              {latestJournal.map(({ data, id }) => (
+                <Card
+                  href={`/journal/${id}/`}
+                  frontmatter={data}
+                  secHeading={false}
+                  showNexusScore={false}
+                />
+              ))}
+            </ul>
+          </section>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/journal/">
+              All Journal
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+          <Hr />
+        </>
+      )
+    }
+
+    {
+      latestNotes.length > 0 && (
+        <>
+          <section class="featured" id="latest-notes">
+            <h2>Latest Notes</h2>
+            <p class="section-desc">In-progress thoughts from the digital garden.</p>
+            <ul>
+              {latestNotes.map(({ data, id }) => (
+                <Card
+                  href={`/notes/${id}/`}
+                  frontmatter={data}
+                  secHeading={false}
+                  showNexusScore={true}
+                  contentType="notes"
+                />
+              ))}
+            </ul>
+          </section>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/notes/">
+              All Notes
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+          <Hr />
+        </>
+      )
+    }
+
+    {
+      recentExplorations.length > 0 && (
+        <>
+          <section class="featured" id="recent-explorations">
+            <h2>Recent Explorations</h2>
+            <p class="section-desc">Notes with embedded prototypes and experiments.</p>
+            <ul>
+              {recentExplorations.map(({ data, id }) => (
+                <Card
+                  href={`/notes/${id}/`}
+                  frontmatter={{ ...data, type: "exploration" }}
+                  secHeading={false}
+                  showNexusScore={true}
+                  contentType="exploration"
+                />
+              ))}
+            </ul>
+          </section>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/notes/?type=exploration">
+              All Explorations
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
+          <Hr />
+        </>
+      )
+    }
+
+    {
+      recentProjects.length > 0 && (
+        <section class="featured" id="recent-projects">
+          <h2>Projects</h2>
+          <p class="section-desc">Active, stable, and archived work.</p>
           <ul>
-            {recentPosts.map(
-              ({ data, id }, index) =>
-                index < SITE.postPerIndex && (
-                  <Card
-                    href={`/notes/${id}/`}
-                    frontmatter={data}
-                    secHeading={false}
-                    showNexusScore={true}
-                  />
-                )
-            )}
+            {recentProjects.map(({ data, id }) => (
+              <Card
+                href={`/projects/${id}/`}
+                frontmatter={data}
+                secHeading={false}
+                showNexusScore={false}
+                contentType="projects"
+              />
+            ))}
           </ul>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/projects/">
+              All Projects
+              <svg xmlns="http://www.w3.org/2000/svg"
+                ><path
+                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+                ></path>
+              </svg>
+            </LinkButton>
+          </div>
         </section>
       )
     }
-
-    <div class="all-posts-btn-wrapper">
-      <LinkButton href="/notes">
-        All Log Entries
-        <svg xmlns="http://www.w3.org/2000/svg"
-          ><path
-            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-          ></path>
-        </svg>
-      </LinkButton>
-    </div>
-
-    {
-      fragmentPosts.length > 0 && (
-        <>
-          <section class="featured" id="thoughts">
-            <h2>Thoughts</h2>
-            <ul>
-              {fragmentPosts.map(({ data, id }) => (
-                <Card
-                  href={`/notes/${id}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  showNexusScore={true}
-                />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
-
-    <!-- {
-      fragmentPosts.length > 0 && (
-        <section id="fragment-posts">
-          <h2>Fragmented Thoughts</h2>
-          <ul class="fragment-grid">
-            {fragmentPosts.map(({ data, id }) =>
-              (
-                <Card
-                  href={`/notes/${id}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  showNexusScore={true}
-                />
-              )
-          )}
-          </ul>
-        </section>
-      )
-    } -->
   </main>
 
   <Footer />
@@ -136,13 +224,13 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply pb-6 pt-8;
+    @apply pb-4 pt-8;
   }
   #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-6xl;
+    @apply my-4 block text-3xl font-bold sm:my-8 sm:text-6xl;
   }
   #hero h2 {
-    @apply my-4 inline-block text-xl sm:my-4 sm:text-2xl;
+    @apply my-4 block text-xl sm:my-4 sm:text-2xl;
   }
   #hero .rss-link {
     @apply mb-6;
@@ -166,6 +254,9 @@ const fragmentPosts = getSortedPosts(posts, ["fragment"]).sort(() => 0.5 - Math.
   }
   .featured h2 {
     @apply text-3xl font-semibold tracking-wide;
+  }
+  .section-desc {
+    @apply mt-2 text-sm text-skin-base/80;
   }
   .all-posts-btn-wrapper {
     @apply my-8 text-center;

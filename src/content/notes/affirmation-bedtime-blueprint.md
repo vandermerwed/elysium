@@ -9,7 +9,6 @@ tags:
   - affirmation
   - protocol
 description: A set of nightly affirmations for kids focusing on dreams, resilience, and parental love. Perfect for bedtime bonding and motivation.
-type: fragment
 aiUsage:
   - none
 ---

@@ -2,12 +2,15 @@ import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
 import NexusScore from "./NexusScore";
 
+type ContentCollection = "notes" | "writing" | "journal" | "projects";
+
 export interface Props {
   href?: string;
-  frontmatter?: CollectionEntry<"notes">["data"];
+  frontmatter?: CollectionEntry<ContentCollection>["data"];
   secHeading?: boolean;
   showNexusScore?: boolean;
   nexusScore?: string;
+  contentType?: string;
 }
 
 const nexusScorePattern = /^(?:R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
@@ -21,6 +24,7 @@ export default function Card({
   secHeading = true,
   showNexusScore = false,
   nexusScore,
+  contentType,
 }: Props) {
   const {
     title,
@@ -30,6 +34,9 @@ export default function Card({
     readingTime,
     nexusScore: frontmatterNexusScore,
   } = frontmatter || {};
+
+  // type only exists on notes and journal collections
+  const type = (frontmatter as { type?: string } | undefined)?.type;
 
   const transitionId = (frontmatter as { id?: string } | undefined)?.id;
 
@@ -44,8 +51,20 @@ export default function Card({
     className: "text-2xl font-medium decoration-dashed hover:underline",
   };
 
+  // Only show badges for special types (exploration, loadout, theme)
+  // Regular content is identified by its folder, not a type badge
+  const formatTypeLabel = (value?: string) => {
+    if (!value) return undefined;
+    if (value === "exploration") return "Exploration";
+    if (value === "loadout") return "Loadout";
+    if (value === "theme") return "Theme";
+    return undefined; // Don't show badges for other types
+  };
+
+  const typeLabel = formatTypeLabel(type);
+
   return (
-    <li className="my-6">
+    <li className="my-6" data-content-type={contentType}>
       <div className="inline-flex">
         {showNexusScore && resolvedNexusScore ? (
           <NexusScore score={resolvedNexusScore} className="m-auto mr-2" />
@@ -61,13 +80,21 @@ export default function Card({
           )}
         </a>
       </div>
-      <Datetime
-        hideIcon={true}
-        showModified={true}
-        pubDatetime={pubDatetime ?? ""}
-        modDatetime={modDatetime}
-        showTime={false}
-        readingTime={readingTime}  />
+      {pubDatetime && (
+        <Datetime
+          hideIcon={true}
+          showModified={true}
+          pubDatetime={pubDatetime}
+          modDatetime={modDatetime}
+          showTime={false}
+          readingTime={readingTime}
+        />
+      )}
+      {typeLabel && (
+        <span className="mt-1 inline-flex w-fit rounded-full border border-skin-line px-2 py-0.5 text-xs uppercase tracking-wide">
+          {typeLabel}
+        </span>
+      )}
       <p className="mt-4">{description}</p>
     </li>
   );

@@ -1,10 +1,19 @@
-import type { CollectionEntry } from "astro:content";
-
 const enableDebugging = false;
 
 type IconScoreRanges = {
   [key: string]: [number, number];
 };
+
+// Interface for the data needed to calculate nexus score
+interface NexusScoreInput {
+  data: {
+    title?: string;
+    wordCount: number;
+    incomingLinks: string[] | { id: string }[];
+    outgoingLinks: string[] | { id: string }[];
+    externalLinks: string[];
+  };
+}
 
 const iconScoreRanges: IconScoreRanges = {
   R_Fragment: [0, 10],
@@ -26,7 +35,7 @@ const iconScoreRanges: IconScoreRanges = {
   T_Integrated: [68, Infinity],
 };
 
-const getNexusScore = (post: CollectionEntry<"notes" | "projects">) => {
+const getNexusScore = (post: NexusScoreInput) => {
   const incomingLinkCount = post.data.incomingLinks.length;
   const outgoingLinkCount = post.data.outgoingLinks.length;
   const externalResourceCount = post.data.externalLinks.length;

@@ -7,20 +7,48 @@ import MarkdownIt from 'markdown-it';
 const parser = new MarkdownIt();
 
 export async function GET() {
-  const posts = await getCollection("notes");
-  const sortedPosts = getSortedPosts(posts, SITE.noteContentTypes);
+  // Get all collections
+  const notes = await getCollection("notes", ({ data }) => data.status && data.status === "published");
+  const writing = await getCollection("writing", ({ data }) => data.status && data.status === "published");
+  const journal = await getCollection("journal", ({ data }) => data.status && data.status === "published");
+
+  // Map each collection to RSS items with correct links
+  const notesItems = notes.map(({ data, body, id }) => ({
+    link: `notes/${id}`,
+    title: data.title,
+    description: data.description,
+    content: sanitizeHtml(parser.render(body)),
+    categories: data.tags,
+    pubDate: new Date(data.pubDatetime),
+  }));
+
+  const writingItems = writing.map(({ data, body, id }) => ({
+    link: `writing/${id}`,
+    title: data.title,
+    description: data.description,
+    content: sanitizeHtml(parser.render(body)),
+    categories: data.tags,
+    pubDate: new Date(data.pubDatetime),
+  }));
+
+  const journalItems = journal.map(({ data, body, id }) => ({
+    link: `journal/${id}`,
+    title: data.title,
+    description: data.description,
+    content: sanitizeHtml(parser.render(body)),
+    categories: data.tags,
+    pubDate: new Date(data.pubDatetime),
+  }));
+
+  // Combine and sort all items by date
+  const allItems = [...notesItems, ...writingItems, ...journalItems].sort(
+    (a, b) => b.pubDate.valueOf() - a.pubDate.valueOf()
+  );
+
   return rss({
     title: SITE.title,
     description: SITE.desc,
     site: SITE.website,
-    items: sortedPosts.map(({ data, body, id }) => ({
-      link: `notes/${id}`,
-      title: data.title,
-      description: data.description,
-      // Note: this will not process components or JSX expressions in MDX files.
-      content: sanitizeHtml(parser.render(body)),
-      categories: data.tags,
-      pubDate: new Date(data.pubDatetime),
-    })),
+    items: allItems,
   });
 }

@@ -7,7 +7,6 @@ status: draft
 tags:
   - fragment
 description: On yearly themes.
-type: fragment
 aiUsage:
   - none
 ---

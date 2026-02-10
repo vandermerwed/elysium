@@ -7,7 +7,6 @@ status: published
 tags:
   - fragment
 description: A research-backed strategy that can help you achieve your goals and improve your habits.
-type: fragment
 aiUsage:
   - none
 ---

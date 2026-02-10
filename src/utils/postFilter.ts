@@ -1,8 +1,10 @@
 import { SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
 
+type CollectionName = "notes" | "writing" | "journal" | "projects";
+
 const postFilter = (
-  post: CollectionEntry<"notes">,
+  post: CollectionEntry<CollectionName>,
   contentTypes?: readonly string[]
 ): boolean => {
   const { data } = post;
@@ -10,10 +12,14 @@ const postFilter = (
     Date.now() >
     new Date(data.pubDatetime).getTime() - SITE.scheduledPostMargin;
 
-  // Determine if content should be included
-  const isContent = Array.isArray(contentTypes) && data.type
-    ? contentTypes.includes(data.type)
-    : true;
+  // Determine if content should be included based on type field
+  // type only exists on notes and journal collections
+  const type = (data as { type?: string }).type;
+  let isContent = true;
+  if (Array.isArray(contentTypes) && contentTypes.length > 0) {
+    // Check type field (notes: exploration, journal: loadout/theme)
+    isContent = type ? contentTypes.includes(type) : false;
+  }
 
   return isContent && data.status && data.status === "published" && (import.meta.env.DEV || isPublishTimePassed);
 };

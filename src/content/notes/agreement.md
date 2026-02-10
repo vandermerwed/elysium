@@ -5,7 +5,6 @@ title: Agreement
 featured: false
 status: draft
 description: Thoughts and notes on agreement
-type: fragment
 aiUsage:
   - none
 ---

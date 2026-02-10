@@ -3,19 +3,23 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
-import Datetime from "@components/Datetime";
-import NexusScore from "@components/NexusScore";
 import type { CollectionEntry } from "astro:content";
-import Card from "@components/Card";
+import Backlinks from "@components/Backlinks.astro";
 import { SITE } from "@config";
 import { render } from 'astro:content';
 
 export interface Props {
   project: CollectionEntry<"projects">;
   projects: CollectionEntry<"projects">[];
+  backlinks?: Array<{
+    title: string;
+    url: string;
+    type?: string;
+    description?: string;
+  }>;
 }
 
-const { project } = Astro.props;
+const { project, projects, backlinks = [] } = Astro.props;
 
 const {
   title,
@@ -23,12 +27,13 @@ const {
   description,
   ogImage,
   canonicalURL,
-  pubDatetime,
-  modDatetime,
+  startDate,
+  endDate,
   tags,
-  editPost,
-  // type,
-  incomingLinks
+  status,
+  techStack,
+  category,
+  links,
 } = project.data;
 
 const { Content, remarkPluginFrontmatter } = await render(project);
@@ -43,12 +48,27 @@ const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
   description,
-  pubDatetime,
-  modDatetime,
   canonicalURL,
   ogImage: ogUrl,
   scrollSmooth: true,
 };
+
+const formatDate = (date?: Date | string | null) =>
+  date
+    ? new Date(date).toLocaleDateString("en-ZA", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "";
+
+const allProjects = projects.map(({ data: { title }, id }) => ({ id, title }));
+const currentProjectIndex = allProjects.findIndex(item => item.id === project.id);
+const prevProject = currentProjectIndex > 0 ? allProjects[currentProjectIndex - 1] : null;
+const nextProject = currentProjectIndex < allProjects.length - 1 ? allProjects[currentProjectIndex + 1] : null;
+
+const relatedExplorations = backlinks.filter(link => link.type === "exploration");
+const otherBacklinks = backlinks.filter(link => link.type !== "exploration");
 
 const articleClasses = ["prose", "mx-auto", "mt-8", "max-w-3xl"];
 if (remarkPluginFrontmatter.marginNotes) {
@@ -58,7 +78,7 @@ if (remarkPluginFrontmatter.marginNotes) {
 ---
 
 <Layout {...layoutProps}>
-  <Header />
+  <Header activeNav="projects" />
 
   <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
     <button
@@ -73,19 +93,17 @@ if (remarkPluginFrontmatter.marginNotes) {
     </button>
   </div>
   <main id="main-content">
-    <NexusScore score={remarkPluginFrontmatter.nexusScore} showDescription={true} size="sm" className="m-auto mr-2" />
     <h1 transition:name={project.id} class="post-title mt-2">{title}</h1>
-    <Datetime
-      showModified={true}
-      showTime={false}
-      pubDatetime={pubDatetime}
-      modDatetime={modDatetime}
-      readingTime={remarkPluginFrontmatter.readingTime}
-      size="lg"
-      className="my-2"
-      editPost={editPost}
-      postId={project.id}
-    />
+    <div class="project-meta">
+      {status && <span>{status}</span>}
+      {category && category.map(value => (
+        <span>{value}</span>
+      ))}
+      {startDate && <span>Started: {formatDate(startDate)}</span>}
+      {status === "archived" && endDate && (
+        <span>Ended: {formatDate(endDate)}</span>
+      )}
+    </div>
 
     <ul class="tags-container">
       {tags.map((tag : string) => <Tag tag={tag} />)}
@@ -94,6 +112,36 @@ if (remarkPluginFrontmatter.marginNotes) {
     <article id="article" class={articleClasses.join(" ")}>
       <Content />
     </article>
+
+    {techStack && techStack.length > 0 && (
+      <section class="project-section">
+        <h2>Tech Stack</h2>
+        <ul class="tech-stack">
+          {techStack.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {status && (
+      <section class="project-section">
+        <h2>Current Status</h2>
+        <p>{status}</p>
+      </section>
+    )}
+
+    {links && (
+      <section class="project-section">
+        <h2>Links</h2>
+        <div class="project-links">
+          {links.demo && <a href={links.demo} target="_blank" rel="noreferrer">View Demo</a>}
+          {links.github && <a href={links.github} target="_blank" rel="noreferrer">View Source</a>}
+          {links.website && <a href={links.website} target="_blank" rel="noreferrer">Visit Website</a>}
+          {links.spotify && <a href={links.spotify} target="_blank" rel="noreferrer">Listen on Spotify</a>}
+        </div>
+      </section>
+    )}
 
     
 
@@ -112,26 +160,72 @@ if (remarkPluginFrontmatter.marginNotes) {
         <span>Back to Top</span>
       </button>
     </div>
-    {
-      (incomingLinks && incomingLinks.length > 0) &&
-        <div>
-          <hr class="my-6 border-solid border-skin-line-muted" />
-          <div class="incoming-links-container">
-            <br>
-            <h2>Incoming Links</h2>
-            <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {
-                incomingLinks.map((value: { id: string; frontmatter?: {} }, _index: number, _array: { id: string; frontmatter?: {} }[]): any => {
-                  const { id, frontmatter } = value;
-                  return (
-                    <Card href={`/projects/${id}`} frontmatter={frontmatter ?? {}} showNexusScore={true} />
-                  );
-                })
-              }
-            </ul>
+    <hr class="my-6 border-solid border-skin-line-muted" />
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {prevProject && (
+        <a href={`/projects/${prevProject.id}/`} class="flex w-full gap-1 hover:opacity-75">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 6l-6 6l6 6" />
+          </svg>
+          <div>
+            <span>Previous Project</span>
+            <div class="text-sm text-skin-accent/85">{prevProject.title}</div>
           </div>
-        </div>    
-      }
+        </a>
+      )}
+      {nextProject && (
+        <a
+          href={`/projects/${nextProject.id}/`}
+          class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+        >
+          <div>
+            <span>Next Project</span>
+            <div class="text-sm text-skin-accent/85">{nextProject.title}</div>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M9 6l6 6l-6 6" />
+          </svg>
+        </a>
+      )}
+    </div>
+
+    {relatedExplorations.length > 0 && (
+      <>
+        <hr class="my-6 border-solid border-skin-line-muted" />
+        <Backlinks backlinks={relatedExplorations} title="Related Explorations" />
+      </>
+    )}
+
+    {otherBacklinks.length > 0 && (
+      <>
+        <hr class="my-6 border-solid border-skin-line-muted" />
+        <Backlinks backlinks={otherBacklinks} title="Referenced By" />
+      </>
+    )}
   </main>
   <Footer />
 </Layout>
@@ -143,8 +237,26 @@ if (remarkPluginFrontmatter.marginNotes) {
   .post-title {
     @apply text-4xl font-semibold text-skin-accent;
   }
+  .project-meta {
+    @apply mt-2 flex flex-wrap gap-3 text-sm text-skin-base/80;
+  }
   .tags-container {
     @apply my-0;
+  }
+  .project-section {
+    @apply my-8;
+  }
+  .tech-stack {
+    @apply mt-2 flex flex-wrap gap-2;
+  }
+  .tech-stack li {
+    @apply rounded-full border border-skin-line px-3 py-1 text-xs uppercase tracking-wide;
+  }
+  .project-links {
+    @apply mt-2 flex flex-wrap gap-4;
+  }
+  .project-links a {
+    @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;
   }
   .incoming-links-container {
     @apply my-2;

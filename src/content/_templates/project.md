@@ -1,21 +1,13 @@
 ---
-pubDatetime: {{date}}T{{time}}:00Z
-modDatetime: {{date}}T{{time}}:00Z
-title: Post Template
-featured: true
-status: future
+title: Project Title
+startDate: {{date}}T{{time}}:00Z
+status: active
 tags:
-  - ???
-description: Some description text.
-type: project
+  - project
+description: Brief project description.
+aiUsage:
+  - none
+modDatetime: 2026-02-02T05:11:28Z
 ---
 
-Project state ideas
-**Starship Building**:
-
-- **Idea**: "Blueprint Sketched"
-- **In Progress**: "Frame Constructed"
-- **Active**: "Starship Launched"
-- **Archived**: "Docked in Hangar"
-
-Projects need to eventually pull in from Coda
+<!-- Project status can be: active, stable, archived -->

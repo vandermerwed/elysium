@@ -26,6 +26,7 @@ export interface FromMarkdownOptions {
     newClassName?: string; // class name to add to links that don't have a matching permalink
     wikiLinkClassName?: string; // class name to add to all wiki links
     hrefTemplate?: (permalink: string) => string; // function to generate the href attribute of a link
+    titleMap?: Record<string, string>; // map of slugs to page titles for display
 }
 
 // mdas-util-from-markdown extension
@@ -37,6 +38,7 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
     const newClassName = opts.newClassName || "new";
     const wikiLinkClassName = opts.wikiLinkClassName || "internal";
     const defaultHrefTemplate = (permalink: string) => permalink;
+    const titleMap = opts.titleMap || {};
 
     const hrefTemplate = opts.hrefTemplate || defaultHrefTemplate;
 
@@ -119,8 +121,10 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
         wikiLink.data.exists = !!matchingPermalink;
         wikiLink.data.permalink = link;
 
-        // remove leading # if the target is a heading on the same page
-        const displayName = alias || target.replace(/^#/, "");
+        // Use alias if provided, otherwise look up title from titleMap, fallback to target
+        // titleMap keys are basenames (no directory), so strip any directory prefix
+        const slug = path.replace(/^#/, "").split("/").pop() || path.replace(/^#/, "");
+        const displayName = alias || titleMap[slug] || target.replace(/^#/, "");
         const headingId = heading.replace(/\s+/g, "-").toLowerCase();
         let classNames = wikiLinkClassName;
         if (!matchingPermalink) {
@@ -129,6 +133,19 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
 
         if (isEmbed) {
             const [isSupportedFormat, format] = isSupportedFileFormat(target);
+            if (isSupportedFormat && format !== "pdf") {
+                let normalizedTarget = target.replace(/\\/g, "/");
+                // Normalize media paths to absolute /media/ URLs so embeds work from any page
+                const mediaMatch = normalizedTarget.match(/(?:^|\/)media\/(.+)$/);
+                if (mediaMatch) {
+                    normalizedTarget = `/media/${mediaMatch[1]}`;
+                }
+                wikiLink.type = "image";
+                wikiLink.url = normalizedTarget;
+                wikiLink.alt = displayName;
+                delete wikiLink.data;
+                return;
+            }
             if (!isSupportedFormat) {
                 // Temporarily render note transclusion as a regular wiki link
                 if (!format) {

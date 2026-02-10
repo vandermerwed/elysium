@@ -1,11 +1,14 @@
 ---
 pubDatetime: {{date}}T{{time}}:00Z
 modDatetime: {{date}}T{{time}}:00Z
-title: YEAR - Year of ???
-featured: true
+title: Year of ??? [20??]
+featured: false
 status: draft
 tags:
   - protocol
-description: The Elysium has charted its course for the 20?? campaign. Quests are locked in, equipment is double-checked, and thrusters are engaged.
+  - theme
+description: My yearly theme for 20?? focusing on [key areas/goals].
 type: theme
+aiUsage:
+  - none
 ---

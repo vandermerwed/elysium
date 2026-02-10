@@ -7,7 +7,6 @@ status: draft
 tags:
   - agency
 description: On Agency. What it is and how to cultivate it
-type: fragment
 aiUsage:
   - none
 ---

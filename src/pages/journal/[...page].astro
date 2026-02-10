@@ -1,0 +1,25 @@
+---
+import { SITE } from "@config";
+import Posts from "@layouts/Posts.astro";
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { getSortedPosts } from "@utils/getSortedPosts";
+import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const basePosts = await getCollection("journal", ({ data }) => data.status && data.status === "published" || data.status === "release");
+  const posts = await getPostsWithEnrichedFrontmatter<"journal">(basePosts);
+
+  return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Posts
+  {page}
+  activeNav="journal"
+  pageTitle="Journal"
+  pageDesc="Personal updates, yearly themes, and tools."
+  basePath="journal"
+/>

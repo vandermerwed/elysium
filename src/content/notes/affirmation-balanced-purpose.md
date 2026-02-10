@@ -11,7 +11,6 @@ tags:
 description: An affirmation for honoring your commitments and dreams while
   prioritizing well-being. Manage your time effectively without sacrificing
   quality or impact.
-type: fragment
 aiUsage:
   - proofreading
 ---

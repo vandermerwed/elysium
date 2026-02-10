@@ -4,10 +4,13 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "notes" | "projects" | "archives" | "tags" | "about" | "search" | "ai";
+  activeNav?: "writing" | "projects" | "about" | "search" | "notes" | "journal" | "tags" | "archives";
 }
 
 const { activeNav } = Astro.props;
+const currentPath = Astro.url.pathname;
+const isActive = (path: string, navKey?: Props["activeNav"]) =>
+  (navKey && activeNav === navKey) || currentPath.startsWith(path);
 ---
 
 <header>
@@ -61,66 +64,31 @@ const { activeNav } = Astro.props;
           </svg>
         </button>
         <ul id="menu-items" class="display-none sm:flex">
-          <!-- <li>
-            <a href="/notes" class={activeNav === "notes" ? "active" : ""}>
-              Notes
-            </a>
-          </li> -->
           <li>
-            <a href="/projects" class={activeNav === "projects" ? "active" : ""}>
+            <a href="/journal/" class={isActive("/journal", "journal") ? "active" : ""}>
+              Journal
+            </a>
+          </li>
+          <li>
+            <a href="/writing/" class={isActive("/writing", "writing") ? "active" : ""}>
+              Writing
+            </a>
+          </li>
+          <li>
+            <a href="/projects/" class={isActive("/projects", "projects") ? "active" : ""}>
               Projects
             </a>
           </li>
           <li>
-            <a href="/tags" class={activeNav === "tags" ? "active" : ""}>
-              Tags
-            </a>
-          </li>
-          <li>
-            <a href="/about/" class={activeNav === "about" ? "active" : ""}>
+            <a href="/about/" class={isActive("/about", "about") ? "active" : ""}>
               About
             </a>
           </li>
-          {
-            SITE.showArchives && (
-              <li>
-                <LinkButton
-                  href="/archives/"
-                  className={`focus-outline flex justify-center p-3 sm:p-1`}
-                  ariaLabel="archives"
-                  title="Archives"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class:list={[
-                      "icon icon-tabler icons-tabler-outline !hidden sm:!inline-block",
-                      activeNav === "archives" && "!stroke-skin-accent",
-                    ]}
-                  >
-                    <>
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                      <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-                      <path d="M10 12l4 0" />
-                    </>
-                  </svg>
-                  <span
-                    class:list={[
-                      "sm:sr-only",
-                      activeNav === "archives" && "active",
-                    ]}
-                  >
-                    Archives
-                  </span>
-                </LinkButton>
-              </li>
-            )
-          }
           <li>
             <LinkButton
               href="/search/"
               className={`focus-outline p-3 sm:p-1 ${
-                activeNav === "search" ? "active" : ""
+                isActive("/search", "search") ? "active" : ""
               } flex`}
               ariaLabel="search"
               title="Search"
@@ -189,7 +157,7 @@ const { activeNav } = Astro.props;
     @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
   nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0;
+    @apply mt-4 grid w-44 grid-cols-2 grid-rows-6 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;
