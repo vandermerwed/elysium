@@ -122,7 +122,8 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
         wikiLink.data.permalink = link;
 
         // Use alias if provided, otherwise look up title from titleMap, fallback to target
-        const slug = path.replace(/^#/, "");
+        // titleMap keys are basenames (no directory), so strip any directory prefix
+        const slug = path.replace(/^#/, "").split("/").pop() || path.replace(/^#/, "");
         const displayName = alias || titleMap[slug] || target.replace(/^#/, "");
         const headingId = heading.replace(/\s+/g, "-").toLowerCase();
         let classNames = wikiLinkClassName;
@@ -133,7 +134,12 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
         if (isEmbed) {
             const [isSupportedFormat, format] = isSupportedFileFormat(target);
             if (isSupportedFormat && format !== "pdf") {
-                const normalizedTarget = target.replace(/\\/g, "/");
+                let normalizedTarget = target.replace(/\\/g, "/");
+                // Normalize media paths to absolute /media/ URLs so embeds work from any page
+                const mediaMatch = normalizedTarget.match(/(?:^|\/)media\/(.+)$/);
+                if (mediaMatch) {
+                    normalizedTarget = `/media/${mediaMatch[1]}`;
+                }
                 wikiLink.type = "image";
                 wikiLink.url = normalizedTarget;
                 wikiLink.alt = displayName;

@@ -6,7 +6,7 @@ featured: false
 status: draft
 tags:
   - habits
-  - dicipline
+  - discipline
   - mental-models
   - progressive-taring
 description: When a habit becomes so automatic it disappears from your effort budget. The kitchen scale as a mental model for raising baselines.

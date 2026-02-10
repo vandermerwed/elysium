@@ -5,6 +5,9 @@ type CollectionName = "notes" | "writing" | "journal" | "projects";
 const normalizeReference = (reference: string) =>
     reference
         .split("|")[0]
+        .replace(/\\/g, "/")
+        .replace(/^(\.\.\/)+/, "")
+        .replace(/^\.\//, "")
         .replace(/\.mdx?$/, "")
         .replace(/^\//, "")
         .trim();

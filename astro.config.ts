@@ -70,6 +70,13 @@ export default defineConfig({
           if (resolvedId.endsWith(".mdx")) {
             resolvedId = resolvedId.replace(".mdx", "");
           }
+          const knownSectionPrefixes = ["notes/", "journal/", "writing/"];
+          const hasKnownSectionPrefix = knownSectionPrefixes.some((prefix) =>
+            resolvedId.startsWith(prefix)
+          );
+          if (hasKnownSectionPrefix) {
+            return [resolvedId];
+          }
           return [`notes/${resolvedId}`];
         }
       }],
