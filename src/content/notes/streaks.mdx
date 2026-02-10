@@ -1,0 +1,57 @@
+---
+pubDatetime: 2025-11-05T06:09:00Z
+modDatetime: 2026-02-10T07:58:29Z
+title: Streaks
+featured: false
+status: published
+tags:
+  - habits
+  - streaks
+  - discipline
+description: Why I'm skeptical of streaks despite maintaining one for 200+ weeks. The cost, the conditions, and what Clear's "never miss twice" rule reveals about why breaking a streak is so destructive.
+aiUsage:
+  - research
+  - proofreading
+---
+
+import TimeSince from "@components/TimeSince.tsx";
+
+<div style="display:none">
+  {/* TODO: Dirty hack to get around the fact that the first instance of a loaded component has script and style tags that break <p> tag rendering. Need to figure out a fix for this. */}
+  <TimeSince client:visible startDateTime="1988-09-30 07:50:00" />
+</div>
+
+I'm not a fan of streaks. They stress me out.
+
+I kept a 3x per week jogging streak for 50 weeks, then broke it. It took me almost three years to start again. That's what streak-breaking does to me. Not a gradual fade. A cliff. Very demotivating to restart from zero when the counter reads zero.
+
+James Clear calls this the spiral: "The first mistake is never the one that ruins you. It is the spiral of repeated mistakes that follows."[^1] His rule is "never miss twice." Missing once is an accident. Missing twice is the start of a new habit.[^2] [A study](https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674) in the European Journal of Social Psychology backs this up. Missing any single day of a habit has no measurable impact on long-term adherence. It's the second miss that kills it.
+
+Now I'm at <TimeSince client:load startDateTime="2022-01-14 00:00:00" unit="weeks" decimalPlaces={0} updateInterval={6000} /> weeks. This streak has caused anxiety and real tension. Times when I've prioritized the jog over other commitments just to keep it alive.[^3]
+
+## When streaks work:
+
+Simple enough to do anywhere (see [[habits]]). Infrequent enough to sustain. 3x/week, not daily. Backed by clear external incentives (see [[pact]]).
+
+## The limits:
+
+I can't manage a daily streak. I don't think I ever will. Unless it's something already invisible. Brushing teeth, morning coffee. Things that don't require activation energy.
+
+## Why this one survives:
+
+It's crossed into [[progressive-taring]] territory. Three runs per week aren't exercise anymore. They're baseline. The streak isn't something I'm chasing, it's just what happens now. The anxiety is still there though. I'm aware that one bad week could send me into another three-year gap.
+
+## The selectivity:
+
+I wouldn't maintain another streak like this. Not at this frequency, not with this level of commitment. The cost is real. The question isn't "can I?" but "is it worth it?"
+
+## The alternative:
+
+[[maintaining-averages]] is a healthier approach for most things. It removes the cliff-edge psychology of streaks and replaces it with something more forgiving. Not everything needs the rigidity of a streak to work.
+
+## Open question:
+Is there a way to get the benefits of a streak (consistency, identity reinforcement) without the anxiety of breaking it? Or is the anxiety the mechanism that makes it work?
+
+[^1]: Clear, James. [Atomic Habits](https://www.goodreads.com/book/show/40121378-atomic-habits) (2018). Also expanded on in his essay [Avoid the Second Mistake](https://jamesclear.com/second-mistake).
+[^2]: This is essentially what [[maintaining-averages]] does. It builds "never miss twice" into the system by design. You don't need a perfect streak, you need to keep the average honest.
+[^3]: The streak becomes its own goal, separate from the underlying habit. You're no longer running for fitness, you're running to not break the streak. That shift creates pressure. James Clear writes about this too. Once your pride gets involved, you'll fight tooth and nail to maintain your habits. [Atomic Habits](https://www.goodreads.com/book/show/40121378-atomic-habits) (2018). Pride is fuel until it becomes a cage.

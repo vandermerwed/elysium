@@ -32,9 +32,11 @@ export default function Card({
     modDatetime,
     description,
     readingTime,
-    type,
     nexusScore: frontmatterNexusScore,
   } = frontmatter || {};
+
+  // type only exists on notes and journal collections
+  const type = (frontmatter as { type?: string } | undefined)?.type;
 
   const transitionId = (frontmatter as { id?: string } | undefined)?.id;
 

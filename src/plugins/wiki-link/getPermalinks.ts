@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import matter from "gray-matter";
 
 // recursively get all files in a directory
 const recursiveGetFiles = (dir: string) => {
@@ -41,4 +42,36 @@ const defaultPathToPermalinkFunc = (
         .replace(/\\/g, "/") // replace windows backslash with forward slash
         .replace(/\/index$/, ""); // remove index from the end of the permalink
     return permalink.length > 0 ? permalink : "/"; // for home page
+};
+
+// Get a map of slugs to page titles for wikilink display
+export const getTitleMap = (
+    markdownFolder: string,
+    ignorePatterns: Array<RegExp> = []
+): Record<string, string> => {
+    const files = recursiveGetFiles(markdownFolder);
+    const filesFiltered = files.filter((file) => {
+        return !ignorePatterns.some((pattern) => file.match(pattern));
+    });
+
+    const titleMap: Record<string, string> = {};
+
+    for (const file of filesFiltered) {
+        if (!file.match(/\.(md|mdx)$/)) continue;
+
+        try {
+            const content = fs.readFileSync(file, "utf-8");
+            const { data } = matter(content);
+
+            if (data.title) {
+                // Get the slug (filename without extension)
+                const slug = path.basename(file).replace(/\.(md|mdx)$/, "");
+                titleMap[slug] = data.title;
+            }
+        } catch (e) {
+            // Skip files that can't be parsed
+        }
+    }
+
+    return titleMap;
 };

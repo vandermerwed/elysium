@@ -6,20 +6,21 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
+import CyclingWords from "@components/CyclingWords.astro";
 import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { SITE } from "@config";
 
-const baseNotes = await getCollection("notes", ({ data }) => data.status && data.status === "published");
+const baseNotes = await getCollection("notes", ({ data }) => data.status && data.status === "published" || data.status === "release");
 const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes);
 const sortedNotes = getSortedPosts(notes);
 
-const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published");
+const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published" || data.status === "release");
 const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting);
 const sortedWriting = getSortedPosts(writing);
 
-const baseJournal = await getCollection("journal", ({ data }) => data.status && data.status === "published");
+const baseJournal = await getCollection("journal", ({ data }) => data.status && data.status === "published" || data.status === "release");
 const journal = await getPostsWithEnrichedFrontmatter<"journal">(baseJournal);
 const sortedJournal = getSortedPosts(journal);
 
@@ -38,13 +39,22 @@ const recentProjects = projects.slice(0, 3);
   <main id="main-content">
     <section id="hero">
       <h1 class="mr-2"><span class="text-skin-accent">Daniel</span><br />van der Merwe</h1>
-      <h2>Builder and systems thinker.</h2>
-      <p>
-        By day, I’m Technical Director at <a class="external-link" href="https://rokkit200.co" target="_blank" rel="noopener noreferrer">Rokkit200</a>. Outside of work, I explore ideas, build tools for myself, and document what I’m learning.
-      </p>
-      <p>
-        This is my personal digital space for side projects, experiments, and thinking. It’s not a portfolio, it’s where I tinker, iterate, and share the parts that might be useful to others.
-      </p>
+      <h2>
+        <CyclingWords 
+          words={[
+            ["thinks", "in systems"],
+            ["automates", "the boring"],
+            ["builds", "for others"],
+            ["tinkers", "relentlessly"],
+            ["writes", "to think"],
+            ["learns", "in public"],
+            ["cares", "about craft"],
+            ["cares", "about people"],
+            ["shows", "up"],
+          ]} 
+          style="scramble" 
+        />
+      </h2>
     </section>
 
     {
@@ -214,13 +224,13 @@ const recentProjects = projects.slice(0, 3);
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply pb-6 pt-8;
+    @apply pb-4 pt-8;
   }
   #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-6xl;
+    @apply my-4 block text-3xl font-bold sm:my-8 sm:text-6xl;
   }
   #hero h2 {
-    @apply my-4 inline-block text-xl sm:my-4 sm:text-2xl;
+    @apply my-4 block text-xl sm:my-4 sm:text-2xl;
   }
   #hero .rss-link {
     @apply mb-6;

@@ -1,0 +1,305 @@
+---
+type WordEntry = string | [string, string];
+
+interface Props {
+  words?: WordEntry[];
+  intervalMs?: number;
+  class?: string;
+  style?: "slide" | "scramble";
+}
+
+const HOLD_RATIO = 0.7;
+const MIN_WIDTH_CHARS = 4;
+
+const {
+  words = ["think", "build", "tinker", "care"],
+  intervalMs = 2000,
+  class: className,
+  style: animStyle = "slide",
+} = Astro.props;
+
+// Normalize entries to [word, suffix] tuples
+const normalizedWords: [string, string][] = words.map((w) =>
+  Array.isArray(w) ? w : [w, ""]
+);
+
+const phrases = normalizedWords.map(([word, suffix]) =>
+  suffix ? `${word} ${suffix}` : word
+);
+
+// Pad with boundary duplicates so the slide animation loops seamlessly:
+// [last, ...all, first, second] creates overlap at both ends of the strip
+const displayPhrases =
+  phrases.length > 1
+    ? [phrases.at(-1)!, ...phrases, phrases[0], phrases[1]]
+    : phrases;
+
+const steps = phrases.length;
+const durationMs = steps * intervalMs;
+const longest = Math.max(...phrases.map((p) => p.length), MIN_WIDTH_CHARS);
+
+// Each step holds at currentY for HOLD_RATIO of the segment, then slides to nextY
+const segment = 100 / steps;
+const keyframes = Array.from({ length: steps }, (_, i) => {
+  const start = i * segment;
+  const holdEnd = start + segment * HOLD_RATIO;
+  const moveEnd = (i + 1) * segment;
+  const currentY = -((i * 100) / displayPhrases.length);
+  const nextY = -(((i + 1) * 100) / displayPhrases.length);
+
+  return `
+    ${start.toFixed(2)}% { transform: translateY(${currentY.toFixed(2)}%); animation-timing-function: linear; }
+    ${holdEnd.toFixed(2)}% { transform: translateY(${currentY.toFixed(2)}%); animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+    ${moveEnd.toFixed(2)}% { transform: translateY(${nextY.toFixed(2)}%); }`;
+}).join("");
+
+const uniqueId = `cycling-${Math.random().toString(36).slice(2, 8)}`;
+const scrambleData = normalizedWords.map(([word, suffix]) => ({ word, suffix }));
+---
+
+{animStyle === "slide" ? (
+  <span
+    class:list={["cycling-words", "cycling-words--slide", className]}
+    style={`--min-width:${longest + 1}ch;`}
+  >
+    <span class="cycling-words__frame" aria-hidden="true">
+      <span class="cycling-words__stack" style={`animation: ${uniqueId} ${durationMs}ms linear infinite;`}>
+        {displayPhrases.map((phrase) => (
+          <span class="cycling-words__word">{phrase}</span>
+        ))}
+      </span>
+    </span>
+    <span class="sr-only">{phrases.join(", ")}</span>
+  </span>
+) : (
+  <span
+    class:list={["cycling-words", "cycling-words--scramble", className]}
+    data-phrases={JSON.stringify(scrambleData)}
+    data-interval={intervalMs}
+  >
+    <span class="cycling-words__word" aria-hidden="true">{normalizedWords[0][0]}</span>{normalizedWords[0][1] && (<>{" "}<span class="cycling-words__suffix" aria-hidden="true">{normalizedWords[0][1]}</span></>)}
+    <span class="sr-only">{phrases.join(", ")}</span>
+  </span>
+)}
+
+<style>
+  /* ===== Shared ===== */
+  .cycling-words {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  /* ===== Slide ===== */
+  .cycling-words--slide {
+    --word-height: 1.2em;
+    --visible-lines: 3;
+  }
+
+  .cycling-words--slide .cycling-words__frame {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    height: calc(var(--word-height) * var(--visible-lines));
+    min-width: var(--min-width);
+    margin-top: calc(var(--word-height) * -1);
+    margin-bottom: calc(var(--word-height) * -1);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.15) 20%,
+      rgba(0, 0, 0, 1) 40%,
+      rgba(0, 0, 0, 1) 60%,
+      rgba(0, 0, 0, 0.15) 80%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.15) 20%,
+      rgba(0, 0, 0, 1) 40%,
+      rgba(0, 0, 0, 1) 60%,
+      rgba(0, 0, 0, 0.15) 80%,
+      transparent 100%
+    );
+  }
+
+  .cycling-words--slide .cycling-words__stack {
+    position: relative;
+    display: block;
+    will-change: transform;
+  }
+
+  .cycling-words--slide .cycling-words__word {
+    display: block;
+    height: var(--word-height);
+    line-height: var(--word-height);
+    text-align: center;
+  }
+
+  /* ===== Scramble ===== */
+  .cycling-words--scramble {
+    display: inline;
+    font-family: inherit;
+    vertical-align: baseline;
+  }
+
+  .cycling-words--scramble .cycling-words__word {
+    display: inline;
+  }
+
+  .cycling-words--scramble .cycling-words__suffix {
+    display: inline;
+    opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cycling-words--slide .cycling-words__stack {
+      animation: none !important;
+    }
+  }
+</style>
+
+{animStyle === "slide" && (
+  <Fragment set:html={`<style>@keyframes ${uniqueId} {${keyframes}}</style>`} />
+)}
+
+<script>
+  interface PhraseData {
+    word: string;
+    suffix: string;
+  }
+
+  const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+  const SCRAMBLE_ITERATIONS = 14;
+  const HOLD_RATIO = 0.7;
+  const REVEAL_THRESHOLD_FACTOR = 0.85;
+
+  class ScrambleText {
+    private element: HTMLElement;
+    private wordEl: HTMLElement;
+    private suffixEl: HTMLElement | null;
+    private phrases: PhraseData[];
+    private interval: number;
+    private currentIndex = 0;
+    private isAnimating = false;
+    private timeoutId: number | null = null;
+
+    constructor(element: HTMLElement) {
+      this.element = element;
+      this.wordEl = element.querySelector(".cycling-words__word") as HTMLElement;
+      this.suffixEl = element.querySelector(".cycling-words__suffix");
+      this.phrases = JSON.parse(element.dataset.phrases || "[]");
+      this.interval = parseInt(element.dataset.interval || "3000", 10);
+
+      if (this.phrases.length > 1) {
+        this.scheduleNext();
+      }
+    }
+
+    private scheduleNext() {
+      this.timeoutId = window.setTimeout(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.phrases.length;
+        this.scrambleTo(this.phrases[this.currentIndex]);
+      }, this.interval * HOLD_RATIO);
+    }
+
+    private async scrambleTo(target: PhraseData) {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
+
+      const currentWord = this.wordEl.textContent || "";
+      const currentSuffix = this.suffixEl?.textContent?.trim() || "";
+      const scrambleDuration = this.interval * (1 - HOLD_RATIO);
+      const iterationTime = scrambleDuration / SCRAMBLE_ITERATIONS;
+
+      this.ensureSuffixEl(target);
+
+      for (let i = 0; i < SCRAMBLE_ITERATIONS; i++) {
+        const progress = i / SCRAMBLE_ITERATIONS;
+        this.wordEl.textContent = this.scrambleString(currentWord, target.word, progress);
+        this.updateSuffix(target.suffix, currentSuffix, progress);
+        await this.sleep(iterationTime);
+      }
+
+      // Settle to final state
+      this.wordEl.textContent = target.word;
+      this.setSuffixVisible(target.suffix);
+
+      this.isAnimating = false;
+      this.scheduleNext();
+    }
+
+    private ensureSuffixEl(target: PhraseData) {
+      if (!target.suffix || this.suffixEl) return;
+
+      const srOnly = this.element.querySelector(".sr-only");
+      this.element.insertBefore(document.createTextNode(" "), srOnly);
+
+      this.suffixEl = document.createElement("span");
+      this.suffixEl.className = "cycling-words__suffix";
+      this.suffixEl.setAttribute("aria-hidden", "true");
+      this.element.insertBefore(this.suffixEl, srOnly);
+    }
+
+    private updateSuffix(targetSuffix: string, currentSuffix: string, progress: number) {
+      if (!this.suffixEl) return;
+
+      if (targetSuffix) {
+        this.suffixEl.style.display = "inline";
+        this.suffixEl.textContent = this.scrambleString(currentSuffix, targetSuffix, progress);
+      } else if (progress > 0.5) {
+        this.suffixEl.style.display = "none";
+        this.suffixEl.textContent = "";
+      }
+    }
+
+    private setSuffixVisible(suffix: string) {
+      if (!this.suffixEl) return;
+
+      if (suffix) {
+        this.suffixEl.style.display = "inline";
+        this.suffixEl.textContent = suffix;
+      } else {
+        this.suffixEl.style.display = "none";
+        this.suffixEl.textContent = "";
+      }
+    }
+
+    private scrambleString(from: string, to: string, progress: number): string {
+      const maxLength = Math.max(from.length, to.length);
+      let result = "";
+
+      for (let j = 0; j < maxLength; j++) {
+        const targetChar = to[j] || "";
+        const revealThreshold = ((j + 1) / maxLength) * REVEAL_THRESHOLD_FACTOR;
+
+        if (progress > revealThreshold) {
+          result += targetChar;
+        } else if (j < to.length) {
+          result += targetChar === " "
+            ? " "
+            : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+      }
+
+      return result;
+    }
+
+    private sleep(ms: number): Promise<void> {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    destroy() {
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
+    }
+  }
+
+  document.querySelectorAll(".cycling-words--scramble").forEach((el) => {
+    new ScrambleText(el as HTMLElement);
+  });
+</script>

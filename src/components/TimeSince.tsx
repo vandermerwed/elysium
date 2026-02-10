@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 
+type TimeUnit = 'day' | 'week' | 'month' | 'year';
+
 interface Props {
   startDateTime: Date;
-  unit?: dayjs.OpUnitType;
+  unit?: TimeUnit;
   decimalPlaces?: number;
   updateInterval?: number;
 }
 
-const calculateTimeSince = (startDateTime: Date, unit: dayjs.OpUnitType, decimalPlaces: number) => {
+const calculateTimeSince = (startDateTime: Date, unit: TimeUnit, decimalPlaces: number) => {
   const now = dayjs();
   const start = dayjs(startDateTime);
   const diff = now.diff(start, unit, true);

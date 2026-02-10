@@ -26,6 +26,7 @@ export interface FromMarkdownOptions {
     newClassName?: string; // class name to add to links that don't have a matching permalink
     wikiLinkClassName?: string; // class name to add to all wiki links
     hrefTemplate?: (permalink: string) => string; // function to generate the href attribute of a link
+    titleMap?: Record<string, string>; // map of slugs to page titles for display
 }
 
 // mdas-util-from-markdown extension
@@ -37,6 +38,7 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
     const newClassName = opts.newClassName || "new";
     const wikiLinkClassName = opts.wikiLinkClassName || "internal";
     const defaultHrefTemplate = (permalink: string) => permalink;
+    const titleMap = opts.titleMap || {};
 
     const hrefTemplate = opts.hrefTemplate || defaultHrefTemplate;
 
@@ -119,8 +121,9 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
         wikiLink.data.exists = !!matchingPermalink;
         wikiLink.data.permalink = link;
 
-        // remove leading # if the target is a heading on the same page
-        const displayName = alias || target.replace(/^#/, "");
+        // Use alias if provided, otherwise look up title from titleMap, fallback to target
+        const slug = path.replace(/^#/, "");
+        const displayName = alias || titleMap[slug] || target.replace(/^#/, "");
         const headingId = heading.replace(/\s+/g, "-").toLowerCase();
         let classNames = wikiLinkClassName;
         if (!matchingPermalink) {

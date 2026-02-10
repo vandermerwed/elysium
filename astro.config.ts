@@ -8,7 +8,7 @@ import remarkCollapse from "remark-collapse";
 // import wikiLinkPlugin from "@portaljs/remark-wiki-link";
 import remarkWikiLink from "./src/plugins/wiki-link/index.ts";
 import { remarkNexusScore } from "./src/plugins/nexus-score/index.ts";
-import { getPermalinks } from "./src/plugins/wiki-link/getPermalinks.ts";
+import { getPermalinks, getTitleMap } from "./src/plugins/wiki-link/getPermalinks.ts";
 import rehypeExternalLinks from 'rehype-external-links';
 import { visit } from "unist-util-visit";
 import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs';
@@ -47,9 +47,10 @@ export default defineConfig({
         },
       ],
       // https://github.com/datopian/portaljs/tree/main/packages/remark-wiki-link
-      [remarkWikiLink, { 
+      [remarkWikiLink, {
         permalinks: getPermalinks("src/content/"),
-        pathFormat: 'obsidian-absolute', 
+        titleMap: getTitleMap("src/content/"),
+        pathFormat: 'obsidian-absolute',
         // generate url of the linked page.
         // here `slug` would be "Page Name" for wiki link [[Page Name]].
         // TODO: This needs refactoring to be more robust

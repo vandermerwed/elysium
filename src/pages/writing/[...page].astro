@@ -12,7 +12,7 @@ import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published");
+  const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published" || data.status === "release");
   const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting);
 
   return paginate(getSortedPosts(writing), { pageSize: SITE.postPerPage });

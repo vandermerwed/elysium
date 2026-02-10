@@ -9,7 +9,7 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("writing", ({ data }) => data.status && data.status === "published");
+  const posts = await getCollection("writing", ({ data }) => data.status && data.status === "published" || data.status === "release");
 
   const postResult = posts.map(post => ({
     params: { id: post.id },
