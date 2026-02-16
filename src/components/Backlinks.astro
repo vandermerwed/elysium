@@ -1,4 +1,6 @@
 ---
+import SectionHeader from "@components/SectionHeader.astro";
+
 export interface Props {
   backlinks: Array<{
     title: string;
@@ -9,7 +11,7 @@ export interface Props {
   title?: string;
 }
 
-const { backlinks, title = "Referenced By" } = Astro.props;
+const { backlinks, title = "Backlinks" } = Astro.props;
 const formatTypeLabel = (value?: string) => {
   if (!value) return undefined;
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -18,17 +20,20 @@ const formatTypeLabel = (value?: string) => {
 
 {backlinks && backlinks.length > 0 && (
   <section class="backlinks">
-    <h2>{title}</h2>
+    <SectionHeader title={title} count={backlinks.length} />
     <ul>
       {backlinks.map(link => (
         <li>
-          <a href={link.url}>
-            {link.type && (
-              <span class="type-badge">{formatTypeLabel(link.type)}</span>
-            )}
-            {link.title}
+          <a href={link.url} class="backlink-card">
+            <span class="backlink-header">
+              <span class="backlink-arrow" aria-hidden="true">&larr;</span>
+              <span class="backlink-title">{link.title}</span>
+              {link.type && (
+                <span class="backlink-type">{formatTypeLabel(link.type)}</span>
+              )}
+            </span>
+            {link.description && <p class="backlink-desc">{link.description}</p>}
           </a>
-          {link.description && <p class="excerpt">{link.description}</p>}
         </li>
       ))}
     </ul>
@@ -37,24 +42,57 @@ const formatTypeLabel = (value?: string) => {
 
 <style>
   .backlinks {
-    @apply my-8;
-  }
-  .backlinks h2 {
-    @apply mb-4 text-2xl font-semibold;
+    @apply my-6;
   }
   .backlinks ul {
-    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+    @apply mt-4 grid gap-3;
+    list-style: none;
+    padding: 0;
   }
   .backlinks li {
-    @apply rounded-md border border-skin-line p-4;
+    @apply font-mono text-sm;
   }
-  .backlinks a {
-    @apply flex flex-col gap-2 text-skin-accent hover:underline;
+  .backlink-card {
+    @apply block rounded border-l-2 px-4 py-3;
+    background: rgb(var(--color-card));
+    border-color: rgb(var(--color-border-muted));
+    text-decoration: none;
+    transition: border-color var(--transition-base), background var(--transition-base);
   }
-  .type-badge {
-    @apply w-fit rounded-full border border-skin-line px-2 py-0.5 text-xs uppercase tracking-wide text-skin-base;
+  .backlink-card:hover {
+    border-color: rgb(var(--color-accent));
+    background: rgb(var(--color-card-muted));
+    text-decoration: none;
   }
-  .excerpt {
-    @apply text-sm text-skin-base/80;
+  .backlink-header {
+    @apply flex items-baseline gap-2;
+  }
+  .backlink-arrow {
+    @apply text-xs;
+    color: rgb(var(--color-border-muted));
+    transition: color var(--transition-base);
+  }
+  .backlink-card:hover .backlink-arrow {
+    color: rgb(var(--color-accent));
+  }
+  .backlink-title {
+    @apply font-medium;
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
+  }
+  .backlink-card:hover .backlink-title {
+    color: rgb(var(--color-accent));
+  }
+  .backlink-type {
+    @apply ml-auto text-xs uppercase;
+    color: rgb(var(--color-base));
+  }
+  .backlink-desc {
+    @apply mt-1.5 text-xs leading-relaxed;
+    color: rgb(var(--color-base));
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>

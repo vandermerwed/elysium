@@ -2,7 +2,7 @@
  * Applies the 'has-margin-notes' class to the article element if it contains margin notes.
  * This function is used to conditionally apply styles based on the presence of margin notes.
  */
-const MARGIN_NOTE_BREAKPOINT_FALLBACK = "60rem";
+const MARGIN_NOTE_BREAKPOINT_FALLBACK = "72rem";
 
 function getMarginNoteBreakpoint(): string {
   const root = document.documentElement;
@@ -18,12 +18,12 @@ function getMarginNoteBreakpoint(): string {
 function convertToPixels(value: string): number {
   const match = value.match(/^([0-9]*\.?[0-9]+)\s*(px|rem|em)?$/i);
   if (!match) {
-    return 960;
+    return 1152;
   }
 
   const numeric = Number(match[1]);
   if (!Number.isFinite(numeric)) {
-    return 960;
+    return 1152;
   }
 
   const unit = (match[2] || "px").toLowerCase();
@@ -36,7 +36,7 @@ function convertToPixels(value: string): number {
   );
 
   if (!Number.isFinite(rootFontSize) || rootFontSize <= 0) {
-    return 960;
+    return 1152;
   }
 
   return numeric * rootFontSize;

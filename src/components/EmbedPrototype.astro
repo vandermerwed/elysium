@@ -13,14 +13,31 @@ const { url, type, title } = Astro.props;
   {type === "custom" ? (
     <a href={url} target="_blank" rel="noreferrer">View Prototype →</a>
   ) : (
-    <iframe
-      src={url}
-      title={title ?? "Prototype"}
-      loading="lazy"
-      allow="fullscreen; clipboard-write"
-    />
+    <div class="prototype-frame" data-src={url} data-title={title ?? "Prototype"}>
+      <button class="prototype-load" type="button">
+        <span class="prototype-load-icon" aria-hidden="true">▶</span>
+        Load Prototype
+      </button>
+    </div>
   )}
 </div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLDivElement>(".prototype-frame[data-src]").forEach(frame => {
+      const btn = frame.querySelector<HTMLButtonElement>(".prototype-load");
+      if (!btn) return;
+      btn.addEventListener("click", () => {
+        const iframe = document.createElement("iframe");
+        iframe.src = frame.dataset.src!;
+        iframe.title = frame.dataset.title ?? "Prototype";
+        iframe.loading = "lazy";
+        iframe.allow = "fullscreen; clipboard-write";
+        frame.replaceChildren(iframe);
+      }, { once: true });
+    });
+  });
+</script>
 
 <style>
   .prototype-embed {
@@ -29,8 +46,24 @@ const { url, type, title } = Astro.props;
   .prototype-embed h3 {
     @apply mb-4 text-lg font-semibold;
   }
-  .prototype-embed iframe {
-    @apply h-96 w-full rounded-md border border-skin-line;
+  .prototype-frame {
+    @apply relative h-96 w-full rounded-md border border-skin-line;
+  }
+  .prototype-frame iframe {
+    @apply h-full w-full rounded-md border-0;
+  }
+  .prototype-load {
+    @apply absolute inset-0 flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-0 font-mono text-sm tracking-wide;
+    background: rgb(var(--color-card-muted) / 0.3);
+    color: rgb(var(--color-base));
+    transition: background var(--transition-base), color var(--transition-base);
+  }
+  .prototype-load:hover {
+    background: rgb(var(--color-card-muted) / 0.5);
+    color: rgb(var(--color-text-base));
+  }
+  .prototype-load-icon {
+    @apply text-2xl;
   }
   .prototype-embed a {
     @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;

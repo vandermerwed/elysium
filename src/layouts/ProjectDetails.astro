@@ -6,7 +6,8 @@ import Tag from "@components/Tag.astro";
 import type { CollectionEntry } from "astro:content";
 import Backlinks from "@components/Backlinks.astro";
 import { SITE } from "@config";
-import { render } from 'astro:content';
+import { render } from "astro:content";
+import { formatDate, formatProjectAge } from "@utils/marginalia";
 
 export interface Props {
   project: CollectionEntry<"projects">;
@@ -53,14 +54,7 @@ const layoutProps = {
   scrollSmooth: true,
 };
 
-const formatDate = (date?: Date | string | null) =>
-  date
-    ? new Date(date).toLocaleDateString("en-ZA", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    : "";
+const statusIndicator = status === "active" ? ">>> ACTIVE" : status === "stable" ? "--- STABLE" : "... ARCHIVED";
 
 const allProjects = projects.map(({ data: { title }, id }) => ({ id, title }));
 const currentProjectIndex = allProjects.findIndex(item => item.id === project.id);
@@ -74,155 +68,101 @@ const articleClasses = ["prose", "mx-auto", "mt-8", "max-w-3xl"];
 if (remarkPluginFrontmatter.marginNotes) {
   articleClasses.push("has-margin-notes");
 }
-
 ---
 
 <Layout {...layoutProps}>
   <Header activeNav="projects" />
 
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
-    <button
-      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
-      onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg"
-        ><path
-          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-        ></path>
-      </svg><span>Go back</span>
-    </button>
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-4">
+    <a href="/projects/" class="back-link">
+      &larr; projects
+    </a>
   </div>
   <main id="main-content">
-    <h1 transition:name={project.id} class="post-title mt-2">{title}</h1>
+    <h1 transition:name={project.id} class="post-title">{title}</h1>
+    <span class="title-rule" aria-hidden="true"></span>
+
     <div class="project-meta">
-      {status && <span>{status}</span>}
+      <span class="project-status">{statusIndicator}</span>
       {category && category.map(value => (
+        <span class="meta-sep">&middot;&middot;&middot;</span>
         <span>{value}</span>
       ))}
-      {startDate && <span>Started: {formatDate(startDate)}</span>}
+      {startDate && (
+        <>
+          <span class="meta-sep">&middot;&middot;&middot;</span>
+          <span>Started {formatDate(startDate)}</span>
+        </>
+      )}
       {status === "archived" && endDate && (
-        <span>Ended: {formatDate(endDate)}</span>
+        <>
+          <span class="meta-sep">&middot;&middot;&middot;</span>
+          <span>Ended {formatDate(endDate)}</span>
+        </>
       )}
     </div>
 
+    {techStack && techStack.length > 0 && (
+      <div class="tech-row">
+        <span class="tech-list">{techStack.join(" \u00b7 ")}</span>
+        <span class="tech-dots" aria-hidden="true"></span>
+        {startDate && <span class="tech-age">{formatProjectAge(startDate)}</span>}
+      </div>
+    )}
+
     <ul class="tags-container">
-      {tags.map((tag : string) => <Tag tag={tag} />)}
+      {tags.map((tag: string) => <Tag tag={tag} />)}
     </ul>
 
     <article id="article" class={articleClasses.join(" ")}>
       <Content />
     </article>
 
-    {techStack && techStack.length > 0 && (
-      <section class="project-section">
-        <h2>Tech Stack</h2>
-        <ul class="tech-stack">
-          {techStack.map(item => (
-            <li>{item}</li>
-          ))}
-        </ul>
-      </section>
-    )}
-
-    {status && (
-      <section class="project-section">
-        <h2>Current Status</h2>
-        <p>{status}</p>
-      </section>
-    )}
-
     {links && (
-      <section class="project-section">
-        <h2>Links</h2>
-        <div class="project-links">
-          {links.demo && <a href={links.demo} target="_blank" rel="noreferrer">View Demo</a>}
-          {links.github && <a href={links.github} target="_blank" rel="noreferrer">View Source</a>}
-          {links.website && <a href={links.website} target="_blank" rel="noreferrer">Visit Website</a>}
-          {links.spotify && <a href={links.spotify} target="_blank" rel="noreferrer">Listen on Spotify</a>}
-        </div>
-      </section>
+      <div class="project-links">
+        {links.demo && <a href={links.demo} target="_blank" rel="noreferrer">Demo</a>}
+        {links.github && <a href={links.github} target="_blank" rel="noreferrer">Source</a>}
+        {links.website && <a href={links.website} target="_blank" rel="noreferrer">Website</a>}
+        {links.spotify && <a href={links.spotify} target="_blank" rel="noreferrer">Spotify</a>}
+      </div>
     )}
 
-    
-
-    <div
-      class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"
-    >
+    <div class="post-actions">
       <button
         id="back-to-top"
-        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
+        class="focus-outline back-to-top"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
-          <path
-            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-          ></path>
-        </svg>
-        <span>Back to Top</span>
+        &uarr; Back to Top
       </button>
     </div>
-    <hr class="my-6 border-solid border-skin-line-muted" />
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+
+    <hr class="detail-rule" />
+
+    <div class="prev-next">
       {prevProject && (
-        <a href={`/projects/${prevProject.id}/`} class="flex w-full gap-1 hover:opacity-75">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M15 6l-6 6l6 6" />
-          </svg>
-          <div>
-            <span>Previous Project</span>
-            <div class="text-sm text-skin-accent/85">{prevProject.title}</div>
-          </div>
+        <a href={`/projects/${prevProject.id}/`} class="prev-link">
+          <span class="pn-direction">&larr; Previous</span>
+          <span class="pn-title">{prevProject.title}</span>
         </a>
       )}
       {nextProject && (
-        <a
-          href={`/projects/${nextProject.id}/`}
-          class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
-        >
-          <div>
-            <span>Next Project</span>
-            <div class="text-sm text-skin-accent/85">{nextProject.title}</div>
-          </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M9 6l6 6l-6 6" />
-          </svg>
+        <a href={`/projects/${nextProject.id}/`} class="next-link">
+          <span class="pn-direction">Next &rarr;</span>
+          <span class="pn-title">{nextProject.title}</span>
         </a>
       )}
     </div>
 
     {relatedExplorations.length > 0 && (
       <>
-        <hr class="my-6 border-solid border-skin-line-muted" />
+        <hr class="detail-rule" />
         <Backlinks backlinks={relatedExplorations} title="Related Explorations" />
       </>
     )}
 
     {otherBacklinks.length > 0 && (
       <>
-        <hr class="my-6 border-solid border-skin-line-muted" />
+        <hr class="detail-rule" />
         <Backlinks backlinks={otherBacklinks} title="Referenced By" />
       </>
     )}
@@ -234,35 +174,106 @@ if (remarkPluginFrontmatter.marginNotes) {
   main {
     @apply mx-auto w-full max-w-3xl px-4 pb-12;
   }
+  .back-link {
+    @apply mb-2 mt-8 font-mono text-sm;
+    color: rgb(var(--color-base));
+    text-decoration: none;
+  }
+  .back-link:hover {
+    color: rgb(var(--color-accent));
+  }
   .post-title {
-    @apply text-4xl font-semibold text-skin-accent;
+    @apply mt-2 font-mono text-3xl font-normal;
+    color: rgb(var(--color-text-base));
+  }
+  .title-rule {
+    @apply my-3 block;
+    width: 100%;
+    border-bottom: 2px double rgb(var(--color-border));
   }
   .project-meta {
-    @apply mt-2 flex flex-wrap gap-3 text-sm text-skin-base/80;
+    @apply flex flex-wrap items-baseline gap-x-2 gap-y-1 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .project-status {
+    @apply uppercase;
+    color: rgb(var(--color-accent-secondary));
+  }
+  .meta-sep {
+    color: rgb(var(--color-border-muted));
+  }
+  .tech-row {
+    @apply my-2 flex items-baseline gap-2 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .tech-list {
+    @apply whitespace-nowrap;
+  }
+  .tech-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .tech-age {
+    @apply whitespace-nowrap;
   }
   .tags-container {
-    @apply my-0;
-  }
-  .project-section {
-    @apply my-8;
-  }
-  .tech-stack {
-    @apply mt-2 flex flex-wrap gap-2;
-  }
-  .tech-stack li {
-    @apply rounded-full border border-skin-line px-3 py-1 text-xs uppercase tracking-wide;
+    @apply my-3 flex flex-wrap gap-1;
+    list-style: none;
+    padding: 0;
   }
   .project-links {
-    @apply mt-2 flex flex-wrap gap-4;
+    @apply mt-6 flex flex-wrap gap-4 font-mono text-sm;
   }
   .project-links a {
-    @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;
+    color: rgb(var(--color-text-base));
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 4px;
   }
-  .incoming-links-container {
-    @apply my-2;
+  .project-links a:hover {
+    color: rgb(var(--color-accent));
   }
-  .fragment-notice {
-    @apply flex text-skin-base items-center space-x-2 opacity-80 pb-4 rounded-md;
+  .post-actions {
+    @apply mt-6 flex justify-end;
+  }
+  .back-to-top {
+    @apply whitespace-nowrap font-mono text-sm;
+    color: rgb(var(--color-base));
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .back-to-top:hover {
+    color: rgb(var(--color-accent));
+  }
+  .detail-rule {
+    @apply my-6;
+    border: none;
+    border-top: 1px solid rgb(var(--color-border));
+  }
+  .prev-next {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+  .prev-link,
+  .next-link {
+    @apply flex flex-col gap-1 font-mono text-sm;
+    text-decoration: none;
+  }
+  .next-link {
+    @apply text-right sm:col-start-2;
+  }
+  .pn-direction {
+    @apply text-xs;
+    color: rgb(var(--color-base));
+  }
+  .pn-title {
+    color: rgb(var(--color-text-base));
+  }
+  .prev-link:hover .pn-title,
+  .next-link:hover .pn-title {
+    color: rgb(var(--color-accent));
   }
 </style>
 

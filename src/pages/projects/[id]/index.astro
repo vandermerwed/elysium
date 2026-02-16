@@ -2,7 +2,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import ProjectDetails from "@layouts/ProjectDetails.astro";
 import { getSortedProjects } from "@utils/getSortedProjects";
-import getIncomingLinks from "@utils/getIncomingLinks";
+import { buildNoteGraph, getIncomingLinkIds } from "@utils/noteGraph";
 
 export interface Props {
   project: CollectionEntry<"projects">;
@@ -26,15 +26,21 @@ const sortedProjects = getSortedProjects(projects);
 const notes = await getCollection("notes");
 const writing = await getCollection("writing");
 const journal = await getCollection("journal");
-const backlinkSources = [...notes, ...writing, ...journal, ...projects];
-const incomingLinks = getIncomingLinks(backlinkSources, project.id, "projects");
-const backlinks = incomingLinks.map(entry => {
-  const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
+const allPosts = [...notes, ...writing, ...journal, ...projects];
+
+const graph = buildNoteGraph(allPosts);
+const nodeId = `projects/${project.id}`;
+const incomingNodeIds = getIncomingLinkIds(graph, nodeId);
+const backlinks = incomingNodeIds.map(id => {
+  const [collection, ...idParts] = id.split("/");
+  const postId = idParts.join("/");
+  const source = allPosts.find(p => p.collection === collection && p.id === postId);
+  const entryBasePath = collection === "projects" ? "projects" : collection;
   return {
-    title: entry.data.title,
-    url: `/${entryBasePath}/${entry.id}/`,
-    type: entry.data.type, // exploration, loadout, theme, or undefined
-    description: entry.data.description,
+    title: source?.data.title ?? postId,
+    url: `/${entryBasePath}/${postId}/`,
+    type: source?.data && "type" in source.data ? (source.data as Record<string, unknown>).type as string | undefined : undefined,
+    description: source?.data.description ?? "",
   };
 });
 ---

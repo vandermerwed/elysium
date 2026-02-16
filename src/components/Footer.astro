@@ -1,15 +1,23 @@
 ---
-import Hr from "./Hr.astro";
-import Socials from "@components/Socials.astro";
+import { getCollection } from "astro:content";
+import { SOCIALS } from "@config";
+import { getGitHash, getVersion, getBuildTimestamp } from "@utils/buildInfo";
 
 const currentYear = new Date().getFullYear();
 
-const contactDescriptions = {
-  Mail: "Projects, introductions, or longer threads.",
-  Github: "Code, issues, and open-source discussion.",
-  LinkedIn: "Professional context and networking.",
-  Bluesky: "Short updates and quick replies.",
-};
+const publishedFilter = ({ data }: { data: { status?: string } }) =>
+  data.status === "published" || data.status === "release";
+const projectStatuses = new Set(["active", "stable", "archived"]);
+
+const noteCount = (await getCollection("notes", publishedFilter)).length;
+const writingCount = (await getCollection("writing", publishedFilter)).length;
+const projectCount = (await getCollection("projects", ({ data }) => !data.hidden && projectStatuses.has(data.status ?? ""))).length;
+
+const gitHash = getGitHash();
+const version = getVersion();
+const buildTimestamp = getBuildTimestamp();
+
+const activeSocials = SOCIALS.filter(s => s.active);
 
 export interface Props {
   noMarginTop?: boolean;
@@ -19,20 +27,45 @@ const { noMarginTop = false } = Astro.props;
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
-  <Hr noPadding />
+  <div class="footer-rule">
+    <hr aria-hidden="true" />
+  </div>
   <div class="footer-wrapper">
-    <div class="footer-left">
-      <span>© {currentYear}, Daniel van der Merwe</span>
-    </div>
-    <div class="footer-right">
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="/changelog/">Changelog</a>
-        <a href="https://github.com/vandermerwed/elysium" rel="noreferrer">Source</a>
-        <!-- <a href="/rss.xml">RSS</a> -->
-        <a href="/tags/">Tags</a>
-        <a href="/archives/">Archives</a>
+    <div class="footer-main">
+      <div class="footer-row">
+        <span class="footer-copyright">&copy; {currentYear} Daniel van der Merwe</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/changelog/">changelog</a>
+          <span class="footer-dot" aria-hidden="true">&middot;</span>
+          <a href="https://github.com/vandermerwed/elysium" rel="noreferrer">source</a>
+          <span class="footer-dot" aria-hidden="true">&middot;</span>
+          <a href="/tags/">tags</a>
+          <span class="footer-dot" aria-hidden="true">&middot;</span>
+          <a href="/rss.xml">rss</a>
+        </nav>
+      </div>
+
+      <nav class="footer-social" aria-label="Social links">
+        {activeSocials.map((social, i) => (
+          <>
+            <a href={social.href} title={social.linkTitle} rel="noreferrer">{social.name.toLowerCase()}</a>
+            {i < activeSocials.length - 1 && <span class="footer-dot" aria-hidden="true">&middot;</span>}
+          </>
+        ))}
       </nav>
-      <Socials className="footer-contact-icons" descriptions={contactDescriptions} />
+    </div>
+
+    <div class="footer-status">
+      <div class="status-line">
+        <span class="status-label">SYS</span>
+        <span class="status-dots" aria-hidden="true"></span>
+        <span class="status-value">{noteCount} notes &middot; {writingCount} articles &middot; {projectCount} projects</span>
+      </div>
+      <div class="status-line">
+        <span class="status-label">BUILD</span>
+        <span class="status-dots" aria-hidden="true"></span>
+        <span class="status-value">{buildTimestamp} &middot; v{version} &middot; <a href={`https://github.com/vandermerwed/elysium/commit/${gitHash}`} rel="noreferrer">#{gitHash}</a></span>
+      </div>
     </div>
   </div>
 </footer>
@@ -41,22 +74,71 @@ const { noMarginTop = false } = Astro.props;
   footer {
     @apply w-full;
   }
+  .footer-rule {
+    @apply mx-auto max-w-3xl px-4;
+  }
+  .footer-rule hr {
+    border-color: rgb(var(--color-border));
+    border-top-width: 1px;
+  }
   .footer-wrapper {
-    @apply flex flex-col items-center justify-between gap-4 py-6 sm:flex-row sm:items-start sm:py-4;
+    @apply mx-auto max-w-3xl space-y-3 px-4 py-6;
   }
-  .footer-left {
-    @apply text-sm text-skin-base/80;
+  .footer-main {
+    @apply space-y-1;
   }
-  .footer-right {
-    @apply flex flex-col items-center gap-3 sm:items-end;
+  .footer-row {
+    @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1;
+  }
+  .footer-copyright {
+    @apply text-sm;
+    color: rgb(var(--color-base));
   }
   .footer-nav {
-    @apply flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm;
+    @apply flex flex-wrap items-center justify-end gap-x-1 gap-y-0 font-mono text-sm;
   }
   .footer-nav a {
-    @apply hover:text-skin-accent;
+    color: rgb(var(--color-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
   }
-  .footer-contact-icons {
-    @apply flex flex-wrap items-center justify-center gap-2;
+  .footer-nav a:hover {
+    color: rgb(var(--color-accent));
+  }
+  .footer-dot {
+    color: rgb(var(--color-border-muted));
+  }
+  .footer-social {
+    @apply flex flex-wrap items-center justify-end gap-x-1 gap-y-0 font-mono text-sm;
+  }
+  .footer-social a {
+    color: rgb(var(--color-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .footer-social a:hover {
+    color: rgb(var(--color-accent));
+  }
+
+  .footer-status {
+    @apply space-y-0.5 border-t pt-3 font-mono text-xs;
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-base));
+  }
+  .status-line {
+    @apply flex items-baseline gap-2;
+  }
+  .status-label {
+    @apply font-semibold uppercase;
+    color: rgb(var(--color-text-base));
+  }
+  .status-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .status-value {
+    @apply whitespace-nowrap;
   }
 </style>

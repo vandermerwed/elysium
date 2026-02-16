@@ -1,0 +1,52 @@
+---
+export interface Props {
+  startDateTime: string;
+  unit?: "day" | "week" | "month" | "year";
+  decimalPlaces?: number;
+  updateInterval?: number;
+}
+
+const {
+  startDateTime,
+  unit = "year",
+  decimalPlaces = 9,
+  updateInterval = 100,
+} = Astro.props;
+---
+
+<span
+  class="time-since"
+  data-start={startDateTime}
+  data-unit={unit}
+  data-decimals={decimalPlaces}
+  data-interval={updateInterval}
+>...</span>
+
+<script>
+  function initTimeSince() {
+    document.querySelectorAll<HTMLSpanElement>("span.time-since").forEach(el => {
+      const start = new Date(el.dataset.start!).getTime();
+      const unit = el.dataset.unit || "year";
+      const decimals = parseInt(el.dataset.decimals || "9", 10);
+      const interval = parseInt(el.dataset.interval || "100", 10);
+
+      const divisors: Record<string, number> = {
+        day: 86400000,
+        week: 604800000,
+        month: 2629746000,
+        year: 31556952000,
+      };
+
+      function update() {
+        const diff = (Date.now() - start) / (divisors[unit] || divisors.year);
+        el.textContent = diff.toFixed(decimals);
+      }
+
+      update();
+      setInterval(update, interval);
+    });
+  }
+
+  initTimeSince();
+  document.addEventListener("astro:after-swap", initTimeSince);
+</script>

@@ -1,0 +1,74 @@
+---
+export interface Props {
+  href: string;
+  title: string;
+  description: string;
+  prototypeUrl?: string;
+  prototypeType?: string;
+}
+
+const {
+  href,
+  title,
+  description,
+  prototypeUrl,
+  prototypeType,
+} = Astro.props;
+---
+
+<li class="exploration-card">
+  {prototypeUrl && (
+    <div class="exploration-preview">
+      <span class="preview-label">Prototype</span>
+    </div>
+  )}
+  <div class="exploration-content">
+    <a href={href} class="exploration-title">
+      <h3 transition:name={href}>{title}</h3>
+    </a>
+    <p class="exploration-desc">{description}</p>
+    <span class="exploration-badge">Exploration</span>
+  </div>
+</li>
+
+<style>
+  .exploration-card {
+    @apply overflow-hidden border;
+    border-color: rgb(var(--color-border));
+    transition: border-color var(--transition-base);
+  }
+  .exploration-card:hover {
+    border-color: rgb(var(--color-border-muted));
+  }
+  .exploration-preview {
+    @apply flex h-28 items-center justify-center font-mono text-xs uppercase tracking-widest;
+    background: rgb(var(--color-card-muted) / 0.3);
+    color: rgb(var(--color-base));
+    letter-spacing: 0.15em;
+  }
+  .exploration-content {
+    @apply p-4;
+  }
+  .exploration-title {
+    text-decoration: none;
+  }
+  .exploration-title:hover {
+    text-decoration: none;
+  }
+  .exploration-title h3 {
+    @apply font-mono text-base font-semibold;
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
+  }
+  .exploration-card:hover .exploration-title h3 {
+    color: rgb(var(--color-accent));
+  }
+  .exploration-desc {
+    @apply mt-2 text-sm leading-relaxed line-clamp-2;
+    color: rgb(var(--color-text-base) / 0.85);
+  }
+  .exploration-badge {
+    @apply mt-3 inline-block font-mono text-xs uppercase tracking-wide;
+    color: rgb(var(--color-accent-secondary));
+  }
+</style>

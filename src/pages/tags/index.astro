@@ -4,21 +4,80 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
-import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
 
 const posts = await getCollection("notes");
 
-let tags = getUniqueTags(posts);
+const tags = getUniqueTags(posts);
+const sortedTags = tags.sort((a, b) => a.tag.localeCompare(b.tag));
+
+// Group tags by first letter
+const grouped = new Map<string, typeof sortedTags>();
+for (const t of sortedTags) {
+  const letter = t.tag.charAt(0).toUpperCase();
+  if (!grouped.has(letter)) grouped.set(letter, []);
+  grouped.get(letter)!.push(t);
+}
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>
   <Header activeNav="tags" />
-  <Main pageTitle="Tags" pageDesc="All the tags used in notes.">
-    <ul>
-      {tags.map(({ tag }) => <Tag {tag} size="lg" />)}
-    </ul>
+  <Main pageTitle="Tags" pageDesc="All the tags used in notes." count={tags.length}>
+    <div class="tags-index">
+      {[...grouped.entries()].map(([letter, letterTags]) => (
+        <div class="tag-group">
+          <span class="tag-letter" aria-hidden="true">{letter}</span>
+          <ul class="tag-list">
+            {letterTags.map(({ tag }) => (
+              <li>
+                <a href={`/tags/${tag}/`} transition:name={`tag-${tag}`} class="tag-link">
+                  <span class="tag-hash" aria-hidden="true">#</span>{tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
   </Main>
   <Footer />
 </Layout>
+
+<style>
+  .tags-index {
+    @apply mt-6;
+  }
+  .tag-group {
+    @apply flex gap-4 py-3;
+    border-bottom: 1px solid rgb(var(--color-border));
+  }
+  .tag-group:first-child {
+    border-top: 1px solid rgb(var(--color-border));
+  }
+  .tag-letter {
+    @apply flex-shrink-0 font-mono text-sm font-semibold uppercase;
+    width: 2ch;
+    color: rgb(var(--color-accent));
+  }
+  .tag-list {
+    @apply flex flex-wrap gap-x-4 gap-y-1;
+    list-style: none;
+    padding: 0;
+  }
+  .tag-list li {
+    @apply font-mono text-sm;
+  }
+  .tag-link {
+    color: rgb(var(--color-text-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .tag-link:hover {
+    color: rgb(var(--color-accent));
+  }
+  .tag-hash {
+    color: rgb(var(--color-accent));
+    margin-right: 1px;
+  }
+</style>

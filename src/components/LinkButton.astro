@@ -19,7 +19,7 @@ const {
 {
   disabled ? (
     <span
-      class:list={["group inline-block", className]}
+      class:list={["link-btn link-btn--disabled", className]}
       title={title}
       aria-disabled={disabled}
     >
@@ -28,7 +28,7 @@ const {
   ) : (
     <a
       {href}
-      class:list={["group inline-block hover:text-skin-accent", className]}
+      class:list={["link-btn", className]}
       aria-label={ariaLabel}
       title={title}
     >
@@ -36,3 +36,22 @@ const {
     </a>
   )
 }
+
+<style>
+  .link-btn {
+    @apply inline-block font-mono text-sm;
+    color: rgb(var(--color-base));
+    border: 1px solid rgb(var(--color-border-muted));
+    padding: 0.375rem 0.75rem;
+    text-decoration: none;
+    transition: border-color var(--transition-base), color var(--transition-base);
+  }
+  .link-btn:hover {
+    color: rgb(var(--color-accent));
+    border-color: rgb(var(--color-accent));
+  }
+  .link-btn--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+</style>

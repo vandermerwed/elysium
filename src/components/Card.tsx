@@ -1,3 +1,9 @@
+/**
+ * @deprecated Use type-specific card components instead:
+ * WritingCard.astro, JournalCard.astro, NoteCard.astro,
+ * ProjectCard.astro, ExplorationCard.astro.
+ * Only kept for Search.tsx (React client-side component).
+ */
 import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
 import NexusScore from "./NexusScore";

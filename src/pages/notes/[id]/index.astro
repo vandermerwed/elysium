@@ -2,7 +2,8 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
-import getIncomingLinks from "@utils/getIncomingLinks";
+import { buildNoteGraph, getIncomingLinkIds, getOutgoingLinkIds, getNodeMetrics } from "@utils/noteGraph";
+import { computeNexusScore } from "@utils/getNexusScore";
 
 export interface Props {
   post: CollectionEntry<"notes">;
@@ -26,15 +27,31 @@ const sortedPosts = getSortedPosts(posts);
 const writingPosts = await getCollection("writing");
 const journalPosts = await getCollection("journal");
 const projectPosts = await getCollection("projects");
-const backlinkSources = [...posts, ...writingPosts, ...journalPosts, ...projectPosts];
-const incomingLinks = getIncomingLinks(backlinkSources, post.id, "notes");
-const backlinks = incomingLinks.map(entry => {
-  const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
+const allPosts = [...posts, ...writingPosts, ...journalPosts, ...projectPosts];
+
+const graph = buildNoteGraph(allPosts);
+const nodeId = `notes/${post.id}`;
+
+// Enrich post data with graph metrics
+const metrics = getNodeMetrics(graph, nodeId);
+const incoming = getIncomingLinkIds(graph, nodeId);
+const outgoing = getOutgoingLinkIds(graph, nodeId);
+post.data.nexusScore = computeNexusScore(metrics);
+post.data.incomingLinks = incoming.map(id => ({ id }));
+post.data.outgoingLinks = outgoing.map(id => ({ id }));
+post.data.externalLinks = Array.from({ length: metrics.externalLinkCount }, (_, i) => String(i));
+
+const incomingNodeIds = incoming;
+const backlinks = incomingNodeIds.map(id => {
+  const [collection, ...idParts] = id.split("/");
+  const postId = idParts.join("/");
+  const source = allPosts.find(p => p.collection === collection && p.id === postId);
+  const entryBasePath = collection === "projects" ? "projects" : collection;
   return {
-    title: entry.data.title,
-    url: `/${entryBasePath}/${entry.id}/`,
-    type: entry.data.type, // exploration, loadout, theme, or undefined
-    description: entry.data.description,
+    title: source?.data.title ?? postId,
+    url: `/${entryBasePath}/${postId}/`,
+    type: source?.data && "type" in source.data ? (source.data as Record<string, unknown>).type as string | undefined : undefined,
+    description: source?.data.description ?? "",
   };
 });
 ---

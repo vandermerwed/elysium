@@ -1,4 +1,6 @@
 ---
+import { formatDate } from "@utils/marginalia";
+
 export interface Props {
   version: string;
   title: string;
@@ -11,18 +13,15 @@ const { version, title, date, description, changes } = Astro.props;
 ---
 
 <article class="changelog-item">
-  <header>
-    <span class="version">{version}</span>
-    <h2>{title}</h2>
-    <time datetime={date.toISOString()}>{date.toLocaleDateString()}</time>
-  </header>
-
-  <div class="description">
-    <p>{description}</p>
+  <div class="changelog-row">
+    <span class="changelog-version">v{version}</span>
+    <h2 class="changelog-title">{title}</h2>
+    <span class="changelog-dots" aria-hidden="true"></span>
+    <time class="changelog-date" datetime={date.toISOString()}>{formatDate(date)}</time>
   </div>
-
+  <p class="changelog-desc">{description}</p>
   {changes && changes.length > 0 && (
-    <ul class="changes">
+    <ul class="changelog-changes">
       {changes.map(change => (
         <li>{change}</li>
       ))}
@@ -32,21 +31,45 @@ const { version, title, date, description, changes } = Astro.props;
 
 <style>
   .changelog-item {
-    @apply my-8 rounded-md border border-skin-line p-6;
+    @apply my-4 border-l-2 py-2 pl-4;
+    border-color: rgb(var(--color-border));
+    transition: border-color var(--transition-base);
   }
-  .changelog-item header {
-    @apply mb-4 flex flex-col gap-1;
+  .changelog-item:hover {
+    border-color: rgb(var(--color-accent));
   }
-  .changelog-item h2 {
-    @apply text-2xl font-semibold;
+  .changelog-row {
+    @apply flex items-baseline gap-2 font-mono text-sm;
   }
-  .version {
-    @apply text-xs uppercase tracking-wide text-skin-base/70;
+  .changelog-version {
+    @apply whitespace-nowrap text-xs uppercase tracking-wide;
+    color: rgb(var(--color-accent));
   }
-  .description {
-    @apply text-skin-base/90;
+  .changelog-title {
+    @apply whitespace-nowrap font-mono text-base font-semibold;
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
   }
-  .changes {
-    @apply mt-4 list-disc space-y-2 pl-4 text-sm;
+  .changelog-item:hover .changelog-title {
+    color: rgb(var(--color-accent));
+  }
+  .changelog-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .changelog-date {
+    @apply whitespace-nowrap;
+    color: rgb(var(--color-base));
+  }
+  .changelog-desc {
+    @apply mt-1.5 text-sm leading-relaxed;
+    color: rgb(var(--color-text-base) / 0.85);
+  }
+  .changelog-changes {
+    @apply mt-2 space-y-1 pl-4 font-mono text-xs;
+    color: rgb(var(--color-base));
+    list-style: "- ";
   }
 </style>

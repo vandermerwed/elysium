@@ -5,6 +5,9 @@ startDate: 2019-01-11T00:00:00Z
 endDate: 2021-03-21T00:00:00Z
 tags:
   - podcast
+  - productivity
+category:
+  - podcast
 description: A podcast about productivity with Jacob Pretorius.
 links:
   website: https://relativelyproductive.com/

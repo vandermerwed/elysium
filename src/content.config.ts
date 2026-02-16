@@ -8,7 +8,7 @@ const projectStatusEnum = z.enum(["active", "stable", "archived"]);
 
 // Collection-specific types (folder determines main classification)
 const notesTypeEnum = z.enum(["exploration"]); // Expandable for future note types
-const journalTypeEnum = z.enum(["loadout", "theme"]); // Sub-types for journal entries
+const journalTypeEnum = z.enum(["loadout", "theme", "life"]); // Sub-types for journal entries
 
 const baseContentSchema = ({ image }: { image: any }) =>
   z.object({
@@ -104,7 +104,7 @@ const projects = defineCollection({
       year: z.number().optional(),
       techStack: z.array(z.string()).optional(),
       category: z
-        .array(z.enum(["open-source", "tool", "theme", "experiment"]))
+        .array(z.enum(["open-source", "tool", "theme", "experiment", "podcast"]))
         .optional(),
       links: z
         .object({

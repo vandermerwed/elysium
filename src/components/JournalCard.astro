@@ -1,0 +1,95 @@
+---
+import { formatDate, formatWordCount, formatReadingTime } from "@utils/marginalia";
+
+export interface Props {
+  href: string;
+  title: string;
+  pubDatetime: Date;
+  modDatetime?: Date | null;
+  description: string;
+  wordCount?: number;
+  readingTime?: string;
+  type?: string;
+  contentHash?: string;
+  seqNum?: string;
+}
+
+const {
+  href,
+  title,
+  pubDatetime,
+  modDatetime,
+  description,
+  wordCount = 0,
+  readingTime = "",
+  type,
+  contentHash,
+  seqNum,
+} = Astro.props;
+
+const typeLabel = type === "loadout" ? "Loadout" : type === "theme" ? "Theme" : type === "life" ? "Life" : null;
+---
+
+<li class="journal-card">
+  {seqNum && <span class="card-position">{seqNum}{contentHash && <span class="card-hash">{contentHash}</span>}</span>}
+  <a href={href} class="card-title-link">
+    <h3 transition:name={href}>{title}</h3>
+  </a>
+  <p class="card-description">{description}</p>
+  <div class="card-meta">
+    <span>{formatDate(pubDatetime)}</span>
+    {modDatetime && <><span class="meta-sep">&middot;</span><span>MOD {formatDate(modDatetime)}</span></>}
+    {wordCount > 0 && <><span class="meta-sep">&middot;</span><span>{formatWordCount(wordCount)}</span></>}
+    {readingTime && <><span class="meta-sep">&middot;</span><span>{formatReadingTime(readingTime)}</span></>}
+    {typeLabel && <><span class="meta-sep">&middot;</span><span class="card-type">{typeLabel}</span></>}
+  </div>
+</li>
+
+<style>
+  .journal-card {
+    @apply relative my-4 border-l-2 py-2 pl-4;
+    border-color: rgb(var(--color-border));
+    transition: border-color var(--transition-base);
+  }
+  .journal-card:hover {
+    border-color: rgb(var(--color-accent));
+  }
+  .card-position {
+    @apply absolute right-0 top-2 hidden font-mono text-xs sm:block;
+    color: rgb(var(--color-base));
+    opacity: 0.6;
+  }
+  .card-hash {
+    @apply ml-1;
+    opacity: 0.5;
+  }
+  .card-title-link {
+    text-decoration: none;
+  }
+  .card-title-link:hover {
+    text-decoration: none;
+  }
+  .card-title-link h3 {
+    @apply font-mono text-base font-semibold;
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
+  }
+  .journal-card:hover .card-title-link h3 {
+    color: rgb(var(--color-accent));
+  }
+  .card-description {
+    @apply mt-1.5 text-sm leading-relaxed line-clamp-2;
+    color: rgb(var(--color-text-base) / 0.85);
+  }
+  .card-meta {
+    @apply mt-1.5 flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .meta-sep {
+    color: rgb(var(--color-border-muted));
+  }
+  .card-type {
+    @apply border px-1.5 py-0.5 text-xs uppercase tracking-wide;
+    border-color: rgb(var(--color-border));
+  }
+</style>

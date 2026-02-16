@@ -1,0 +1,148 @@
+---
+import type { GardenStats } from "@utils/gardenStats";
+
+export interface Props {
+  stats: GardenStats;
+}
+
+const { stats } = Astro.props;
+---
+
+<div class="garden-status">
+  <div class="garden-status-header">
+    <span class="garden-status-prefix" aria-hidden="true">::</span>
+    <span class="garden-status-title">Garden Status</span>
+    <span class="garden-status-rule" aria-hidden="true"></span>
+  </div>
+
+  <div class="garden-status-body">
+    <div class="garden-stat-row">
+      <span class="garden-stat-label">{stats.total} notes</span>
+    </div>
+
+    <div class="garden-stat-group">
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">|-</span>
+        <span class="garden-stat-label">Developed</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byStage.developed}</span>
+      </div>
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">|-</span>
+        <span class="garden-stat-label">Emerging</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byStage.emerging}</span>
+      </div>
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">`-</span>
+        <span class="garden-stat-label">Seedling</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byStage.seedling}</span>
+      </div>
+    </div>
+
+    <div class="garden-stat-row garden-stat-heading">
+      <span class="garden-stat-label">Topology</span>
+    </div>
+    <div class="garden-stat-group">
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">|-</span>
+        <span class="garden-stat-label">Hubs</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byTopology.hubs}</span>
+      </div>
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">|-</span>
+        <span class="garden-stat-label">Relays</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byTopology.relays}</span>
+      </div>
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">`-</span>
+        <span class="garden-stat-label">Terminals</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byTopology.terminals}</span>
+      </div>
+    </div>
+
+    <div class="garden-stat-summary">
+      <span>{stats.totalLinks} total connections</span>
+      <span class="garden-stat-sep" aria-hidden="true">&middot;</span>
+      <span>{stats.avgLinksPerNote} avg/note</span>
+    </div>
+
+    {stats.mostConnected && (
+      <div class="garden-stat-row">
+        <span class="garden-stat-label">Most connected</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.mostConnected.title} ({stats.mostConnected.linkCount})</span>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .garden-status {
+    @apply mb-6 mt-4;
+    border: 1px solid rgb(var(--color-border));
+    padding: 1rem 1.25rem;
+  }
+  .garden-status-header {
+    @apply flex items-center gap-3 font-mono text-sm uppercase tracking-wider;
+    color: rgb(var(--color-text-base));
+    margin-bottom: 0.75rem;
+  }
+  .garden-status-prefix {
+    color: rgb(var(--color-accent));
+  }
+  .garden-status-title {
+    @apply font-semibold whitespace-nowrap;
+  }
+  .garden-status-rule {
+    @apply flex-1;
+    border-bottom: 1px solid rgb(var(--color-border));
+  }
+
+  .garden-status-body {
+    @apply font-mono text-sm;
+    color: rgb(var(--color-base));
+  }
+  .garden-stat-group {
+    margin-bottom: 0.5rem;
+  }
+  .garden-stat-heading {
+    margin-top: 0.5rem;
+  }
+  .garden-stat-row {
+    @apply flex items-baseline gap-1;
+    line-height: 1.75;
+  }
+  .garden-tree-prefix {
+    @apply text-xs;
+    color: rgb(var(--color-border));
+    width: 2ch;
+    flex-shrink: 0;
+  }
+  .garden-stat-label {
+    @apply whitespace-nowrap;
+  }
+  .garden-stat-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border));
+    margin: 0 0.25rem;
+    min-width: 2ch;
+    position: relative;
+    top: -3px;
+  }
+  .garden-stat-value {
+    @apply whitespace-nowrap;
+    color: rgb(var(--color-text-base));
+  }
+  .garden-stat-summary {
+    @apply mt-2 mb-1 text-xs;
+    color: rgb(var(--color-base));
+  }
+  .garden-stat-sep {
+    @apply mx-1;
+  }
+</style>

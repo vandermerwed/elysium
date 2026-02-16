@@ -1,0 +1,93 @@
+---
+import { formatDate, formatWordCount, formatReadingTime } from "@utils/marginalia";
+
+export interface Props {
+  href: string;
+  title: string;
+  pubDatetime: Date;
+  modDatetime?: Date | null;
+  description: string;
+  wordCount?: number;
+  readingTime?: string;
+  contentHash?: string;
+  seqNum?: string;
+}
+
+const {
+  href,
+  title,
+  pubDatetime,
+  modDatetime,
+  description,
+  wordCount = 0,
+  readingTime = "",
+  contentHash,
+  seqNum,
+} = Astro.props;
+---
+
+<li class="writing-card">
+  {seqNum && <span class="card-position">{seqNum}{contentHash && <span class="card-hash">{contentHash}</span>}</span>}
+  <a href={href} class="card-title-link">
+    <h3 transition:name={href}>{title}</h3>
+  </a>
+  <span class="card-rule" aria-hidden="true"></span>
+  <div class="card-meta">
+    <span>{formatDate(pubDatetime)}</span>
+    {modDatetime && <><span class="meta-sep">&middot;</span><span>MOD {formatDate(modDatetime)}</span></>}
+    {wordCount > 0 && <><span class="meta-sep">&middot;</span><span>{formatWordCount(wordCount)}</span></>}
+    {readingTime && <><span class="meta-sep">&middot;</span><span>{formatReadingTime(readingTime)}</span></>}
+  </div>
+  <p class="card-description">{description}</p>
+</li>
+
+<style>
+  .writing-card {
+    @apply relative my-4 border p-4;
+    border-color: rgb(var(--color-border));
+    background: rgb(var(--color-card) / 0.3);
+    transition: border-color var(--transition-base);
+  }
+  .writing-card:hover {
+    border-color: rgb(var(--color-border-muted));
+  }
+  .card-position {
+    @apply absolute right-4 top-4 hidden font-mono text-xs sm:block;
+    color: rgb(var(--color-base));
+    opacity: 0.6;
+  }
+  .card-hash {
+    @apply ml-1;
+    opacity: 0.5;
+  }
+  .card-title-link {
+    text-decoration: none;
+  }
+  .card-title-link:hover {
+    text-decoration: none;
+  }
+  .card-title-link h3 {
+    @apply font-mono text-lg font-semibold;
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
+  }
+  .writing-card:hover .card-title-link h3 {
+    color: rgb(var(--color-accent));
+  }
+  .card-rule {
+    @apply my-2 block;
+    width: 6ch;
+    border-bottom: 1px solid rgb(var(--color-border));
+  }
+  .card-meta {
+    @apply flex flex-wrap gap-x-2 gap-y-1 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .meta-sep {
+    color: rgb(var(--color-border-muted));
+  }
+  .card-description {
+    @apply mt-3 text-sm leading-relaxed line-clamp-3;
+    color: rgb(var(--color-text-base) / 0.85);
+  }
+</style>

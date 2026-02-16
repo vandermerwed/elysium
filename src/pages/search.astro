@@ -2,29 +2,225 @@
 import { getCollection } from "astro:content";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import SearchBar from "@components/Search";
+import SectionHeader from "@components/SectionHeader.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
 
-// Retrieve all published articles
-const posts = await getCollection("notes", ({ data }) => data.status && data.status === "published");
-const sortedPosts = getSortedPosts(posts);
+const allNotes = await getCollection("notes", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allWriting = await getCollection("writing", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allJournal = await getCollection("journal", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
 
-// List of items to search in
-const searchList = sortedPosts.map(({ data, id }) => ({
+const noteItems = getSortedPosts(allNotes).map(({ data, id }) => ({
   title: data.title,
   description: data.description,
-  data,
-  id,
+  href: `/notes/${id}/`,
+  collection: "notes",
 }));
+
+const writingItems = getSortedPosts(allWriting).map(({ data, id }) => ({
+  title: data.title,
+  description: data.description,
+  href: `/writing/${id}/`,
+  collection: "writing",
+}));
+
+const journalItems = getSortedPosts(allJournal).map(({ data, id }) => ({
+  title: data.title,
+  description: data.description,
+  href: `/journal/${id}/`,
+  collection: "journal",
+}));
+
+const searchList = [...writingItems, ...journalItems, ...noteItems];
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
   <Header activeNav="search" />
-  <Main pageTitle="Search" pageDesc="Search any article ...">
-    <SearchBar client:load searchList={searchList} />
-  </Main>
+  <main id="main-content">
+    <SectionHeader title="Search" />
+    <p class="section-desc">Search across all content.</p>
+
+    <label class="search-input-wrap">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" />
+        </svg>
+      </span>
+      <input
+        id="search-input"
+        class="search-input"
+        placeholder="Search for anything..."
+        type="text"
+        name="search"
+        autocomplete="off"
+      />
+    </label>
+
+    <div id="search-result-count" class="search-result-count" style="display:none;"></div>
+
+    <ul id="search-results" class="search-results"></ul>
+  </main>
   <Footer />
 </Layout>
+
+<script is:inline define:vars={{ searchList }}>
+  (function() {
+    const input = document.getElementById("search-input");
+    const resultsList = document.getElementById("search-results");
+    const resultCount = document.getElementById("search-result-count");
+    if (!input || !resultsList || !resultCount) return;
+
+    const collectionLabel = { notes: "Note", writing: "Writing", journal: "Journal" };
+
+    // Simple search function (no external dependency needed for basic fuzzy matching)
+    function searchItems(query) {
+      const q = query.toLowerCase().trim();
+      if (q.length < 2) return [];
+
+      return searchList
+        .map(item => {
+          const titleMatch = item.title.toLowerCase().includes(q);
+          const descMatch = item.description.toLowerCase().includes(q);
+          // Simple scoring: title match is weighted higher
+          const score = (titleMatch ? 2 : 0) + (descMatch ? 1 : 0);
+          return { item, score };
+        })
+        .filter(r => r.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(r => r.item);
+    }
+
+    function renderResults(results, query) {
+      if (query.length < 2) {
+        resultCount.style.display = "none";
+        resultsList.innerHTML = "";
+        return;
+      }
+
+      resultCount.style.display = "block";
+      resultCount.textContent = `Found ${results.length} ${results.length === 1 ? "result" : "results"} for \u2018${query}\u2019`;
+
+      resultsList.innerHTML = results.map(item => `
+        <li class="search-result-item">
+          <div class="search-result-row">
+            <a href="${item.href}" class="search-result-title">${escapeHtml(item.title)}</a>
+            <span class="search-result-dots" aria-hidden="true"></span>
+            <span class="search-result-type">${collectionLabel[item.collection] || item.collection}</span>
+          </div>
+          ${item.description ? `<p class="search-result-desc">${escapeHtml(item.description)}</p>` : ""}
+        </li>
+      `).join("");
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Read initial query from URL
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get("q") || "";
+    if (initialQuery) {
+      input.value = initialQuery;
+      renderResults(searchItems(initialQuery), initialQuery);
+    }
+
+    // Focus input
+    setTimeout(() => {
+      input.focus();
+      input.selectionStart = input.selectionEnd = input.value.length;
+    }, 50);
+
+    // Listen for input
+    input.addEventListener("input", () => {
+      const val = input.value;
+      const results = searchItems(val);
+      renderResults(results, val);
+
+      // Update URL
+      if (val.length > 0) {
+        const sp = new URLSearchParams(window.location.search);
+        sp.set("q", val);
+        history.replaceState(null, "", window.location.pathname + "?" + sp.toString());
+      } else {
+        history.replaceState(null, "", window.location.pathname);
+      }
+    });
+  })();
+</script>
+
+<style is:global>
+  #main-content {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12 pt-8;
+  }
+  .section-desc {
+    @apply mb-6 mt-3 text-sm;
+    color: rgb(var(--color-base));
+  }
+  .search-input-wrap {
+    @apply relative block;
+  }
+  .search-icon {
+    @apply absolute inset-y-0 left-0 flex items-center pl-3;
+    opacity: 0.5;
+  }
+  .search-icon svg {
+    @apply h-5 w-5;
+    fill: rgb(var(--color-base));
+  }
+  .search-input {
+    @apply block w-full py-3 pl-10 pr-3 font-mono text-sm;
+    background: rgb(var(--color-card));
+    color: rgb(var(--color-text-base));
+    border: 1px solid rgb(var(--color-border));
+    outline: none;
+    transition: border-color var(--transition-base);
+  }
+  .search-input::placeholder {
+    color: rgb(var(--color-base));
+    font-style: italic;
+  }
+  .search-input:focus {
+    border-color: rgb(var(--color-accent));
+  }
+  .search-result-count {
+    @apply mt-6 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .search-results {
+    @apply mt-4;
+    list-style: none;
+    padding: 0;
+  }
+  .search-result-item {
+    @apply my-4;
+  }
+  .search-result-row {
+    @apply flex items-baseline gap-2 font-mono text-sm;
+  }
+  .search-result-title {
+    @apply whitespace-nowrap font-medium;
+    color: rgb(var(--color-text-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .search-result-title:hover {
+    color: rgb(var(--color-accent));
+  }
+  .search-result-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .search-result-type {
+    @apply whitespace-nowrap text-xs uppercase;
+    color: rgb(var(--color-base));
+  }
+  .search-result-desc {
+    @apply mt-1 truncate pl-0 text-xs;
+    color: rgb(var(--color-base));
+  }
+</style>

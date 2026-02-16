@@ -1,23 +1,31 @@
 ---
 import { SITE } from "@config";
 import Posts from "@layouts/Posts.astro";
-import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
+import { buildNoteGraph } from "@utils/noteGraph";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const basePosts = await getCollection("journal", ({ data }) => data.status && data.status === "published" || data.status === "release");
-  const posts = await getPostsWithEnrichedFrontmatter<"journal">(basePosts);
+  const allNotes = await getCollection("notes");
+  const allWriting = await getCollection("writing");
+  const allJournal = await getCollection("journal");
+  const allProjects = await getCollection("projects");
+  const graph = buildNoteGraph([...allNotes, ...allWriting, ...allJournal, ...allProjects]);
+
+  const basePosts = allJournal.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+  const posts = await getPostsWithEnrichedFrontmatter<"journal">(basePosts, graph);
 
   return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+const typedPage = page as unknown as Page<CollectionEntry<"journal">>;
 ---
 
 <Posts
-  {page}
+  page={typedPage}
   activeNav="journal"
   pageTitle="Journal"
   pageDesc="Personal updates, yearly themes, and tools."

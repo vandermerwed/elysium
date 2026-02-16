@@ -11,7 +11,22 @@
       "Bash(grep:*)",
       "Bash(dir:*)",
       "Bash(npx tsc)",
-      "Bash(npx astro check:*)"
+      "Bash(npx astro check:*)",
+      "Bash(ls \"C:\\\\Projects\\\\Elysium\\\\Code\\\\elysium\\\\public\\\\fonts\"\" 2>/dev/null; echo \"---\"; ls \"C:ProjectsElysiumCodeelysiumpublic\"\")",
+      "Bash(git checkout:*)",
+      "Bash(curl:*)",
+      "Bash(unzip:*)",
+      "Bash(xargs:*)",
+      "Bash(ls:*)",
+      "Bash(npx astro build)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_resize",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_type"
     ]
   }
 }
