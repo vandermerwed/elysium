@@ -34,7 +34,7 @@ const {
   contentType = "notes",
 } = Astro.props;
 
-const nexusScorePattern = /^(?:R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
+const nexusScorePattern = /^(?:B|A|R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
 const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
 
 const typeLabel = type === "exploration" ? "Expl" : "Note";
@@ -44,7 +44,7 @@ const typeLabel = type === "exploration" ? "Expl" : "Note";
   <div class="note-row">
     {isValidScore && (
       <span class="note-nexus">
-        <NexusScore score={nexusScore} className="scale-75" />
+        <NexusScore score={nexusScore} size="sm" />
       </span>
     )}
     <a href={href} class="note-title" transition:name={href}>

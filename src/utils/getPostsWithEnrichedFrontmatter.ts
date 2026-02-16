@@ -1,7 +1,7 @@
 import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import type Graph from "graphology";
-import { getNodeMetrics, getIncomingLinkIds, getOutgoingLinkIds } from "./noteGraph";
+import { getNodeMetrics, getIncomingLinkIds, getOutgoingLinkIds, getNormContext } from "./noteGraph";
 import { computeNexusScore } from "./getNexusScore";
 
 type CollectionName = "notes" | "writing" | "journal" | "projects";
@@ -32,7 +32,8 @@ const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
             if (graph) {
                 const nodeId = `${post.collection}/${post.id}`;
                 const metrics = getNodeMetrics(graph, nodeId);
-                const nexusScore = computeNexusScore(metrics);
+                const normCtx = getNormContext(graph);
+                const nexusScore = computeNexusScore(metrics, normCtx);
                 const incoming = getIncomingLinkIds(graph, nodeId);
                 const outgoing = getOutgoingLinkIds(graph, nodeId);
 

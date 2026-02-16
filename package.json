@@ -25,6 +25,7 @@
     "dayjs": "^1.11.13",
     "fuse.js": "^7.0.0",
     "graphology": "^0.26.0",
+    "graphology-communities-louvain": "^2.0.2",
     "graphology-metrics": "^2.4.0",
     "graphology-types": "^0.24.8",
     "gray-matter": "^4.0.3",

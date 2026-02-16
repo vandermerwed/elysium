@@ -31,18 +31,19 @@ function generateAIUsageSentence(aiUsage: string[]) {
 const { aiUsage = [] } = Astro.props;
 const aiUsageSentence = generateAIUsageSentence(aiUsage);
 ---
-<div class="not-prose card mb-6 mt-6 flex items-start space-x-3 rounded-md border border-skin-line p-3 shadow-sm">
+<div class="aida-notice not-prose">
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class="icon icon-tabler icons-tabler-outline icon-tabler-robot link-button w-5 h-5 text-skin-base flex-shrink-0 mt-0.5"
-    width="24"
-    height="24"
+    class="aida-icon"
+    width="14"
+    height="14"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
+    aria-hidden="true"
   >
     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
     <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
@@ -55,14 +56,28 @@ const aiUsageSentence = generateAIUsageSentence(aiUsage);
     <path d="M10 8v.01"></path>
     <path d="M14 8v.01"></path>
   </svg>
-  <div class="flex flex-col space-y-2 text-skin-base">
-    <p class="text-sm">{aiUsageSentence}</p>
-    <p class="text-xs">
-      For more information, please see my{" "}
-      <a href="/ai" class="text-skin-base underline hover:text-skin-accent">
-        AI usage policy
-      </a>
-      .
-    </p>
-  </div>
+  <span>{aiUsageSentence} <a href="/ai">Policy</a>.</span>
 </div>
+
+<style>
+  .aida-notice {
+    @apply flex items-center gap-2 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .aida-icon {
+    @apply h-3.5 w-3.5 flex-shrink-0;
+    stroke: rgb(var(--color-border-muted));
+    fill: none;
+  }
+  .aida-notice a {
+    color: rgb(var(--color-base));
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    text-decoration-color: rgb(var(--color-border-muted));
+    transition: color var(--transition-base);
+  }
+  .aida-notice a:hover {
+    color: rgb(var(--color-accent));
+  }
+</style>

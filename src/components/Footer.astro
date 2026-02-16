@@ -105,6 +105,9 @@ const { noMarginTop = false } = Astro.props;
   .footer-nav a:hover {
     color: rgb(var(--color-accent));
   }
+  .footer-nav a[rel="noreferrer"]:hover {
+    color: rgb(var(--color-accent-secondary));
+  }
   .footer-dot {
     color: rgb(var(--color-border-muted));
   }
@@ -117,28 +120,41 @@ const { noMarginTop = false } = Astro.props;
     transition: color var(--transition-base);
   }
   .footer-social a:hover {
-    color: rgb(var(--color-accent));
+    color: rgb(var(--color-accent-secondary));
   }
 
   .footer-status {
-    @apply space-y-0.5 border-t pt-3 font-mono text-xs;
-    border-color: rgb(var(--color-border));
-    color: rgb(var(--color-base));
+    @apply space-y-0 font-mono;
+    font-size: 0.65rem;
+    line-height: 1.4;
+    color: rgb(var(--color-border-muted));
+    margin-top: 1rem;
   }
   .status-line {
-    @apply flex items-baseline gap-2;
+    @apply flex items-baseline gap-1.5;
   }
   .status-label {
-    @apply font-semibold uppercase;
-    color: rgb(var(--color-text-base));
+    @apply uppercase;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: rgb(var(--color-border-muted));
   }
   .status-dots {
     @apply flex-1;
-    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    border-bottom: 1px dotted rgb(var(--color-border));
     position: relative;
     top: -3px;
+    opacity: 0.4;
   }
   .status-value {
     @apply whitespace-nowrap;
+  }
+  .status-value a {
+    color: rgb(var(--color-border-muted));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .status-value a:hover {
+    color: rgb(var(--color-accent));
   }
 </style>

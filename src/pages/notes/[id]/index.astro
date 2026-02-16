@@ -2,7 +2,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
-import { buildNoteGraph, getIncomingLinkIds, getOutgoingLinkIds, getNodeMetrics } from "@utils/noteGraph";
+import { buildNoteGraph, getIncomingLinkIds, getOutgoingLinkIds, getNodeMetrics, getGraphDiameter, getCommunitySize, getClusterLabel, getNormContext } from "@utils/noteGraph";
 import { computeNexusScore } from "@utils/getNexusScore";
 
 export interface Props {
@@ -34,12 +34,25 @@ const nodeId = `notes/${post.id}`;
 
 // Enrich post data with graph metrics
 const metrics = getNodeMetrics(graph, nodeId);
+const normContext = getNormContext(graph);
 const incoming = getIncomingLinkIds(graph, nodeId);
 const outgoing = getOutgoingLinkIds(graph, nodeId);
-post.data.nexusScore = computeNexusScore(metrics);
+post.data.nexusScore = computeNexusScore(metrics, normContext);
 post.data.incomingLinks = incoming.map(id => ({ id }));
 post.data.outgoingLinks = outgoing.map(id => ({ id }));
 post.data.externalLinks = Array.from({ length: metrics.externalLinkCount }, (_, i) => String(i));
+post.data.closeness = metrics.closeness;
+post.data.hubScore = metrics.hubScore;
+post.data.authorityScore = metrics.authorityScore;
+post.data.eccentricity = metrics.eccentricity;
+post.data.betweennessValue = metrics.betweenness;
+post.data.pageRankValue = metrics.pageRank;
+post.data.reachability = metrics.reachability;
+post.data.reciprocity = metrics.reciprocity;
+post.data.communityId = metrics.communityId;
+post.data.communitySize = getCommunitySize(graph, metrics.communityId);
+post.data.clusterLabel = getClusterLabel(graph, metrics.communityId);
+post.data.diameter = getGraphDiameter(graph);
 
 const incomingNodeIds = incoming;
 const backlinks = incomingNodeIds.map(id => {

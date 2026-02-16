@@ -93,6 +93,18 @@ const nexusScore = remarkPluginFrontmatter.nexusScore ?? post.data.nexusScore ??
 const incomingLinks = Array.isArray(post.data.incomingLinks) ? post.data.incomingLinks : [];
 const outgoingLinks = Array.isArray(post.data.outgoingLinks) ? post.data.outgoingLinks : [];
 const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externalLinks : [];
+const closeness = (post.data as Record<string, any>).closeness ?? 0;
+const hubScore = (post.data as Record<string, any>).hubScore ?? 0;
+const authorityScore = (post.data as Record<string, any>).authorityScore ?? 0;
+const eccentricity = (post.data as Record<string, any>).eccentricity ?? 0;
+const betweennessValue = (post.data as Record<string, any>).betweennessValue ?? 0;
+const pageRankValue = (post.data as Record<string, any>).pageRankValue ?? 0;
+const reachability = (post.data as Record<string, any>).reachability ?? 0;
+const reciprocity = (post.data as Record<string, any>).reciprocity ?? 0;
+const communityId = (post.data as Record<string, any>).communityId ?? -1;
+const communitySize = (post.data as Record<string, any>).communitySize ?? 0;
+const clusterLabel = (post.data as Record<string, any>).clusterLabel ?? "";
+const diameter = (post.data as Record<string, any>).diameter ?? 0;
 ---
 
 <Layout {...layoutProps}>
@@ -106,7 +118,29 @@ const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externa
   <main id="main-content">
     <div class="post-header">
       <h1 transition:name={post.id} class="post-title">{title}</h1>
-      <span class="title-rule" aria-hidden="true"></span>
+
+      {basePath === "notes" && nexusScore ? (
+        <NexusPanel
+          nexusScore={nexusScore}
+          incomingCount={incomingLinks.length}
+          outgoingCount={outgoingLinks.length}
+          externalCount={externalLinks.length}
+          closeness={closeness}
+          hubScore={hubScore}
+          authorityScore={authorityScore}
+          eccentricity={eccentricity}
+          betweennessValue={betweennessValue}
+          pageRankValue={pageRankValue}
+          reachability={reachability}
+          reciprocity={reciprocity}
+          communityId={communityId}
+          communitySize={communitySize}
+          clusterLabel={clusterLabel}
+          diameter={diameter}
+        />
+      ) : (
+        <span class="title-rule" aria-hidden="true"></span>
+      )}
 
       <div class="post-meta">
         <span>PUB {formatDate(pubDatetime)}</span>
@@ -127,15 +161,6 @@ const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externa
       <ul class="tags-container">
         {tags.map((tag: string) => <Tag tag={tag} />)}
       </ul>
-
-      {basePath === "notes" && nexusScore && (
-        <NexusPanel
-          nexusScore={nexusScore}
-          incomingCount={incomingLinks.length}
-          outgoingCount={outgoingLinks.length}
-          externalCount={externalLinks.length}
-        />
-      )}
 
       {inspiration && (
         <section class="inspiration">
@@ -171,19 +196,6 @@ const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externa
       />
     )}
 
-    <div>
-      <AidaNotice aiUsage={aiUsage} />
-    </div>
-
-    <div class="post-actions">
-      <button
-        id="back-to-top"
-        class="focus-outline back-to-top"
-      >
-        &uarr; Back to Top
-      </button>
-    </div>
-
     <hr class="detail-rule" />
 
     <div class="prev-next">
@@ -205,11 +217,18 @@ const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externa
       }
     </div>
     {backlinks.length > 0 && (
-      <>
-        <hr class="detail-rule" />
-        <Backlinks backlinks={backlinks} />
-      </>
+      <Backlinks backlinks={backlinks} />
     )}
+
+    <div class="post-footer-meta">
+      <AidaNotice aiUsage={aiUsage} />
+      <button
+        id="back-to-top"
+        class="focus-outline back-to-top"
+      >
+        &uarr; Top
+      </button>
+    </div>
   </main>
   <Footer />
 </Layout>
@@ -282,11 +301,12 @@ const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externa
     border-color: rgb(var(--color-border));
     color: rgb(var(--color-accent));
   }
-  .post-actions {
-    @apply mt-6 flex flex-col-reverse items-center justify-between gap-4 sm:flex-row-reverse sm:items-end;
+  .post-footer-meta {
+    @apply flex items-center justify-between gap-4;
+    margin-bottom: 1.25rem;
   }
   .back-to-top {
-    @apply whitespace-nowrap font-mono text-sm;
+    @apply whitespace-nowrap font-mono text-xs;
     color: rgb(var(--color-base));
     background: none;
     border: none;
@@ -297,12 +317,13 @@ const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externa
     color: rgb(var(--color-accent));
   }
   .detail-rule {
-    @apply my-6;
+    @apply my-5;
     border: none;
     border-top: 1px solid rgb(var(--color-border));
   }
   .prev-next {
-    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+    @apply grid grid-cols-1 gap-3 sm:grid-cols-2;
+    margin-bottom: 0.5rem;
   }
   .prev-link,
   .next-link {

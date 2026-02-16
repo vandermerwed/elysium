@@ -47,6 +47,18 @@ const { stats } = Astro.props;
     <div class="garden-stat-group">
       <div class="garden-stat-row">
         <span class="garden-tree-prefix" aria-hidden="true">|-</span>
+        <span class="garden-stat-label">Bridges</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byTopology.bridges}</span>
+      </div>
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">|-</span>
+        <span class="garden-stat-label">Authorities</span>
+        <span class="garden-stat-dots" aria-hidden="true"></span>
+        <span class="garden-stat-value">{stats.byTopology.authorities}</span>
+      </div>
+      <div class="garden-stat-row">
+        <span class="garden-tree-prefix" aria-hidden="true">|-</span>
         <span class="garden-stat-label">Hubs</span>
         <span class="garden-stat-dots" aria-hidden="true"></span>
         <span class="garden-stat-value">{stats.byTopology.hubs}</span>

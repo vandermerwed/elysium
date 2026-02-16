@@ -42,10 +42,12 @@ const formatTypeLabel = (value?: string) => {
 
 <style>
   .backlinks {
-    @apply my-6;
+    @apply mt-5 mb-2;
+    max-width: none;
+    padding: 0;
   }
   .backlinks ul {
-    @apply mt-4 grid gap-3;
+    @apply mt-3 grid gap-2.5;
     list-style: none;
     padding: 0;
   }
@@ -53,7 +55,7 @@ const formatTypeLabel = (value?: string) => {
     @apply font-mono text-sm;
   }
   .backlink-card {
-    @apply block rounded border-l-2 px-4 py-3;
+    @apply block rounded border-l-2 px-4 py-2.5;
     background: rgb(var(--color-card));
     border-color: rgb(var(--color-border-muted));
     text-decoration: none;
