@@ -37,7 +37,6 @@ const {
 const nexusScorePattern = /^(?:B|A|R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
 const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
 
-const typeLabel = type === "exploration" ? "Expl" : "Note";
 ---
 
 <li class="note-card" data-content-type={contentType}>
@@ -53,7 +52,6 @@ const typeLabel = type === "exploration" ? "Expl" : "Note";
     <span class="note-dots" aria-hidden="true"></span>
     <span class="note-date">{formatDate(pubDatetime)}</span>
     {seqNum && <span class="note-position">{seqNum}{contentHash && <span class="note-hash">{contentHash}</span>}</span>}
-    <span class="note-type">{typeLabel}</span>
   </div>
   <div class="note-sub">
     <span class="note-desc">{description}</span>
@@ -72,10 +70,13 @@ const typeLabel = type === "exploration" ? "Expl" : "Note";
     @apply my-4;
   }
   .note-row {
-    @apply flex items-baseline gap-2 font-mono text-sm;
+    @apply flex items-center gap-2 font-mono text-sm;
   }
   .note-nexus {
     @apply hidden flex-shrink-0 sm:inline-flex;
+    /* 3 cells × 7px = 21px square icon */
+    width: 21px;
+    justify-content: center;
   }
   .note-title {
     @apply whitespace-nowrap font-medium;
@@ -111,14 +112,21 @@ const typeLabel = type === "exploration" ? "Expl" : "Note";
     color: rgb(var(--color-base));
   }
   .note-sub {
-    @apply mt-1 overflow-hidden pl-6 text-xs;
+    @apply mt-1 overflow-hidden text-xs;
     color: rgb(var(--color-base));
+  }
+  @media (min-width: 640px) {
+    .note-sub {
+      /* icon 21px + gap 8px = 29px, aligns with title start */
+      padding-left: 29px;
+    }
   }
   .note-desc {
     @apply block truncate;
   }
   .note-links {
-    @apply mt-0.5 hidden gap-1.5 pl-6 font-mono text-xs sm:flex;
+    @apply mt-0.5 hidden gap-1.5 font-mono text-xs sm:flex;
+    padding-left: 29px;
     color: rgb(var(--color-base));
     opacity: 0.7;
   }

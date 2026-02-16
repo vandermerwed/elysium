@@ -14,6 +14,7 @@ import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { buildNoteGraph } from "@utils/noteGraph";
+import { getSeqNum } from "@utils/marginalia";
 import { SITE } from "@config";
 
 const allNotes = await getCollection("notes");
@@ -139,14 +140,17 @@ const recentProjects = projects.filter(p => p.data.status !== "archived").slice(
       recentExplorations.length > 0 && (
         <section class="home-section" id="recent-explorations">
           <SectionHeader title="Explorations" href="/notes/?type=exploration" linkLabel="All" />
-          <ul class="fragment-grid">
-            {recentExplorations.map(({ data, id }) => (
+          <ul class="exploration-layout">
+            {recentExplorations.map(({ data, id }, index) => (
               <ExplorationCard
                 href={`/notes/${id}/`}
                 title={data.title}
                 description={data.description}
+                pubDatetime={data.pubDatetime}
                 prototypeUrl={data.prototypeUrl}
                 prototypeType={data.prototypeType}
+                inspiration={data.inspiration as any}
+                seqNum={getSeqNum(index, recentExplorations.length)}
               />
             ))}
           </ul>
@@ -179,6 +183,11 @@ const recentProjects = projects.filter(p => p.data.status !== "archived").slice(
 </Layout>
 
 <style>
+  /* ===== Main ===== */
+  #main-content {
+    @apply pb-10;
+  }
+
   /* ===== Hero Section ===== */
   #hero {
     @apply pb-6 pt-8;
@@ -218,7 +227,7 @@ const recentProjects = projects.filter(p => p.data.status !== "archived").slice(
 
   /* ===== Sections ===== */
   .home-section {
-    @apply pb-4 pt-10;
+    @apply py-10;
   }
   .home-section ul {
     @apply mt-4;
@@ -227,5 +236,20 @@ const recentProjects = projects.filter(p => p.data.status !== "archived").slice(
   /* ===== Fragment Posts Grid ===== */
   .fragment-grid {
     @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+
+  /* ===== Explorations Layout ===== */
+  .exploration-layout {
+    @apply grid grid-cols-1 gap-4;
+  }
+  /* First item full-width featured; 3+ items: rest in 2-col grid */
+  @media (min-width: 640px) {
+    .exploration-layout {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .exploration-layout > :global(:first-child) {
+      grid-column: 1 / -1;
+    }
+    /* Single item stays full-width naturally */
   }
 </style>

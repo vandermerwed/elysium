@@ -1,34 +1,57 @@
 ---
+import { formatDate } from "@utils/marginalia";
+
 export interface Props {
   href: string;
   title: string;
   description: string;
+  pubDatetime: Date;
   prototypeUrl?: string;
   prototypeType?: string;
+  inspiration?: { title?: string; url?: string; author?: string };
+  seqNum?: string;
 }
 
 const {
   href,
   title,
   description,
+  pubDatetime,
   prototypeUrl,
   prototypeType,
+  inspiration,
+  seqNum,
 } = Astro.props;
+
+const protoLabel = prototypeType
+  ? `[ prototype // ${prototypeType} ]`
+  : "[ prototype ]";
 ---
 
 <li class="exploration-card">
-  {prototypeUrl && (
-    <div class="exploration-preview">
-      <span class="preview-label">Prototype</span>
+  <a href={href} class="exploration-link">
+    {prototypeUrl && (
+      <div class="exploration-preview">
+        <div class="preview-grid" aria-hidden="true"></div>
+        <span class="preview-label">{protoLabel}</span>
+        <span class="preview-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    )}
+    <div class="exploration-content">
+      {seqNum && <span class="card-position">{seqNum}</span>}
+      <h3 class="exploration-title" transition:name={href}>{title}</h3>
+      <p class="exploration-desc">{description}</p>
+      <div class="exploration-meta">
+        <span class="exploration-date">{formatDate(pubDatetime)}</span>
+        {inspiration?.author && (
+          <span class="exploration-inspiration">
+            <span class="meta-sep">&middot;</span> Inspired by {inspiration.author}
+          </span>
+        )}
+        <span class="exploration-badge">Exploration</span>
+      </div>
     </div>
-  )}
-  <div class="exploration-content">
-    <a href={href} class="exploration-title">
-      <h3 transition:name={href}>{title}</h3>
-    </a>
-    <p class="exploration-desc">{description}</p>
-    <span class="exploration-badge">Exploration</span>
-  </div>
+  </a>
 </li>
 
 <style>
@@ -40,35 +63,119 @@ const {
   .exploration-card:hover {
     border-color: rgb(var(--color-border-muted));
   }
+
+  .exploration-link {
+    @apply block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .exploration-link:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* ── Preview area ── */
   .exploration-preview {
-    @apply flex h-28 items-center justify-center font-mono text-xs uppercase tracking-widest;
-    background: rgb(var(--color-card-muted) / 0.3);
+    @apply relative flex items-center justify-center font-mono text-xs uppercase tracking-widest;
+    height: 10rem;
+    background: rgba(var(--color-card-muted), 0.3);
     color: rgb(var(--color-base));
     letter-spacing: 0.15em;
+    overflow: hidden;
   }
+
+  /* Dot-grid pattern overlay */
+  .preview-grid {
+    @apply absolute;
+    inset: 8px;
+    background-image: radial-gradient(
+      circle,
+      rgba(var(--color-text-base), 0.10) 1px,
+      transparent 1px
+    );
+    background-size: 16px 16px;
+    background-position: center center;
+    pointer-events: none;
+  }
+
+  .preview-label {
+    @apply relative z-10 px-2 py-0.5;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+    transition: opacity var(--transition-base), background-color var(--transition-base), color var(--transition-base);
+  }
+  .exploration-card:hover .preview-label {
+    opacity: 1;
+    background-color: rgba(var(--color-accent), 0.85);
+    color: rgb(var(--color-fill));
+  }
+
+  .preview-arrow {
+    @apply absolute bottom-3 right-4 z-10 font-mono text-sm;
+    color: rgb(var(--color-base));
+    opacity: 0;
+    transition: opacity var(--transition-base), color var(--transition-base);
+  }
+  .exploration-card:hover .preview-arrow {
+    opacity: 1;
+    color: rgb(var(--color-accent));
+  }
+
+  /* ── Content area ── */
   .exploration-content {
-    @apply p-4;
+    @apply relative p-4;
   }
+
+  .card-position {
+    @apply absolute right-4 top-4 hidden font-mono text-xs sm:block;
+    color: rgb(var(--color-base));
+    opacity: 0.6;
+  }
+
   .exploration-title {
-    text-decoration: none;
-  }
-  .exploration-title:hover {
-    text-decoration: none;
-  }
-  .exploration-title h3 {
     @apply font-mono text-base font-semibold;
     color: rgb(var(--color-text-base));
     transition: color var(--transition-base);
   }
-  .exploration-card:hover .exploration-title h3 {
+  .exploration-card:hover .exploration-title {
     color: rgb(var(--color-accent));
   }
+
   .exploration-desc {
     @apply mt-2 text-sm leading-relaxed line-clamp-2;
-    color: rgb(var(--color-text-base) / 0.85);
+    color: rgba(var(--color-text-base), 0.85);
   }
+  .exploration-card:hover .exploration-desc {
+    color: rgba(var(--color-text-base), 0.85);
+  }
+
+  /* ── Metadata row ── */
+  .exploration-meta {
+    @apply mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .exploration-card:hover .exploration-meta {
+    color: rgb(var(--color-base));
+  }
+
+  .exploration-date {
+    color: rgb(var(--color-base));
+  }
+
+  .exploration-inspiration {
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+  .exploration-card:hover .exploration-inspiration {
+    color: rgb(var(--color-base));
+  }
+
+  .meta-sep {
+    color: rgb(var(--color-border-muted));
+  }
+
   .exploration-badge {
-    @apply mt-3 inline-block font-mono text-xs uppercase tracking-wide;
+    @apply ml-auto uppercase tracking-wide;
     color: rgb(var(--color-accent-secondary));
   }
 </style>
