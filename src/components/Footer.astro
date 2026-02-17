@@ -9,9 +9,30 @@ const publishedFilter = ({ data }: { data: { status?: string } }) =>
   data.status === "published" || data.status === "release";
 const projectStatuses = new Set(["active", "stable", "archived"]);
 
-const noteCount = (await getCollection("notes", publishedFilter)).length;
-const writingCount = (await getCollection("writing", publishedFilter)).length;
-const projectCount = (await getCollection("projects", ({ data }) => !data.hidden && projectStatuses.has(data.status ?? ""))).length;
+type FooterCounts = {
+  noteCount: number;
+  writingCount: number;
+  projectCount: number;
+};
+
+const FOOTER_COUNTS_KEY = "__FOOTER_COUNTS__";
+const globalAny = globalThis as typeof globalThis & { [FOOTER_COUNTS_KEY]?: FooterCounts };
+
+if (!globalAny[FOOTER_COUNTS_KEY]) {
+  const [notes, writing, projects] = await Promise.all([
+    getCollection("notes", publishedFilter),
+    getCollection("writing", publishedFilter),
+    getCollection("projects", ({ data }) => !data.hidden && projectStatuses.has(data.status ?? "")),
+  ]);
+
+  globalAny[FOOTER_COUNTS_KEY] = {
+    noteCount: notes.length,
+    writingCount: writing.length,
+    projectCount: projects.length,
+  };
+}
+
+const { noteCount, writingCount, projectCount } = globalAny[FOOTER_COUNTS_KEY] as FooterCounts;
 
 const gitHash = getGitHash();
 const version = getVersion();
@@ -64,7 +85,12 @@ const { noMarginTop = false } = Astro.props;
       <div class="status-line">
         <span class="status-label">BUILD</span>
         <span class="status-dots" aria-hidden="true"></span>
-        <span class="status-value">{buildTimestamp} &middot; v{version} &middot; <a href={`https://github.com/vandermerwed/elysium/commit/${gitHash}`} rel="noreferrer">#{gitHash}</a></span>
+        <span class="status-value">
+          {buildTimestamp} &middot; v{version} &middot;{" "}
+          {gitHash === "dev"
+            ? <>#{gitHash}</>
+            : <a href={`https://github.com/vandermerwed/elysium/commit/${gitHash}`} rel="noreferrer">#{gitHash}</a>}
+        </span>
       </div>
     </div>
   </div>

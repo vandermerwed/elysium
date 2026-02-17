@@ -151,41 +151,37 @@ const { stats } = Astro.props;
 </div>
 
 <script>
-  function initGardenPanel() {
-    document.querySelectorAll("[data-garden-toggle]").forEach(toggle => {
-      toggle.addEventListener("click", () => {
-        const panel = toggle.closest("[data-garden-panel]");
-        if (!panel) return;
-        const body = panel.querySelector("[data-garden-body]") as HTMLElement;
-        if (!body) return;
+  document.addEventListener("click", (e) => {
+    const toggle = (e.target as Element).closest("[data-garden-toggle]");
+    if (!toggle) return;
 
-        const isOpen = panel.classList.contains("is-open");
-        const op = panel.querySelector("[data-garden-op]");
+    const panel = toggle.closest("[data-garden-panel]");
+    if (!panel) return;
+    const body = panel.querySelector("[data-garden-body]") as HTMLElement;
+    if (!body) return;
 
-        if (isOpen) {
-          body.style.height = body.scrollHeight + "px";
-          requestAnimationFrame(() => {
-            body.style.height = "0";
-          });
-          panel.classList.remove("is-open");
-          toggle.setAttribute("aria-expanded", "false");
-          if (op) op.textContent = "+";
-        } else {
-          panel.classList.add("is-open");
-          toggle.setAttribute("aria-expanded", "true");
-          if (op) op.textContent = "\u2212";
-          body.style.height = body.scrollHeight + "px";
-          body.addEventListener("transitionend", function handler() {
-            body.style.height = "auto";
-            body.removeEventListener("transitionend", handler);
-          });
-        }
+    const isOpen = panel.classList.contains("is-open");
+    const op = panel.querySelector("[data-garden-op]");
+
+    if (isOpen) {
+      body.style.height = body.scrollHeight + "px";
+      requestAnimationFrame(() => {
+        body.style.height = "0";
       });
-    });
-  }
-
-  initGardenPanel();
-  document.addEventListener("astro:after-swap", initGardenPanel);
+      panel.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      if (op) op.textContent = "+";
+    } else {
+      panel.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      if (op) op.textContent = "\u2212";
+      body.style.height = body.scrollHeight + "px";
+      body.addEventListener("transitionend", function handler() {
+        body.style.height = "auto";
+        body.removeEventListener("transitionend", handler);
+      });
+    }
+  });
 </script>
 
 <style>

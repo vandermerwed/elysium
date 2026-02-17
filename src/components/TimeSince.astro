@@ -23,19 +23,28 @@ const {
 >...</span>
 
 <script>
+  const timeSinceIntervals: ReturnType<typeof setInterval>[] = [];
+
+  function cleanupTimeSince() {
+    for (const id of timeSinceIntervals) clearInterval(id);
+    timeSinceIntervals.length = 0;
+  }
+
   function initTimeSince() {
+    cleanupTimeSince();
+
+    const divisors: Record<string, number> = {
+      day: 86400000,
+      week: 604800000,
+      month: 2629746000,
+      year: 31556952000,
+    };
+
     document.querySelectorAll<HTMLSpanElement>("span.time-since").forEach(el => {
       const start = new Date(el.dataset.start!).getTime();
       const unit = el.dataset.unit || "year";
       const decimals = parseInt(el.dataset.decimals || "9", 10);
       const interval = parseInt(el.dataset.interval || "100", 10);
-
-      const divisors: Record<string, number> = {
-        day: 86400000,
-        week: 604800000,
-        month: 2629746000,
-        year: 31556952000,
-      };
 
       function update() {
         const diff = (Date.now() - start) / (divisors[unit] || divisors.year);
@@ -43,10 +52,11 @@ const {
       }
 
       update();
-      setInterval(update, interval);
+      timeSinceIntervals.push(setInterval(update, interval));
     });
   }
 
   initTimeSince();
+  document.addEventListener("astro:before-swap", cleanupTimeSince);
   document.addEventListener("astro:after-swap", initTimeSince);
 </script>

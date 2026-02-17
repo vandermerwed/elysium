@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
@@ -38,10 +38,11 @@ function extractPlainText(body: string | undefined, maxLen = 500): string {
 
 // Build enriched search list with body text, tags, and graph metrics
 type SearchCollection = "notes" | "writing" | "journal";
-const collections: { posts: typeof allNotes; collection: SearchCollection; basePath: string }[] = [
-  { posts: allNotes, collection: "notes", basePath: "/notes" },
-  { posts: allWriting, collection: "writing", basePath: "/writing" },
-  { posts: allJournal, collection: "journal", basePath: "/journal" },
+type AnyPost = CollectionEntry<"notes"> | CollectionEntry<"writing"> | CollectionEntry<"journal">;
+const collections: { posts: AnyPost[]; collection: SearchCollection; basePath: string }[] = [
+  { posts: allNotes as AnyPost[], collection: "notes", basePath: "/notes" },
+  { posts: allWriting as AnyPost[], collection: "writing", basePath: "/writing" },
+  { posts: allJournal as AnyPost[], collection: "journal", basePath: "/journal" },
 ];
 
 const searchList = collections.flatMap(({ posts, collection, basePath }) =>

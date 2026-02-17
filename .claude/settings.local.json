@@ -30,7 +30,10 @@
       "mcp__playwright__browser_install",
       "Bash(npx astro sync:*)",
       "Bash(pkill:*)",
-      "mcp__playwright__browser_close"
+      "mcp__playwright__browser_close",
+      "Bash(npm audit:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm view:*)"
     ]
   }
 }

@@ -40,12 +40,13 @@ export function computeGardenStats(
   let totalReciprocity = 0;
   const collectionCommunities = new Set<number>();
 
+  const normCtx = getNormContext(graph);
+
   graph.forEachNode((nodeId, attrs) => {
     if (!nodeId.startsWith(prefix)) return;
     noteCount++;
 
     const metrics = getNodeMetrics(graph, nodeId);
-    const normCtx = getNormContext(graph);
     const score = computeNexusScore(metrics, normCtx);
 
     // Parse stage from score string (e.g. "H_Developed")

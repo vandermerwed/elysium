@@ -14,6 +14,8 @@ const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
     posts: CollectionEntry<T>[],
     graph?: Graph
 ) => {
+    const normCtx = graph ? getNormContext(graph) : undefined;
+
     return Promise.all(
         posts.map(async post => {
             const { remarkPluginFrontmatter } = await render(post);
@@ -32,8 +34,7 @@ const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
             if (graph) {
                 const nodeId = `${post.collection}/${post.id}`;
                 const metrics = getNodeMetrics(graph, nodeId);
-                const normCtx = getNormContext(graph);
-                const nexusScore = computeNexusScore(metrics, normCtx);
+                const nexusScore = computeNexusScore(metrics, normCtx!);
                 const incoming = getIncomingLinkIds(graph, nodeId);
                 const outgoing = getOutgoingLinkIds(graph, nodeId);
 
@@ -41,7 +42,6 @@ const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
                     nexusScore,
                     incomingLinks: incoming.map(id => ({ id })),
                     outgoingLinks: outgoing.map(id => ({ id })),
-                    externalLinks: Array.from({ length: metrics.externalLinkCount }, (_, i) => String(i)),
                 };
             }
 

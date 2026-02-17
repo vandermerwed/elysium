@@ -2,8 +2,10 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
-import { buildNoteGraph, getIncomingLinkIds, getOutgoingLinkIds, getNodeMetrics, getGraphDiameter, getCommunitySize, getClusterLabel, getNormContext } from "@utils/noteGraph";
+import { getIncomingLinkIds, getOutgoingLinkIds, getNodeMetrics, getGraphDiameter, getCommunitySize, getClusterLabel, getNormContext } from "@utils/noteGraph";
 import { computeNexusScore } from "@utils/getNexusScore";
+import { getSharedGraph, getAllPosts, getCollections } from "@utils/buildGraph";
+import { getBacklinks } from "@utils/getBacklinks";
 
 export interface Props {
   post: CollectionEntry<"notes">;
@@ -22,14 +24,10 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-const posts = await getCollection("notes");
-const sortedPosts = getSortedPosts(posts);
-const writingPosts = await getCollection("writing");
-const journalPosts = await getCollection("journal");
-const projectPosts = await getCollection("projects");
-const allPosts = [...posts, ...writingPosts, ...journalPosts, ...projectPosts];
-
-const graph = buildNoteGraph(allPosts);
+const collections = await getCollections();
+const sortedPosts = getSortedPosts(collections.notes);
+const graph = await getSharedGraph();
+const allPosts = await getAllPosts();
 const nodeId = `notes/${post.id}`;
 
 // Enrich post data with graph metrics
@@ -40,7 +38,6 @@ const outgoing = getOutgoingLinkIds(graph, nodeId);
 post.data.nexusScore = computeNexusScore(metrics, normContext);
 post.data.incomingLinks = incoming.map(id => ({ id }));
 post.data.outgoingLinks = outgoing.map(id => ({ id }));
-post.data.externalLinks = Array.from({ length: metrics.externalLinkCount }, (_, i) => String(i));
 post.data.closeness = metrics.closeness;
 post.data.hubScore = metrics.hubScore;
 post.data.authorityScore = metrics.authorityScore;
@@ -54,19 +51,7 @@ post.data.communitySize = getCommunitySize(graph, metrics.communityId);
 post.data.clusterLabel = getClusterLabel(graph, metrics.communityId);
 post.data.diameter = getGraphDiameter(graph);
 
-const incomingNodeIds = incoming;
-const backlinks = incomingNodeIds.map(id => {
-  const [collection, ...idParts] = id.split("/");
-  const postId = idParts.join("/");
-  const source = allPosts.find(p => p.collection === collection && p.id === postId);
-  const entryBasePath = collection === "projects" ? "projects" : collection;
-  return {
-    title: source?.data.title ?? postId,
-    url: `/${entryBasePath}/${postId}/`,
-    type: source?.data && "type" in source.data ? (source.data as Record<string, unknown>).type as string | undefined : undefined,
-    description: source?.data.description ?? "",
-  };
-});
+const backlinks = getBacklinks(graph, nodeId, allPosts);
 ---
 
 <PostDetails post={post} posts={sortedPosts} basePath="notes" activeNav="notes" backlinks={backlinks} />

@@ -2,7 +2,8 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
-import { buildNoteGraph, getIncomingLinkIds } from "@utils/noteGraph";
+import { getSharedGraph, getAllPosts, getCollections } from "@utils/buildGraph";
+import { getBacklinks } from "@utils/getBacklinks";
 
 export interface Props {
   post: CollectionEntry<"journal">;
@@ -21,28 +22,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-const posts = await getCollection("journal");
-const sortedPosts = getSortedPosts(posts);
-const notePosts = await getCollection("notes");
-const writingPosts = await getCollection("writing");
-const projectPosts = await getCollection("projects");
-const allPosts = [...posts, ...notePosts, ...writingPosts, ...projectPosts];
-
-const graph = buildNoteGraph(allPosts);
-const nodeId = `journal/${post.id}`;
-const incomingNodeIds = getIncomingLinkIds(graph, nodeId);
-const backlinks = incomingNodeIds.map(id => {
-  const [collection, ...idParts] = id.split("/");
-  const postId = idParts.join("/");
-  const source = allPosts.find(p => p.collection === collection && p.id === postId);
-  const entryBasePath = collection === "projects" ? "projects" : collection;
-  return {
-    title: source?.data.title ?? postId,
-    url: `/${entryBasePath}/${postId}/`,
-    type: source?.data && "type" in source.data ? (source.data as Record<string, unknown>).type as string | undefined : undefined,
-    description: source?.data.description ?? "",
-  };
-});
+const collections = await getCollections();
+const sortedPosts = getSortedPosts(collections.journal);
+const graph = await getSharedGraph();
+const allPosts = await getAllPosts();
+const backlinks = getBacklinks(graph, `journal/${post.id}`, allPosts);
 ---
 
 <PostDetails post={post} posts={sortedPosts} basePath="journal" activeNav="journal" backlinks={backlinks} />

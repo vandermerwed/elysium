@@ -27,6 +27,7 @@
     "graphology": "^0.26.0",
     "graphology-communities-louvain": "^2.0.2",
     "graphology-metrics": "^2.4.0",
+    "graphology-shortest-path": "^2.1.0",
     "graphology-types": "^0.24.8",
     "gray-matter": "^4.0.3",
     "hast-util-to-html": "^9.0.5",
