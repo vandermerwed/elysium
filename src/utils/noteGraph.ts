@@ -185,12 +185,19 @@ export function buildNoteGraph(allPosts: AnyPost[]): Graph {
   for (const post of allPosts) {
     const nodeId = `${post.collection}/${post.id}`;
     idToNode.set(nodeId, nodeId);
-    idToNode.set(post.id, nodeId);
+    if (!idToNode.has(post.id)) {
+      idToNode.set(post.id, nodeId);
+    } else if (idToNode.get(post.id) !== nodeId) {
+      // Ambiguous slug across collections — remove short key to force explicit resolution
+      idToNode.delete(post.id);
+    }
     // Also map bare filename for obsidian-style links
     const parts = post.id.split("/");
     const basename = parts[parts.length - 1];
     if (!idToNode.has(basename)) {
       idToNode.set(basename, nodeId);
+    } else if (idToNode.get(basename) !== nodeId) {
+      idToNode.delete(basename);
     }
   }
 
@@ -205,6 +212,22 @@ export function buildNoteGraph(allPosts: AnyPost[]): Graph {
     for (const raw of wikilinks) {
       const target = normalizeWikilink(raw);
       const targetNodeId = resolveTarget(target, idToNode);
+      if (
+        targetNodeId &&
+        targetNodeId !== sourceId &&
+        !graph.hasEdge(sourceId, targetNodeId)
+      ) {
+        graph.addEdge(sourceId, targetNodeId);
+      }
+    }
+
+    // Also parse internal markdown links [text](/collection/slug) for graph edges
+    const internalLinkMatches = body.matchAll(
+      /\[.*?\]\(\/(notes|writing|journal|projects)\/([^)#]+)\)/g
+    );
+    for (const match of internalLinkMatches) {
+      const targetCandidate = `${match[1]}/${match[2].replace(/\/$/, "")}`;
+      const targetNodeId = idToNode.get(targetCandidate);
       if (
         targetNodeId &&
         targetNodeId !== sourceId &&

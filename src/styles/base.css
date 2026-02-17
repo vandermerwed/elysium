@@ -203,12 +203,14 @@
   }
 
   /* External Link Styles */
-  .prose a.external-link {
+  .prose a.external-link,
+  .prose .margin-sidenote a[href^="http"] {
     color: rgb(var(--color-accent-secondary)) !important;
     background-image: linear-gradient(rgb(var(--color-accent-secondary)), rgb(var(--color-accent-secondary)));
   }
 
-  .prose a.external-link::after {
+  .prose a.external-link::after,
+  .prose .margin-sidenote a[href^="http"]::after {
     content: "↗";
     margin-left: .25rem;
     text-decoration: none;

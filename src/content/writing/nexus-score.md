@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2023-10-12T09:52:00Z
-modDatetime: 2024-12-16T11:22:29Z
+modDatetime: 2026-02-17T17:30:48Z
 title: Visual Representations of Interconnectedness and Depth
 featured: false
 status: published
@@ -149,3 +149,6 @@ I had to disable Nexus Score on collection pages as it was causing performance i
 
 ## Update: 2024-11-04
 With the way that remark plugins work it is not currently possible to process incoming links in a note. This means that the Nexus Score is not accurate.
+
+## Update: 2026-02-17
+I've completely rebuilt the Nexus Score system from the ground up. The new version replaces the arbitrary weighted scoring with a proper graph-theory approach using betweenness centrality, PageRank, HITS, and community detection. The topology classification has been expanded from three types (R/H/T) to five (B/A/H/R/T), and the visual icons have been replaced with Chladni-inspired ASCII dot patterns. Read the full write-up in [[nexus-score-v2|Nexus Score v2: Teaching Notes to Know Their Place]].

@@ -92,7 +92,7 @@ const readingTime = remarkPluginFrontmatter.readingTime ?? post.data.readingTime
 const nexusScore = remarkPluginFrontmatter.nexusScore ?? post.data.nexusScore ?? "";
 const incomingLinks = Array.isArray(post.data.incomingLinks) ? post.data.incomingLinks : [];
 const outgoingLinks = Array.isArray(post.data.outgoingLinks) ? post.data.outgoingLinks : [];
-const externalLinks = Array.isArray(post.data.externalLinks) ? post.data.externalLinks : [];
+const externalLinkCount = (post.data as Record<string, any>).externalLinkCount ?? (Array.isArray(post.data.externalLinks) ? post.data.externalLinks.length : 0);
 const closeness = (post.data as Record<string, any>).closeness ?? 0;
 const hubScore = (post.data as Record<string, any>).hubScore ?? 0;
 const authorityScore = (post.data as Record<string, any>).authorityScore ?? 0;
@@ -124,7 +124,7 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
           nexusScore={nexusScore}
           incomingCount={incomingLinks.length}
           outgoingCount={outgoingLinks.length}
-          externalCount={externalLinks.length}
+          externalCount={externalLinkCount}
           closeness={closeness}
           hubScore={hubScore}
           authorityScore={authorityScore}
@@ -303,6 +303,7 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
   }
   .post-footer-meta {
     @apply flex items-center justify-between gap-4;
+    margin-top: 2rem;
     margin-bottom: 1.25rem;
   }
   .back-to-top {

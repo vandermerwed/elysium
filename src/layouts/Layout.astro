@@ -138,6 +138,7 @@ const structuredData = {
 import {
   applyMarginNoteClass,
   attachMobileSidenoteToggles,
+  patchMarginNoteExternalLinks,
 } from "../utils/dom";
 
 type MarginNoteWindow = typeof window & {
@@ -158,5 +159,7 @@ if (!marginWindow.__marginNoteSwapHandler) {
 }
 
 attachMobileSidenoteToggles();
+patchMarginNoteExternalLinks();
 document.addEventListener("astro:after-swap", attachMobileSidenoteToggles);
+document.addEventListener("astro:after-swap", patchMarginNoteExternalLinks);
 </script>

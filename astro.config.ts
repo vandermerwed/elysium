@@ -77,7 +77,12 @@ export default defineConfig({
           if (hasKnownSectionPrefix) {
             return [resolvedId];
           }
-          return [`notes/${resolvedId}`];
+          return [
+            `notes/${resolvedId}`,
+            `writing/${resolvedId}`,
+            `journal/${resolvedId}`,
+            `projects/${resolvedId}`,
+          ];
         }
       }],
       remarkNexusScore,

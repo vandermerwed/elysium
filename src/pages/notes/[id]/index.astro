@@ -50,6 +50,7 @@ post.data.communityId = metrics.communityId;
 post.data.communitySize = getCommunitySize(graph, metrics.communityId);
 post.data.clusterLabel = getClusterLabel(graph, metrics.communityId);
 post.data.diameter = getGraphDiameter(graph);
+post.data.externalLinkCount = metrics.externalLinkCount;
 
 const backlinks = getBacklinks(graph, nodeId, allPosts);
 ---

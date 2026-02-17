@@ -36,12 +36,16 @@ const defaultPathToPermalinkFunc = (
     filePath: string,
     markdownFolder: string
 ) => {
-    const permalink = filePath
-        .replace(markdownFolder, "") // make the permalink relative to the markdown folder
+    // Normalize both paths to forward slashes before comparison (fixes Windows)
+    const normalizedFile = filePath.replace(/\\/g, "/");
+    const normalizedFolder = markdownFolder.replace(/\\/g, "/");
+    const stripped = normalizedFile
+        .replace(normalizedFolder, "") // make the permalink relative to the markdown folder
         .replace(/\.(mdx|md)/, "")
-        .replace(/\\/g, "/") // replace windows backslash with forward slash
         .replace(/\/index$/, ""); // remove index from the end of the permalink
-    return permalink.length > 0 ? permalink : "/"; // for home page
+    if (stripped.length === 0) return "/"; // for home page
+    // Ensure leading slash for absolute paths
+    return stripped.startsWith("/") ? stripped : "/" + stripped;
 };
 
 // Get a map of slugs to page titles for wikilink display

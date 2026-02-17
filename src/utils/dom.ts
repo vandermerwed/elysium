@@ -51,6 +51,23 @@ function isDesktopViewport(breakpoint: string): boolean {
   }
 }
 
+/**
+ * Adds target="_blank" and rel="noopener nofollow" to external links inside
+ * margin notes, since the rehype-external-links plugin cannot reach raw HTML
+ * emitted by the remark-tufte-footnotes plugin.
+ */
+export function patchMarginNoteExternalLinks() {
+  const article = document.getElementById("article");
+  if (!article) return;
+  const links = article.querySelectorAll<HTMLAnchorElement>(
+    ".margin-sidenote a[href^='http']"
+  );
+  for (const a of links) {
+    if (!a.target) a.target = "_blank";
+    if (!a.rel) a.rel = "noopener nofollow";
+  }
+}
+
 export function applyMarginNoteClass() {
   const article = document.getElementById("article");
   if (!article) return;
