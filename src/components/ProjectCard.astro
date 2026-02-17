@@ -27,7 +27,7 @@ const statusClass = status === "archived" ? "status-archived" : status === "acti
 
 <li class="project-card">
   <div class="project-row">
-    <span class="project-diamond" aria-hidden="true">&#9671;</span>
+    <span class="project-diamond" aria-hidden="true"></span>
     <a href={href} class="project-title">
       {title}
     </a>
@@ -50,17 +50,17 @@ const statusClass = status === "archived" ? "status-archived" : status === "acti
     @apply my-4;
     transition: color var(--transition-base);
   }
-  .project-card:hover .project-diamond {
-    content: "\25C6";
-  }
   .project-row {
     @apply flex items-baseline gap-2 font-mono text-sm;
   }
   .project-diamond {
     @apply text-skin-accent;
   }
-  .project-card:hover .project-diamond::after {
-    content: "";
+  .project-diamond::before {
+    content: "\25C7";
+  }
+  .project-card:hover .project-diamond::before {
+    content: "\25C6";
   }
   .project-title {
     @apply whitespace-nowrap font-semibold;

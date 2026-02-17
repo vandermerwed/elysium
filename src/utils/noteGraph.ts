@@ -55,6 +55,8 @@ let cachedCommunities: Record<string, number> | null = null;
 let cachedCommunityCount: number = 0;
 let cachedClusterLabels: Record<number, string> = {};
 let cachedDiameter: number = 0;
+let cachedEccentricity: Record<string, number> = {};
+let cachedReachability: Record<string, number> = {};
 let cachedNormContext: NormContext | null = null;
 let cachedGraphRef: Graph | null = null;
 
@@ -96,17 +98,27 @@ function ensureMetricsCache(graph: Graph) {
     }
   }
 
-  // Compute diameter (max eccentricity across all nodes)
+  // Compute diameter, eccentricity, and reachability via BFS for all nodes
   let maxEcc = 0;
+  cachedEccentricity = {};
+  cachedReachability = {};
+  const totalNodes = graph.order;
   graph.forEachNode(node => {
     try {
       const dists = singleSourceLength(graph, node);
       const vals = Object.values(dists);
       if (vals.length > 1) {
         const ecc = Math.max(...vals);
+        cachedEccentricity[node] = ecc;
         if (ecc > maxEcc) maxEcc = ecc;
+      } else {
+        cachedEccentricity[node] = 0;
       }
-    } catch { /* disconnected node */ }
+      cachedReachability[node] = totalNodes > 1 ? (vals.length - 1) / (totalNodes - 1) : 0;
+    } catch {
+      cachedEccentricity[node] = 0;
+      cachedReachability[node] = 0;
+    }
   });
   cachedDiameter = maxEcc;
 
@@ -150,6 +162,8 @@ export function buildNoteGraph(allPosts: AnyPost[]): Graph {
   cachedCommunityCount = 0;
   cachedClusterLabels = {};
   cachedDiameter = 0;
+  cachedEccentricity = {};
+  cachedReachability = {};
   cachedNormContext = null;
   cachedGraphRef = null;
 
@@ -267,22 +281,8 @@ export function getNodeMetrics(graph: Graph, nodeId: string): NodeMetrics {
     graph.getNodeAttribute(nodeId, "externalLinkCount") ?? 0;
   const wordCount = graph.getNodeAttribute(nodeId, "wordCount") ?? 0;
 
-  // Compute eccentricity + reachability via BFS
-  let nodeEccentricity = 0;
-  let reachability = 0;
-  try {
-    const distances = singleSourceLength(graph, nodeId);
-    const distValues = Object.values(distances);
-    const totalNodes = graph.order;
-    if (distValues.length > 1) {
-      nodeEccentricity = Math.max(...distValues);
-    }
-    // Reachability: % of garden nodes reachable from this node
-    reachability = totalNodes > 1 ? (distValues.length - 1) / (totalNodes - 1) : 0;
-  } catch {
-    nodeEccentricity = 0;
-    reachability = 0;
-  }
+  const nodeEccentricity = cachedEccentricity[nodeId] ?? 0;
+  const reachability = cachedReachability[nodeId] ?? 0;
 
   // Reciprocity: count of mutual (bidirectional) links
   let reciprocity = 0;

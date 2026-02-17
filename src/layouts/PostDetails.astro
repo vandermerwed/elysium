@@ -481,9 +481,17 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
     function open(src, alt) {
       overlay = document.createElement("div");
       overlay.className = "lightbox-overlay";
-      overlay.innerHTML =
-        '<button class="lightbox-close" aria-label="Close preview">&times;</button>' +
-        '<img src="' + src + '" alt="' + (alt || "") + '" />';
+
+      var closeBtn = document.createElement("button");
+      closeBtn.className = "lightbox-close";
+      closeBtn.setAttribute("aria-label", "Close preview");
+      closeBtn.textContent = "\u00d7";
+      overlay.appendChild(closeBtn);
+
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = alt || "";
+      overlay.appendChild(img);
 
       document.body.appendChild(overlay);
       document.body.style.overflow = "hidden";

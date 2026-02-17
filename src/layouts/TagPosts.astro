@@ -25,7 +25,6 @@ const { page, tag, tagName } = Astro.props;
     titleTransition={`tag-${tag}`}
     pageDesc={`All the articles with the tag "${tagName}".`}
   >
-    <h1 slot="title" transition:name={`tag-${tag}`}>{`Tag:${tag}`}</h1>
     <ul>
       {
         page.data.map(({ data, id }) => (

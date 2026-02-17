@@ -97,6 +97,14 @@ for (const [nodeId, item] of nodeIdToItem) {
 }
 
 const searchMeta = { maxPageRank, maxInDegree, maxAuthority };
+
+/** Serialize to JSON, escaping sequences that could break out of a script tag. */
+function safeJsonSerialize(data: unknown): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
@@ -129,9 +137,9 @@ const searchMeta = { maxPageRank, maxInDegree, maxAuthority };
 </Layout>
 
 <!-- Serialized search data for the client -->
-<script type="application/json" id="search-data" set:html={JSON.stringify(searchList)} />
-<script type="application/json" id="search-meta" set:html={JSON.stringify(searchMeta)} />
-<script type="application/json" id="graph-neighbors" set:html={JSON.stringify(graphNeighbors)} />
+<script is:inline type="application/json" id="search-data" set:html={safeJsonSerialize(searchList)} />
+<script is:inline type="application/json" id="search-meta" set:html={safeJsonSerialize(searchMeta)} />
+<script is:inline type="application/json" id="graph-neighbors" set:html={safeJsonSerialize(graphNeighbors)} />
 
 <script>
   import Fuse from "fuse.js";
