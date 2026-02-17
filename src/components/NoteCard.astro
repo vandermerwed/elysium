@@ -26,7 +26,6 @@ const {
   nexusScore,
   contentHash,
   seqNum,
-  type,
   incomingLinks = 0,
   outgoingLinks = 0,
   externalLinks = 0,
@@ -37,46 +36,67 @@ const {
 const nexusScorePattern = /^(?:B|A|R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
 const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
 
+
 ---
 
 <li class="note-card" data-content-type={contentType}>
-  <div class="note-row">
-    {isValidScore && (
-      <span class="note-nexus">
-        <NexusScore score={nexusScore} size="sm" />
-      </span>
-    )}
-    <a href={href} class="note-title" transition:name={href}>
-      {title}
-    </a>
-    <span class="note-dots" aria-hidden="true"></span>
-    <span class="note-date">{formatDate(pubDatetime)}</span>
-    {seqNum && <span class="note-position">{seqNum}{contentHash && <span class="note-hash">{contentHash}</span>}</span>}
-  </div>
-  <div class="note-sub">
-    <span class="note-desc">{description}</span>
-  </div>
-  {showLinks && (incomingLinks > 0 || outgoingLinks > 0 || externalLinks > 0) && (
-    <div class="note-links" title="incoming ↓ · outgoing ↑ · external ↗">
-      {incomingLinks > 0 && <span>{incomingLinks}&#8595;</span>}
-      {outgoingLinks > 0 && <span>{outgoingLinks}&#8593;</span>}
-      {externalLinks > 0 && <span>{externalLinks}&#8599;</span>}
+  {isValidScore && (
+    <div class="note-gutter">
+      <NexusScore score={nexusScore} size="sm" />
+      {seqNum && (
+        <span class="note-seq" aria-hidden="true">{seqNum}</span>
+      )}
     </div>
   )}
+  <div class="note-content">
+    <div class="note-row">
+      <a href={href} class="note-title" transition:name={href}>
+        {title}
+      </a>
+      <span class="note-dots" aria-hidden="true"></span>
+      <span class="note-date">{formatDate(pubDatetime)}</span>
+    </div>
+    <div class="note-sub">
+      <span class="note-desc">{description}</span>
+      {contentHash && <span class="note-hash">{contentHash}</span>}
+    </div>
+    {showLinks && (incomingLinks > 0 || outgoingLinks > 0 || externalLinks > 0) && (
+      <div class="note-links" title="incoming ↓ · outgoing ↑ · external ↗">
+        {incomingLinks > 0 && <span>{incomingLinks}&#8595;</span>}
+        {outgoingLinks > 0 && <span>{outgoingLinks}&#8593;</span>}
+        {externalLinks > 0 && <span>{externalLinks}&#8599;</span>}
+      </div>
+    )}
+  </div>
 </li>
 
 <style>
   .note-card {
-    @apply my-4;
+    @apply my-6 flex gap-2;
+  }
+
+  /* Left gutter — pattern + seq number */
+  .note-gutter {
+    @apply hidden flex-shrink-0 flex-col items-center sm:flex;
+    width: 21px;
+    gap: 2px;
+    padding-top: 2px;
+  }
+  .note-seq {
+    margin-top: 2px;
+    font-size: 0.6rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    color: rgb(var(--color-base));
+    opacity: 0.35;
+  }
+
+  /* Right content column */
+  .note-content {
+    @apply min-w-0 flex-1;
   }
   .note-row {
-    @apply flex items-center gap-2 font-mono text-sm;
-  }
-  .note-nexus {
-    @apply hidden flex-shrink-0 sm:inline-flex;
-    /* 3 cells × 7px = 21px square icon */
-    width: 21px;
-    justify-content: center;
+    @apply flex items-baseline gap-2 font-mono text-sm;
   }
   .note-title {
     @apply whitespace-nowrap font-medium;
@@ -98,35 +118,21 @@ const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
     @apply whitespace-nowrap;
     color: rgb(var(--color-base));
   }
-  .note-position {
-    @apply hidden whitespace-nowrap sm:inline;
-    color: rgb(var(--color-base));
-    opacity: 0.6;
-  }
-  .note-hash {
-    @apply ml-1;
-    opacity: 0.5;
-  }
-  .note-type {
-    @apply hidden whitespace-nowrap text-xs uppercase sm:inline;
-    color: rgb(var(--color-base));
-  }
   .note-sub {
-    @apply mt-1 overflow-hidden text-xs;
+    @apply mt-0.5 flex items-baseline gap-2 overflow-hidden text-xs;
     color: rgb(var(--color-base));
-  }
-  @media (min-width: 640px) {
-    .note-sub {
-      /* icon 21px + gap 8px = 29px, aligns with title start */
-      padding-left: 29px;
-    }
   }
   .note-desc {
-    @apply block truncate;
+    @apply block min-w-0 truncate;
+  }
+  .note-hash {
+    @apply ml-auto shrink-0 font-mono;
+    font-size: 0.6rem;
+    color: rgb(var(--color-base));
+    opacity: 0.2;
   }
   .note-links {
     @apply mt-0.5 hidden gap-1.5 font-mono text-xs sm:flex;
-    padding-left: 29px;
     color: rgb(var(--color-base));
     opacity: 0.7;
   }

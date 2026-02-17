@@ -15,68 +15,95 @@ const { types, targetId = "writing-list" } = Astro.props;
       data-filter-button={type}
       aria-pressed={type === "all" ? "true" : "false"}
     >
-      {type === "all" ? "All" : type.charAt(0).toUpperCase() + type.slice(1)}
+      {type === "all" ? "All" : type === "notes" ? "Note" : type.charAt(0).toUpperCase() + type.slice(1)}
     </button>
   ))}
 </div>
 
 <style>
   .content-type-filter {
-    @apply my-6 flex flex-wrap gap-2;
+    @apply my-6 flex items-center gap-0 font-mono;
   }
   .filter-button {
-    @apply rounded-full border border-skin-line px-3 py-1 text-sm uppercase tracking-wide hover:text-skin-accent;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgb(var(--color-base));
+    background: none;
+    border: 1px solid rgb(var(--color-border));
+    cursor: pointer;
+    transition: color var(--transition-base), background var(--transition-base);
+  }
+  .filter-button:first-child {
+    border-radius: 2px 0 0 2px;
+  }
+  .filter-button:last-child {
+    border-radius: 0 2px 2px 0;
+  }
+  .filter-button + .filter-button {
+    border-left: none;
+  }
+  .filter-button:hover {
+    color: rgb(var(--color-text-base));
+    background: rgb(var(--color-card-muted) / 0.4);
   }
   .filter-button.is-active {
-    @apply border-skin-accent text-skin-accent;
+    color: rgb(var(--color-accent));
+    background: rgb(var(--color-card));
+    border-color: rgb(var(--color-border-muted));
   }
 </style>
 
 <script is:inline>
-  const filterContainer = document.querySelector(".content-type-filter");
-  const targetId = filterContainer?.getAttribute("data-filter-target");
-  const target = targetId ? document.getElementById(targetId) : null;
-  const items = target?.querySelectorAll("[data-content-type]") ?? [];
+  document.addEventListener("astro:page-load", () => {
+    const filterContainer = document.querySelector(".content-type-filter");
+    const targetId = filterContainer?.getAttribute("data-filter-target");
+    const target = targetId ? document.getElementById(targetId) : null;
+    const items = target?.querySelectorAll("[data-content-type]") ?? [];
+    const pagination = document.querySelector("nav[aria-label='Pagination']");
 
-  const setActiveButton = (type) => {
-    filterContainer?.querySelectorAll("[data-filter-button]").forEach((button) => {
-      const isActive = button.getAttribute("data-filter-button") === type;
-      button.classList.toggle("is-active", isActive);
-      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    const setActiveButton = (type) => {
+      filterContainer?.querySelectorAll("[data-filter-button]").forEach((button) => {
+        const isActive = button.getAttribute("data-filter-button") === type;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    };
+
+    const applyFilter = (type) => {
+      items.forEach((item) => {
+        const itemType = item.getAttribute("data-content-type") || "";
+        const shouldShow = type === "all" || itemType === type;
+        item.style.display = shouldShow ? "" : "none";
+      });
+      if (pagination) pagination.style.display = type === "all" ? "" : "none";
+      setActiveButton(type);
+    };
+
+    const getInitialType = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("type") || "all";
+    };
+
+    const updateUrl = (type) => {
+      const url = new URL(window.location.href);
+      if (type === "all") {
+        url.searchParams.delete("type");
+      } else {
+        url.searchParams.set("type", type);
+      }
+      window.history.replaceState({}, "", url);
+    };
+
+    applyFilter(getInitialType());
+
+    filterContainer?.addEventListener("click", (event) => {
+      const targetButton = event.target.closest("[data-filter-button]");
+      if (!targetButton) return;
+      const type = targetButton.getAttribute("data-filter-button") || "all";
+      applyFilter(type);
+      updateUrl(type);
     });
-  };
-
-  const applyFilter = (type) => {
-    items.forEach((item) => {
-      const itemType = item.getAttribute("data-content-type") || "";
-      const shouldShow = type === "all" || itemType === type;
-      item.classList.toggle("hidden", !shouldShow);
-    });
-    setActiveButton(type);
-  };
-
-  const getInitialType = () => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("type") || "all";
-  };
-
-  const updateUrl = (type) => {
-    const url = new URL(window.location.href);
-    if (type === "all") {
-      url.searchParams.delete("type");
-    } else {
-      url.searchParams.set("type", type);
-    }
-    window.history.replaceState({}, "", url);
-  };
-
-  applyFilter(getInitialType());
-
-  filterContainer?.addEventListener("click", (event) => {
-    const targetButton = event.target.closest("[data-filter-button]");
-    if (!targetButton) return;
-    const type = targetButton.getAttribute("data-filter-button") || "all";
-    applyFilter(type);
-    updateUrl(type);
   });
 </script>

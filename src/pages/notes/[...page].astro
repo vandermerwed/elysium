@@ -45,7 +45,7 @@ const { page, gardenStats } = Astro.props;
       <a href="/notes/digital-gardens/"> the history of digital gardens</a>.
     </p>
     {page.currentPage === 1 && <GardenStatus stats={gardenStats} />}
-    <ContentTypeFilter types={["all", "exploration"]} targetId="notes-list" />
+    <ContentTypeFilter types={["all", "notes", "exploration"]} targetId="notes-list" />
     <ul id="notes-list">
       {page.data.map(({ data, id }, i) => (
         <NoteCard

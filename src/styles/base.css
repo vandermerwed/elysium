@@ -193,7 +193,10 @@
     prose-th:border-skin-line prose-td:border
     prose-td:border-skin-line prose-img:mx-auto
     prose-img:!mt-2 prose-img:border-2
-    prose-img:border-skin-line
+    prose-img:border-skin-line prose-img:cursor-zoom-in
+    prose-img:transition-all prose-img:duration-200 prose-img:ease-out
+    hover:prose-img:brightness-105 hover:prose-img:shadow-lg
+    hover:prose-img:border-skin-accent/40
     prose-hr:!border-skin-line-muted
     prose-hr:max-w-sm prose-hr:mx-auto;
   }
@@ -316,6 +319,48 @@
   ::-webkit-scrollbar-track { @apply bg-skin-fill; }
   ::-webkit-scrollbar-thumb { @apply bg-skin-card; }
   ::-webkit-scrollbar-thumb:hover { @apply bg-skin-card-muted; }
+
+  /* Image Lightbox */
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(0 0 0 / 0.8);
+    backdrop-filter: blur(4px);
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+  .lightbox-overlay.is-visible { opacity: 1; }
+  .lightbox-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 0.4);
+    transform: scale(0.95);
+    transition: transform 200ms ease;
+  }
+  .lightbox-overlay.is-visible img { transform: scale(1); }
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: rgb(255 255 255 / 0.7);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-mono);
+    transition: color 150ms ease;
+  }
+  .lightbox-close:hover { color: #fff; }
 
   /* Code Block Styles */
   pre:has(code) { @apply border border-skin-line; }

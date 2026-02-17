@@ -471,6 +471,55 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
   }
   backToTop();
 
+  /** Lightweight image lightbox for prose images */
+  function initLightbox() {
+    const article = document.getElementById("article");
+    if (!article) return;
+
+    let overlay = null;
+
+    function open(src, alt) {
+      overlay = document.createElement("div");
+      overlay.className = "lightbox-overlay";
+      overlay.innerHTML =
+        '<button class="lightbox-close" aria-label="Close preview">&times;</button>' +
+        '<img src="' + src + '" alt="' + (alt || "") + '" />';
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = "hidden";
+
+      // Trigger enter animation on next frame
+      requestAnimationFrame(function () { overlay.classList.add("is-visible"); });
+
+      overlay.addEventListener("click", close);
+      document.addEventListener("keydown", onKey);
+    }
+
+    function close() {
+      if (!overlay) return;
+      overlay.classList.remove("is-visible");
+      overlay.addEventListener("transitionend", function () {
+        overlay.remove();
+        overlay = null;
+      }, { once: true });
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+    }
+
+    function onKey(e) {
+      if (e.key === "Escape") close();
+    }
+
+    var imgs = article.querySelectorAll("img");
+    for (var i = 0; i < imgs.length; i++) {
+      imgs[i].addEventListener("click", function (e) {
+        e.preventDefault();
+        open(this.src, this.alt);
+      });
+    }
+  }
+  initLightbox();
+
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })

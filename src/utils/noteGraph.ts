@@ -160,7 +160,7 @@ export function buildNoteGraph(allPosts: AnyPost[]): Graph {
       title: post.data.title,
       collection: post.collection,
       id: post.id,
-      wordCount: post.data.wordCount ?? 0,
+      wordCount: post.body ? post.body.trim().split(/\s+/).length : 0,
       externalLinkCount: 0,
       tags: (post.data as Record<string, unknown>).tags ?? [],
     });
