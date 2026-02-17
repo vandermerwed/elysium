@@ -27,7 +27,10 @@
       "mcp__playwright__browser_evaluate",
       "mcp__playwright__browser_console_messages",
       "mcp__playwright__browser_type",
-      "mcp__playwright__browser_install"
+      "mcp__playwright__browser_install",
+      "Bash(npx astro sync:*)",
+      "Bash(pkill:*)",
+      "mcp__playwright__browser_close"
     ]
   }
 }

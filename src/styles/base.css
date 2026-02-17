@@ -18,14 +18,14 @@
   font-display: swap;
 }
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+  font-family: 'IBM Plex Sans';
+  src: url('/fonts/IBMPlexSans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter-Medium.woff2') format('woff2');
+  font-family: 'IBM Plex Sans';
+  src: url('/fonts/IBMPlexSans-Medium.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
 }
@@ -76,7 +76,7 @@
 
     /* Font stacks */
     --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', ui-monospace, monospace;
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
 
     /* Spacing tokens */
     --space-section: clamp(4rem, 10vh, 8rem);
@@ -146,15 +146,16 @@
 
   /* Links & Interactive Elements */
   a {
-    text-decoration-line: underline;
-    text-decoration-style: dashed;
-    text-decoration-color: rgb(var(--color-border-muted));
-    text-underline-offset: 4px;
-    transition: color var(--transition-base), text-decoration-color var(--transition-base);
+    color: rgb(var(--color-accent));
+    text-decoration: none;
+    background-image: linear-gradient(rgb(var(--color-accent)), rgb(var(--color-accent)));
+    background-size: 0% 1px;
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    transition: color var(--transition-base), background-size var(--transition-base);
   }
   a:hover {
-    color: rgb(var(--color-accent));
-    text-decoration-color: rgb(var(--color-accent));
+    background-size: 100% 1px;
   }
   a:focus-visible {
     outline: 2px dashed rgb(var(--color-accent));
@@ -177,7 +178,7 @@
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-base
     prose-h3:italic prose-p:!text-skin-base
-    prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-4
+    prose-a:!text-skin-accent prose-a:!no-underline
     hover:prose-a:!text-skin-accent prose-blockquote:!border-l-skin-accent
     prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
     prose-figcaption:!text-skin-base prose-figcaption:opacity-70
@@ -203,7 +204,8 @@
 
   /* External Link Styles */
   .prose a.external-link {
-    @apply hover:!text-skin-accent-secondary;
+    color: rgb(var(--color-accent-secondary)) !important;
+    background-image: linear-gradient(rgb(var(--color-accent-secondary)), rgb(var(--color-accent-secondary)));
   }
 
   .prose a.external-link::after {

@@ -1,9 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import TagPosts from "@layouts/TagPosts.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
-import type { GetStaticPathsOptions } from "astro";
+import type { GetStaticPathsOptions, Page } from "astro";
 import { SITE } from "@config";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -26,4 +26,4 @@ const { tag } = params;
 const { page, tagName } = Astro.props;
 ---
 
-<TagPosts {page} {tag} {tagName} />
+<TagPosts page={page as Page<CollectionEntry<"notes">>} {tag} {tagName} />

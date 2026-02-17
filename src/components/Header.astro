@@ -16,7 +16,7 @@ const isActive = (path: string, navKey?: Props["activeNav"]) =>
   <div class="nav-container">
     <div class="top-nav-wrap">
       <a href="/" class="logo" aria-label="Home">
-        <span class="logo-mark" aria-hidden="true">~/</span>
+        <span class="logo-mark" aria-hidden="true">~/</span><span class="logo-cursor" aria-hidden="true">_</span>
       </a>
       <nav id="nav-menu">
         <button
@@ -133,15 +133,30 @@ const isActive = (path: string, navKey?: Props["activeNav"]) =>
     min-height: 64px;
   }
   .logo {
-    @apply flex items-center gap-2 font-mono text-lg font-medium no-underline;
+    @apply flex items-center font-mono text-lg font-medium no-underline;
     color: rgb(var(--color-text-base));
+    background: none !important;
   }
   .logo:hover {
     text-decoration: none;
+    background: none !important;
   }
   .logo-mark {
     @apply font-mono text-sm;
     color: rgb(var(--color-accent));
+  }
+  .logo-cursor {
+    @apply font-mono text-sm;
+    color: rgb(var(--color-accent));
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .logo:hover .logo-cursor {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
   .hamburger-menu {
     @apply self-center p-2 sm:hidden;
@@ -180,6 +195,7 @@ const isActive = (path: string, navKey?: Props["activeNav"]) =>
   }
   .nav-icon-link {
     @apply flex items-center justify-center p-3 sm:p-1;
+    background: none !important;
   }
   .nav-icon-link svg {
     @apply h-4 w-4;

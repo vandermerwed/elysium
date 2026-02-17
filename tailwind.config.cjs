@@ -66,7 +66,7 @@ module.exports = {
       },
       fontFamily: {
         mono: ["JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", "ui-monospace", "monospace"],
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"]
+        sans: ["IBM Plex Sans", "system-ui", "-apple-system", "sans-serif"]
       },
 
       typography: {

@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2025-11-10T06:09:00Z
-modDatetime: 2026-02-10T07:58:26Z
+modDatetime: 2026-02-17T10:53:46Z
 title: Habits
 featured: false
 status: published
@@ -20,7 +20,7 @@ Simple means no decisions. I jog three times a week. No matter where I am in the
 
 - **Zero decisions:** Every decision is a chance to negotiate with yourself. "Which route?" becomes "maybe not today."
 - **Location-independent:** If it only works at home it breaks the first time you travel.
-- **Honest time commitment:** 30 minutes plus buffer, not "an hour if I really commit." The version that survives is the minimum viable version. Three times per week, not daily. Daily [[streaks]] collapse under their own weight for me. Three times gives slack for life to happen.
+- **Honest time commitment:** 30 minutes plus buffer, not "an hour if I really commit." The version that survives is the minimum viable version. Three times per week, not daily. Daily [[streaks|streaks]] collapse under their own weight for me. Three times gives slack for life to happen.
 
 ## The frameworks behind this:
 James Clear's implementation intention formula is :[^1]
@@ -37,12 +37,12 @@ BJ Fogg's [Tiny Habits](https://www.goodreads.com/book/show/43261127-tiny-habits
 
 His core insight is that motivation is unreliable. Design the habit so it doesn't need motivation. His behaviour model, `B=MAP` (Behaviour = Motivation + Ability + Prompt), explains why my setup works even on days I don't feel like running. The ability threshold is low enough that even minimal motivation gets me out the door.
 
-Where Clear and Fogg diverge is interesting. Clear ties habits to [[identity]]. You're not just running, you're becoming a runner. Fogg is more mechanical. Anchor, behaviour, celebrate. Don't worry about who you're becoming, just make the behaviour automatic.[^3] My experience sits somewhere between the two. The identity piece matters (see [[progressive-taring]] for what happens when a habit becomes so automatic it disappears from your identity as "effort"), but the mechanical design is what got me through the first few months.
+Where Clear and Fogg diverge is interesting. Clear ties habits to [[identity|identity]]. You're not just running, you're becoming a runner. Fogg is more mechanical. Anchor, behaviour, celebrate. Don't worry about who you're becoming, just make the behaviour automatic.[^3] My experience sits somewhere between the two. The identity piece matters (see [[progressive-taring]] for what happens when a habit becomes so automatic it disappears from your identity as "effort"), but the mechanical design is what got me through the first few months.
 
 ## When a habit becomes invisible:
 At some point the activation energy required drops to near zero. You're not deciding to do it. You're just doing it. That's when it crosses into [[progressive-taring]] territory. The habit stops being effort and becomes baseline.
 
-[[habit-stacking]] is a different mechanism. That's about piggybacking new habits onto existing ones. What I'm describing here is more about making a single habit so frictionless it becomes permanent.
+[[habit-stacking|Habit Stacking]] is a different mechanism. That's about piggybacking new habits onto existing ones. What I'm describing here is more about making a single habit so frictionless it becomes permanent.
 
 ## Open question:
 Is three times per week a universal sweet spot or just my sweet spot? I haven't tested other frequencies with the same rigour.

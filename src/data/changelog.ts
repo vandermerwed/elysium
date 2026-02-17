@@ -1,5 +1,28 @@
 export const changelog = [
   {
+    version: "2.2.0",
+    title: "Design Overhaul & Knowledge Graph",
+    date: new Date("2026-02-17"),
+    description:
+      "Rebuilt the visual language around a brutalist monospace aesthetic with new NexusScore Chladni inspired pattern icons, graph-powered garden stats, and refined header styling.",
+    changes: [
+      "Replaced NexusScore with ASCII Chladni inspired pattern 3×3 grid system driven by topology role and maturity stage",
+      "Added NexusPanel with collapsible per-note graph metrics, cluster info, and backlinks",
+      "Built garden status panel with live graph stats: density, clusters, diameter, mutual links, word count",
+      "Computed word count from raw markdown body instead of unpopulated frontmatter",
+      "Scoped graph metrics (density, community count) to collection rather than full cross-collection graph",
+      "Replaced filled header icons with stroke-based SVGs for search and theme toggle",
+      "Swapped logo for terminal-style ~/ home mark with blinking cursor on hover",
+      "Restyled NoteCard with sequence numbers, link indicators, and NexusScore gutter",
+      "Added ContentTypeFilter component for notes listing",
+      "Refined ExplorationCard, PostDetails layout, and base typography",
+      "Switched body font from Inter to IBM Plex Sans for crisper readability",
+      "Redesigned link styles: accent-colored with animated slide-in underline on hover, green underline for external links",
+      "Rebuilt search with Fuse.js fuzzy matching, body text indexing, and graph-boosted ranking",
+      "Search results show NexusScore badges, clickable tags, and inline backlinks from graph neighbors",
+    ],
+  },
+  {
     version: "2.1.0",
     title: "Projects, Content & Homepage Refresh",
     date: new Date("2026-02-10"),

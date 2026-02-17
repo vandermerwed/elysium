@@ -57,6 +57,18 @@ const baseContentSchema = ({ image }: { image: any }) =>
       .default([]),
     externalLinks: z.array(z.string()).default([]),
     nexusScore: z.string().default("A0"),
+    closeness: z.number().default(0),
+    hubScore: z.number().default(0),
+    authorityScore: z.number().default(0),
+    eccentricity: z.number().default(0),
+    betweennessValue: z.number().default(0),
+    pageRankValue: z.number().default(0),
+    reachability: z.number().default(0),
+    reciprocity: z.number().default(0),
+    communityId: z.number().default(-1),
+    communitySize: z.number().default(0),
+    clusterLabel: z.string().default(""),
+    diameter: z.number().default(0),
     editPost: z
       .object({
         disabled: z.boolean().optional(),

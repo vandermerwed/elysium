@@ -6,40 +6,103 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
+import { buildNoteGraph, getNodeMetrics, getIncomingLinkIds, getNormContext } from "@utils/noteGraph";
+import { computeNexusScore } from "@utils/getNexusScore";
 
+// Fetch all published content
 const allNotes = await getCollection("notes", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const allWriting = await getCollection("writing", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const allJournal = await getCollection("journal", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allProjects = await getCollection("projects");
 
-const noteItems = getSortedPosts(allNotes).map(({ data, id }) => ({
-  title: data.title,
-  description: data.description,
-  href: `/notes/${id}/`,
-  collection: "notes",
-}));
+// Build the graph for metrics
+const allPosts = [...allNotes, ...allWriting, ...allJournal, ...allProjects];
+const graph = buildNoteGraph(allPosts);
+const normCtx = getNormContext(graph);
 
-const writingItems = getSortedPosts(allWriting).map(({ data, id }) => ({
-  title: data.title,
-  description: data.description,
-  href: `/writing/${id}/`,
-  collection: "writing",
-}));
+// Helper: extract plain text from markdown body (strip markup)
+function extractPlainText(body: string | undefined, maxLen = 500): string {
+  if (!body) return "";
+  return body
+    .replace(/```[\s\S]*?```/g, "")        // code blocks
+    .replace(/\[\[([^\]|]+)(\|[^\]]+)?\]\]/g, "$1") // wikilinks
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // markdown links
+    .replace(/!\[.*?\]\(.*?\)/g, "")         // images
+    .replace(/^#{1,6}\s+/gm, "")             // headings
+    .replace(/[*_~`>]/g, "")                 // inline formatting
+    .replace(/\n{2,}/g, " ")                 // multiple newlines
+    .replace(/\n/g, " ")                     // single newlines
+    .trim()
+    .slice(0, maxLen);
+}
 
-const journalItems = getSortedPosts(allJournal).map(({ data, id }) => ({
-  title: data.title,
-  description: data.description,
-  href: `/journal/${id}/`,
-  collection: "journal",
-}));
+// Build enriched search list with body text, tags, and graph metrics
+type SearchCollection = "notes" | "writing" | "journal";
+const collections: { posts: typeof allNotes; collection: SearchCollection; basePath: string }[] = [
+  { posts: allNotes, collection: "notes", basePath: "/notes" },
+  { posts: allWriting, collection: "writing", basePath: "/writing" },
+  { posts: allJournal, collection: "journal", basePath: "/journal" },
+];
 
-const searchList = [...writingItems, ...journalItems, ...noteItems];
+const searchList = collections.flatMap(({ posts, collection, basePath }) =>
+  getSortedPosts(posts).map(({ data, id, body }) => {
+    const nodeId = `${collection}/${id}`;
+    const metrics = getNodeMetrics(graph, nodeId);
+    const nexusScore = computeNexusScore(metrics, normCtx);
+
+    return {
+      title: data.title,
+      description: data.description,
+      href: `${basePath}/${id}/`,
+      collection,
+      tags: data.tags ?? [],
+      body: extractPlainText(body),
+      // Graph metrics for ranking
+      pageRank: metrics.pageRank,
+      inDegree: metrics.inDegree,
+      authorityScore: metrics.authorityScore,
+      nexusScore,
+    };
+  })
+);
+
+// Compute max values for normalization on the client
+const maxPageRank = Math.max(...searchList.map(s => s.pageRank), 0.001);
+const maxInDegree = Math.max(...searchList.map(s => s.inDegree), 1);
+const maxAuthority = Math.max(...searchList.map(s => s.authorityScore), 0.001);
+
+// Build a lookup from nodeId to search item
+const nodeIdToItem = new Map<string, typeof searchList[number]>();
+for (const item of searchList) {
+  // href is like "/notes/habits/", basePath is like "/notes"
+  // so strip the basePath prefix + trailing slash to get the post id
+  const id = item.href.split("/").filter(Boolean).slice(1).join("/");
+  nodeIdToItem.set(`${item.collection}/${id}`, item);
+}
+
+// Build graph neighbor map: href -> [{ href, title }]
+const graphNeighbors: Record<string, { href: string; title: string }[]> = {};
+for (const [nodeId, item] of nodeIdToItem) {
+  const incoming = getIncomingLinkIds(graph, nodeId);
+  const neighbors = incoming
+    .map(nId => {
+      const match = nodeIdToItem.get(nId);
+      return match ? { href: match.href, title: match.title } : null;
+    })
+    .filter(Boolean);
+  if (neighbors.length > 0) {
+    graphNeighbors[item.href] = neighbors as { href: string; title: string }[];
+  }
+}
+
+const searchMeta = { maxPageRank, maxInDegree, maxAuthority };
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
   <Header activeNav="search" />
   <main id="main-content">
     <SectionHeader title="Search" />
-    <p class="section-desc">Search across all content.</p>
+    <p class="section-desc">Fuzzy search across all content, ranked by relevance and graph connectivity.</p>
 
     <label class="search-input-wrap">
       <span class="search-icon">
@@ -64,59 +127,170 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
   <Footer />
 </Layout>
 
-<script is:inline define:vars={{ searchList }}>
-  (function() {
-    const input = document.getElementById("search-input");
+<!-- Serialized search data for the client -->
+<script type="application/json" id="search-data" set:html={JSON.stringify(searchList)} />
+<script type="application/json" id="search-meta" set:html={JSON.stringify(searchMeta)} />
+<script type="application/json" id="graph-neighbors" set:html={JSON.stringify(graphNeighbors)} />
+
+<script>
+  import Fuse from "fuse.js";
+
+  interface SearchItem {
+    title: string;
+    description: string;
+    href: string;
+    collection: string;
+    tags: string[];
+    body: string;
+    pageRank: number;
+    inDegree: number;
+    authorityScore: number;
+    nexusScore: string;
+  }
+
+  interface SearchMeta {
+    maxPageRank: number;
+    maxInDegree: number;
+    maxAuthority: number;
+  }
+
+  type GraphNeighbors = Record<string, { href: string; title: string }[]>;
+
+  const collectionLabel: Record<string, string> = {
+    notes: "NOTE",
+    writing: "WRIT",
+    journal: "JRNL",
+  };
+
+  const topologyLabel: Record<string, string> = {
+    B: "Bridge",
+    A: "Authority",
+    H: "Hub",
+    R: "Relay",
+    T: "Terminal",
+  };
+
+  function escapeHtml(str: string): string {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function initSearch() {
+    const input = document.getElementById("search-input") as HTMLInputElement | null;
     const resultsList = document.getElementById("search-results");
     const resultCount = document.getElementById("search-result-count");
     if (!input || !resultsList || !resultCount) return;
 
-    const collectionLabel = { notes: "Note", writing: "Writing", journal: "Journal" };
+    // Prevent double-binding
+    if (input.dataset.searchBound) return;
+    input.dataset.searchBound = "true";
 
-    // Simple search function (no external dependency needed for basic fuzzy matching)
-    function searchItems(query) {
-      const q = query.toLowerCase().trim();
-      if (q.length < 2) return [];
+    // Load serialized data
+    const searchList: SearchItem[] = JSON.parse(
+      document.getElementById("search-data")?.textContent ?? "[]"
+    );
+    const meta: SearchMeta = JSON.parse(
+      document.getElementById("search-meta")?.textContent ?? "{}"
+    );
+    const graphNeighbors: GraphNeighbors = JSON.parse(
+      document.getElementById("graph-neighbors")?.textContent ?? "{}"
+    );
 
-      return searchList
-        .map(item => {
-          const titleMatch = item.title.toLowerCase().includes(q);
-          const descMatch = item.description.toLowerCase().includes(q);
-          // Simple scoring: title match is weighted higher
-          const score = (titleMatch ? 2 : 0) + (descMatch ? 1 : 0);
-          return { item, score };
-        })
-        .filter(r => r.score > 0)
-        .sort((a, b) => b.score - a.score)
-        .map(r => r.item);
+    // Initialize Fuse.js with weighted keys
+    const fuse = new Fuse(searchList, {
+      keys: [
+        { name: "title", weight: 3 },
+        { name: "description", weight: 2 },
+        { name: "tags", weight: 1.5 },
+        { name: "body", weight: 1 },
+      ],
+      includeScore: true,
+      threshold: 0.4,
+      minMatchCharLength: 2,
+      ignoreLocation: true,
+    });
+
+    function computeGraphScore(item: SearchItem): number {
+      const prNorm = meta.maxPageRank > 0 ? item.pageRank / meta.maxPageRank : 0;
+      const idNorm = meta.maxInDegree > 0 ? item.inDegree / meta.maxInDegree : 0;
+      const auNorm = meta.maxAuthority > 0 ? item.authorityScore / meta.maxAuthority : 0;
+      return prNorm * 0.4 + idNorm * 0.3 + auNorm * 0.3;
     }
 
-    function renderResults(results, query) {
+    function search(query: string) {
+      if (query.length < 2) return [];
+
+      const fuseResults = fuse.search(query);
+
+      // Boost with graph metrics + title-match bonus
+      const queryLower = query.toLowerCase().trim();
+      return fuseResults.map(r => {
+        const fuseScore = 1 - (r.score ?? 1); // Fuse score is 0 (perfect) to 1 (worst), invert
+        const graphScore = computeGraphScore(r.item);
+
+        // Title-match bonus: direct title hits should always rank highest
+        const titleLower = r.item.title.toLowerCase();
+        let titleBonus = 0;
+        if (titleLower === queryLower) {
+          titleBonus = 0.5;           // exact match
+        } else if (titleLower.startsWith(queryLower) || queryLower.startsWith(titleLower)) {
+          titleBonus = 0.35;          // prefix match (e.g. "habit" → "Habits")
+        } else if (titleLower.includes(queryLower)) {
+          titleBonus = 0.2;           // substring match
+        }
+
+        // Dynamic blend: strong text matches weight text more, weak matches let graph help
+        const textWeight = 0.6 + 0.35 * fuseScore;
+        const graphWeight = 1 - textWeight;
+        const finalScore = fuseScore * textWeight + graphScore * graphWeight + titleBonus;
+        return { item: r.item, finalScore };
+      }).sort((a, b) => b.finalScore - a.finalScore);
+    }
+
+    function renderResults(results: { item: SearchItem; finalScore: number }[], query: string) {
       if (query.length < 2) {
-        resultCount.style.display = "none";
-        resultsList.innerHTML = "";
+        resultCount!.style.display = "none";
+        resultsList!.innerHTML = "";
         return;
       }
 
-      resultCount.style.display = "block";
-      resultCount.textContent = `Found ${results.length} ${results.length === 1 ? "result" : "results"} for \u2018${query}\u2019`;
+      resultCount!.style.display = "block";
+      resultCount!.textContent = `Found ${results.length} ${results.length === 1 ? "result" : "results"} for \u2018${query}\u2019`;
 
-      resultsList.innerHTML = results.map(item => `
-        <li class="search-result-item">
-          <div class="search-result-row">
-            <a href="${item.href}" class="search-result-title">${escapeHtml(item.title)}</a>
-            <span class="search-result-dots" aria-hidden="true"></span>
-            <span class="search-result-type">${collectionLabel[item.collection] || item.collection}</span>
-          </div>
-          ${item.description ? `<p class="search-result-desc">${escapeHtml(item.description)}</p>` : ""}
-        </li>
-      `).join("");
-    }
+      resultsList!.innerHTML = results.map(({ item }) => {
+        const topChar = item.nexusScore?.charAt(0) ?? "";
+        const topName = topologyLabel[topChar] ?? "";
+        const stage = item.nexusScore?.split("_")[1] ?? "";
+        const nexusBadge = topName && stage
+          ? `<span class="search-result-nexus" title="NexusScore: ${topName} \u00b7 ${stage}">${topChar}\u00b7${stage}</span>`
+          : "";
 
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
+        const tagsHtml = item.tags.length > 0
+          ? `<div class="search-result-tags">${item.tags.slice(0, 4).map(t => `<a href="/tags/${encodeURIComponent(t)}/" class="search-tag">${escapeHtml(t)}</a>`).join("")}</div>`
+          : "";
+
+        const neighbors = graphNeighbors[item.href];
+        const relatedHtml = neighbors && neighbors.length > 0
+          ? `<div class="search-result-related"><span class="related-label">Linked from</span>${neighbors.slice(0, 3).map(n => `<a href="${n.href}" class="related-note-link">${escapeHtml(n.title)}</a>`).join('<span class="related-sep">\u00b7</span>')}</div>`
+          : "";
+
+        return `
+          <li class="search-result-item">
+            <a href="${item.href}" class="search-result-link">
+              <div class="search-result-row">
+                <span class="search-result-title">${escapeHtml(item.title)}</span>
+                <span class="search-result-dots" aria-hidden="true"></span>
+                ${nexusBadge}
+                <span class="search-result-type">${collectionLabel[item.collection] || item.collection}</span>
+              </div>
+              ${item.description ? `<p class="search-result-desc">${escapeHtml(item.description)}</p>` : ""}
+            </a>
+            ${tagsHtml}
+            ${relatedHtml}
+          </li>
+        `;
+      }).join("");
     }
 
     // Read initial query from URL
@@ -124,7 +298,7 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
     const initialQuery = params.get("q") || "";
     if (initialQuery) {
       input.value = initialQuery;
-      renderResults(searchItems(initialQuery), initialQuery);
+      renderResults(search(initialQuery), initialQuery);
     }
 
     // Focus input
@@ -136,10 +310,9 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
     // Listen for input
     input.addEventListener("input", () => {
       const val = input.value;
-      const results = searchItems(val);
+      const results = search(val);
       renderResults(results, val);
 
-      // Update URL
       if (val.length > 0) {
         const sp = new URLSearchParams(window.location.search);
         sp.set("q", val);
@@ -148,7 +321,11 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
         history.replaceState(null, "", window.location.pathname);
       }
     });
-  })();
+  }
+
+  // Run on initial load and after view transitions
+  initSearch();
+  document.addEventListener("astro:page-load", initSearch);
 </script>
 
 <style is:global>
@@ -195,7 +372,25 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
     padding: 0;
   }
   .search-result-item {
-    @apply my-4;
+    @apply my-5;
+    border: 1px solid transparent;
+    transition: border-color var(--transition-base);
+  }
+  .search-result-link {
+    display: block;
+    padding: 0.75rem;
+    background: none !important;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid rgb(var(--color-border));
+    transition: border-color var(--transition-base);
+  }
+  .search-result-link:hover {
+    border-color: rgb(var(--color-accent));
+    color: inherit;
+  }
+  .search-result-link:hover .search-result-title {
+    color: rgb(var(--color-accent));
   }
   .search-result-row {
     @apply flex items-baseline gap-2 font-mono text-sm;
@@ -203,11 +398,7 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
   .search-result-title {
     @apply whitespace-nowrap font-medium;
     color: rgb(var(--color-text-base));
-    text-decoration: none;
     transition: color var(--transition-base);
-  }
-  .search-result-title:hover {
-    color: rgb(var(--color-accent));
   }
   .search-result-dots {
     @apply flex-1;
@@ -219,8 +410,59 @@ const searchList = [...writingItems, ...journalItems, ...noteItems];
     @apply whitespace-nowrap text-xs uppercase;
     color: rgb(var(--color-base));
   }
-  .search-result-desc {
-    @apply mt-1 truncate pl-0 text-xs;
+  .search-result-nexus {
+    @apply ml-1 whitespace-nowrap font-mono text-xs;
     color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+  .search-result-desc {
+    @apply mt-1 pl-0 text-xs;
+    color: rgb(var(--color-base));
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .search-result-tags {
+    @apply mt-2 flex flex-wrap gap-1.5 px-3;
+  }
+  .search-tag {
+    @apply font-mono text-xs;
+    color: rgb(var(--color-accent));
+    opacity: 0.7;
+    background: none !important;
+    text-decoration: none;
+    transition: opacity var(--transition-base);
+  }
+  .search-tag:hover {
+    opacity: 1;
+  }
+  .search-tag::before {
+    content: "#";
+  }
+
+  /* Inline related notes per result */
+  .search-result-related {
+    @apply mt-1.5 flex flex-wrap items-center gap-1.5 px-3 font-mono text-xs;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+  .related-label {
+    @apply mr-0.5;
+  }
+  .related-label::after {
+    content: ":";
+  }
+  .related-note-link {
+    color: rgb(var(--color-base));
+    background: none !important;
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .related-note-link:hover {
+    color: rgb(var(--color-accent));
+  }
+  .related-sep {
+    opacity: 0.4;
   }
 </style>
