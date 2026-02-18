@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Card from "@components/Card";
+import NoteCard from "@components/NoteCard.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import { SITE } from "@config";
@@ -62,7 +62,15 @@ const MonthMap: Record<string, string> = {
                   </div>
                   <ul>
                     {monthGroup.map(({ data, id }) => (
-                      <Card href={`/notes/${id}`} frontmatter={data} />
+                      <NoteCard
+                        href={`/notes/${id}/`}
+                        title={data.title}
+                        pubDatetime={data.pubDatetime}
+                        description={data.description}
+                        nexusScore={data.nexusScore}
+                        type={data.type}
+                        contentType={data.type || "notes"}
+                      />
                     ))}
                   </ul>
                 </div>

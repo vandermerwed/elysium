@@ -1,30 +1,477 @@
 ---
-import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import SearchBar from "@components/Search";
+import SectionHeader from "@components/SectionHeader.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
+import { getNodeMetrics, getIncomingLinkIds, getNormContext } from "@utils/noteGraph";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
+import { computeNexusScore } from "@utils/getNexusScore";
 
-// Retrieve all published articles
-const posts = await getCollection("notes", ({ data }) => data.status && data.status === "published");
-const sortedPosts = getSortedPosts(posts);
+// Use the shared cached graph instead of rebuilding
+const collections = await getCollections();
+const graph = await getSharedGraph();
+const normCtx = getNormContext(graph);
 
-// List of items to search in
-const searchList = sortedPosts.map(({ data, id }) => ({
-  title: data.title,
-  description: data.description,
-  data,
-  id,
-}));
+// Filter to published content for search results
+const allNotes = collections.notes.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allJournal = collections.journal.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+
+// Helper: extract plain text from markdown body (strip markup)
+function extractPlainText(body: string | undefined, maxLen = 500): string {
+  if (!body) return "";
+  return body
+    .replace(/```[\s\S]*?```/g, "")        // code blocks
+    .replace(/\[\[([^\]|]+)(\|[^\]]+)?\]\]/g, "$1") // wikilinks
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // markdown links
+    .replace(/!\[.*?\]\(.*?\)/g, "")         // images
+    .replace(/^#{1,6}\s+/gm, "")             // headings
+    .replace(/[*_~`>]/g, "")                 // inline formatting
+    .replace(/\n{2,}/g, " ")                 // multiple newlines
+    .replace(/\n/g, " ")                     // single newlines
+    .trim()
+    .slice(0, maxLen);
+}
+
+// Build enriched search list with body text, tags, and graph metrics
+type SearchCollection = "notes" | "writing" | "journal";
+type AnyPost = CollectionEntry<"notes"> | CollectionEntry<"writing"> | CollectionEntry<"journal">;
+const searchCollections: { posts: AnyPost[]; collection: SearchCollection; basePath: string }[] = [
+  { posts: allNotes as AnyPost[], collection: "notes", basePath: "/notes" },
+  { posts: allWriting as AnyPost[], collection: "writing", basePath: "/writing" },
+  { posts: allJournal as AnyPost[], collection: "journal", basePath: "/journal" },
+];
+
+const searchList = searchCollections.flatMap(({ posts, collection, basePath }) =>
+  getSortedPosts(posts).map(({ data, id, body }) => {
+    const nodeId = `${collection}/${id}`;
+    const metrics = getNodeMetrics(graph, nodeId);
+    const nexusScore = computeNexusScore(metrics, normCtx);
+
+    return {
+      title: data.title,
+      description: data.description,
+      href: `${basePath}/${id}/`,
+      collection,
+      tags: data.tags ?? [],
+      body: extractPlainText(body),
+      // Graph metrics for ranking
+      pageRank: metrics.pageRank,
+      inDegree: metrics.inDegree,
+      authorityScore: metrics.authorityScore,
+      nexusScore,
+    };
+  })
+);
+
+// Compute max values for normalization on the client
+const maxPageRank = Math.max(...searchList.map(s => s.pageRank), 0.001);
+const maxInDegree = Math.max(...searchList.map(s => s.inDegree), 1);
+const maxAuthority = Math.max(...searchList.map(s => s.authorityScore), 0.001);
+
+// Build a lookup from nodeId to search item
+const nodeIdToItem = new Map<string, typeof searchList[number]>();
+for (const item of searchList) {
+  // href is like "/notes/habits/", basePath is like "/notes"
+  // so strip the basePath prefix + trailing slash to get the post id
+  const id = item.href.split("/").filter(Boolean).slice(1).join("/");
+  nodeIdToItem.set(`${item.collection}/${id}`, item);
+}
+
+// Build graph neighbor map: href -> [{ href, title }]
+const graphNeighbors: Record<string, { href: string; title: string }[]> = {};
+for (const [nodeId, item] of nodeIdToItem) {
+  const incoming = getIncomingLinkIds(graph, nodeId);
+  const neighbors = incoming
+    .map(nId => {
+      const match = nodeIdToItem.get(nId);
+      return match ? { href: match.href, title: match.title } : null;
+    })
+    .filter(Boolean);
+  if (neighbors.length > 0) {
+    graphNeighbors[item.href] = neighbors as { href: string; title: string }[];
+  }
+}
+
+const searchMeta = { maxPageRank, maxInDegree, maxAuthority };
+
+/** Serialize to JSON, escaping sequences that could break out of a script tag. */
+function safeJsonSerialize(data: unknown): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
   <Header activeNav="search" />
-  <Main pageTitle="Search" pageDesc="Search any article ...">
-    <SearchBar client:load searchList={searchList} />
-  </Main>
+  <main id="main-content">
+    <SectionHeader title="Search" />
+    <p class="section-desc">Fuzzy search across all content, ranked by relevance and graph connectivity.</p>
+
+    <label class="search-input-wrap">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" />
+        </svg>
+      </span>
+      <input
+        id="search-input"
+        class="search-input"
+        placeholder="Search for anything..."
+        type="text"
+        name="search"
+        autocomplete="off"
+      />
+    </label>
+
+    <div id="search-result-count" class="search-result-count" style="display:none;"></div>
+
+    <ul id="search-results" class="search-results"></ul>
+  </main>
   <Footer />
 </Layout>
+
+<!-- Serialized search data for the client -->
+<script is:inline type="application/json" id="search-data" set:html={safeJsonSerialize(searchList)} />
+<script is:inline type="application/json" id="search-meta" set:html={safeJsonSerialize(searchMeta)} />
+<script is:inline type="application/json" id="graph-neighbors" set:html={safeJsonSerialize(graphNeighbors)} />
+
+<script>
+  import Fuse from "fuse.js";
+
+  interface SearchItem {
+    title: string;
+    description: string;
+    href: string;
+    collection: string;
+    tags: string[];
+    body: string;
+    pageRank: number;
+    inDegree: number;
+    authorityScore: number;
+    nexusScore: string;
+  }
+
+  interface SearchMeta {
+    maxPageRank: number;
+    maxInDegree: number;
+    maxAuthority: number;
+  }
+
+  type GraphNeighbors = Record<string, { href: string; title: string }[]>;
+
+  const collectionLabel: Record<string, string> = {
+    notes: "NOTE",
+    writing: "WRIT",
+    journal: "JRNL",
+  };
+
+  const topologyLabel: Record<string, string> = {
+    B: "Bridge",
+    A: "Authority",
+    H: "Hub",
+    R: "Relay",
+    T: "Terminal",
+  };
+
+  function escapeHtml(str: string): string {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function initSearch() {
+    const input = document.getElementById("search-input") as HTMLInputElement | null;
+    const resultsList = document.getElementById("search-results");
+    const resultCount = document.getElementById("search-result-count");
+    if (!input || !resultsList || !resultCount) return;
+
+    // Prevent double-binding
+    if (input.dataset.searchBound) return;
+    input.dataset.searchBound = "true";
+
+    // Load serialized data
+    const searchList: SearchItem[] = JSON.parse(
+      document.getElementById("search-data")?.textContent ?? "[]"
+    );
+    const meta: SearchMeta = JSON.parse(
+      document.getElementById("search-meta")?.textContent ?? "{}"
+    );
+    const graphNeighbors: GraphNeighbors = JSON.parse(
+      document.getElementById("graph-neighbors")?.textContent ?? "{}"
+    );
+
+    // Initialize Fuse.js with weighted keys
+    const fuse = new Fuse(searchList, {
+      keys: [
+        { name: "title", weight: 3 },
+        { name: "description", weight: 2 },
+        { name: "tags", weight: 1.5 },
+        { name: "body", weight: 1 },
+      ],
+      includeScore: true,
+      threshold: 0.4,
+      minMatchCharLength: 2,
+      ignoreLocation: true,
+    });
+
+    function computeGraphScore(item: SearchItem): number {
+      const prNorm = meta.maxPageRank > 0 ? item.pageRank / meta.maxPageRank : 0;
+      const idNorm = meta.maxInDegree > 0 ? item.inDegree / meta.maxInDegree : 0;
+      const auNorm = meta.maxAuthority > 0 ? item.authorityScore / meta.maxAuthority : 0;
+      return prNorm * 0.4 + idNorm * 0.3 + auNorm * 0.3;
+    }
+
+    function search(query: string) {
+      if (query.length < 2) return [];
+
+      const fuseResults = fuse.search(query);
+
+      // Boost with graph metrics + title-match bonus
+      const queryLower = query.toLowerCase().trim();
+      return fuseResults.map(r => {
+        const fuseScore = 1 - (r.score ?? 1); // Fuse score is 0 (perfect) to 1 (worst), invert
+        const graphScore = computeGraphScore(r.item);
+
+        // Title-match bonus: direct title hits should always rank highest
+        const titleLower = r.item.title.toLowerCase();
+        let titleBonus = 0;
+        if (titleLower === queryLower) {
+          titleBonus = 0.5;           // exact match
+        } else if (titleLower.startsWith(queryLower) || queryLower.startsWith(titleLower)) {
+          titleBonus = 0.35;          // prefix match (e.g. "habit" → "Habits")
+        } else if (titleLower.includes(queryLower)) {
+          titleBonus = 0.2;           // substring match
+        }
+
+        // Dynamic blend: strong text matches weight text more, weak matches let graph help
+        const textWeight = 0.6 + 0.35 * fuseScore;
+        const graphWeight = 1 - textWeight;
+        const finalScore = fuseScore * textWeight + graphScore * graphWeight + titleBonus;
+        return { item: r.item, finalScore };
+      }).sort((a, b) => b.finalScore - a.finalScore);
+    }
+
+    function renderResults(results: { item: SearchItem; finalScore: number }[], query: string) {
+      if (query.length < 2) {
+        resultCount!.style.display = "none";
+        resultsList!.innerHTML = "";
+        return;
+      }
+
+      resultCount!.style.display = "block";
+      resultCount!.textContent = `Found ${results.length} ${results.length === 1 ? "result" : "results"} for \u2018${query}\u2019`;
+
+      resultsList!.innerHTML = results.map(({ item }) => {
+        const topChar = item.nexusScore?.charAt(0) ?? "";
+        const topName = topologyLabel[topChar] ?? "";
+        const stage = item.nexusScore?.split("_")[1] ?? "";
+        const nexusBadge = topName && stage
+          ? `<span class="search-result-nexus" title="NexusScore: ${topName} \u00b7 ${stage}">${topChar}\u00b7${stage}</span>`
+          : "";
+
+        const tagsHtml = item.tags.length > 0
+          ? `<div class="search-result-tags">${item.tags.slice(0, 4).map(t => `<a href="/tags/${encodeURIComponent(t)}/" class="search-tag">${escapeHtml(t)}</a>`).join("")}</div>`
+          : "";
+
+        const neighbors = graphNeighbors[item.href];
+        const relatedHtml = neighbors && neighbors.length > 0
+          ? `<div class="search-result-related"><span class="related-label">Linked from</span>${neighbors.slice(0, 3).map(n => `<a href="${n.href}" class="related-note-link">${escapeHtml(n.title)}</a>`).join('<span class="related-sep">\u00b7</span>')}</div>`
+          : "";
+
+        return `
+          <li class="search-result-item">
+            <a href="${item.href}" class="search-result-link">
+              <div class="search-result-row">
+                <span class="search-result-title">${escapeHtml(item.title)}</span>
+                <span class="search-result-dots" aria-hidden="true"></span>
+                ${nexusBadge}
+                <span class="search-result-type">${collectionLabel[item.collection] || item.collection}</span>
+              </div>
+              ${item.description ? `<p class="search-result-desc">${escapeHtml(item.description)}</p>` : ""}
+            </a>
+            ${tagsHtml}
+            ${relatedHtml}
+          </li>
+        `;
+      }).join("");
+    }
+
+    // Read initial query from URL
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get("q") || "";
+    if (initialQuery) {
+      input.value = initialQuery;
+      renderResults(search(initialQuery), initialQuery);
+    }
+
+    // Focus input
+    setTimeout(() => {
+      input.focus();
+      input.selectionStart = input.selectionEnd = input.value.length;
+    }, 50);
+
+    // Listen for input
+    input.addEventListener("input", () => {
+      const val = input.value;
+      const results = search(val);
+      renderResults(results, val);
+
+      if (val.length > 0) {
+        const sp = new URLSearchParams(window.location.search);
+        sp.set("q", val);
+        history.replaceState(null, "", window.location.pathname + "?" + sp.toString());
+      } else {
+        history.replaceState(null, "", window.location.pathname);
+      }
+    });
+  }
+
+  // Run on initial load and after view transitions
+  initSearch();
+  document.addEventListener("astro:page-load", initSearch);
+</script>
+
+<style is:global>
+  #main-content {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12 pt-8;
+  }
+  .section-desc {
+    @apply mb-6 mt-3 text-sm;
+    color: rgb(var(--color-base));
+  }
+  .search-input-wrap {
+    @apply relative block;
+  }
+  .search-icon {
+    @apply absolute inset-y-0 left-0 flex items-center pl-3;
+    opacity: 0.5;
+  }
+  .search-icon svg {
+    @apply h-5 w-5;
+    fill: rgb(var(--color-base));
+  }
+  .search-input {
+    @apply block w-full py-3 pl-10 pr-3 font-mono text-sm;
+    background: rgb(var(--color-card));
+    color: rgb(var(--color-text-base));
+    border: 1px solid rgb(var(--color-border));
+    outline: none;
+    transition: border-color var(--transition-base);
+  }
+  .search-input::placeholder {
+    color: rgb(var(--color-base));
+    font-style: italic;
+  }
+  .search-input:focus {
+    border-color: rgb(var(--color-accent));
+  }
+  .search-result-count {
+    @apply mt-6 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .search-results {
+    @apply mt-4;
+    list-style: none;
+    padding: 0;
+  }
+  .search-result-item {
+    @apply my-5;
+    border: 1px solid transparent;
+    transition: border-color var(--transition-base);
+  }
+  .search-result-link {
+    display: block;
+    padding: 0.75rem;
+    background: none !important;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid rgb(var(--color-border));
+    transition: border-color var(--transition-base);
+  }
+  .search-result-link:hover {
+    border-color: rgb(var(--color-accent));
+    color: inherit;
+  }
+  .search-result-link:hover .search-result-title {
+    color: rgb(var(--color-accent));
+  }
+  .search-result-row {
+    @apply flex items-baseline gap-2 font-mono text-sm;
+  }
+  .search-result-title {
+    @apply whitespace-nowrap font-medium;
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
+  }
+  .search-result-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .search-result-type {
+    @apply whitespace-nowrap text-xs uppercase;
+    color: rgb(var(--color-base));
+  }
+  .search-result-nexus {
+    @apply ml-1 whitespace-nowrap font-mono text-xs;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+  .search-result-desc {
+    @apply mt-1 pl-0 text-xs;
+    color: rgb(var(--color-base));
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .search-result-tags {
+    @apply mt-2 flex flex-wrap gap-1.5 px-3;
+  }
+  .search-tag {
+    @apply font-mono text-xs;
+    color: rgb(var(--color-accent));
+    opacity: 0.7;
+    background: none !important;
+    text-decoration: none;
+    transition: opacity var(--transition-base);
+  }
+  .search-tag:hover {
+    opacity: 1;
+  }
+  .search-tag::before {
+    content: "#";
+  }
+
+  /* Inline related notes per result */
+  .search-result-related {
+    @apply mt-1.5 flex flex-wrap items-center gap-1.5 px-3 font-mono text-xs;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+  .related-label {
+    @apply mr-0.5;
+  }
+  .related-label::after {
+    content: ":";
+  }
+  .related-note-link {
+    color: rgb(var(--color-base));
+    background: none !important;
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .related-note-link:hover {
+    color: rgb(var(--color-accent));
+  }
+  .related-sep {
+    opacity: 0.4;
+  }
+</style>

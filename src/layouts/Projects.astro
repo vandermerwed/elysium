@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
+import ProjectCard from "@components/ProjectCard.astro";
 import { SITE } from "@config";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
@@ -12,13 +13,6 @@ export interface Props {
 }
 
 const { page } = Astro.props;
-const formatDate = (date?: Date | string | null) =>
-  date
-    ? new Date(date).toLocaleDateString("en-ZA", {
-        year: "numeric",
-        month: "short",
-      })
-    : "";
 
 const groupedProjects = page.data.reduce(
   (acc, project) => {
@@ -49,86 +43,30 @@ const sections = statusOrder
 
 <Layout title={`Projects | ${SITE.title}`}>
   <Header activeNav="projects" />
-  <Main pageTitle="Projects" pageDesc="Selected work across tools, writing, and experiments.">
+  <Main pageTitle="Projects" pageDesc="Selected work across tools, writing, and experiments." count={page.total}>
     <p class="text-sm text-skin-base/80 not-italic">
       I collect a lot of ideas and half-formed experiments. Most stay in the
       notebook, but some make it into the world. This page is where
-      I keep track of those outcomes. What shipped, what’s steady, and what’s now
+      I keep track of those outcomes. What shipped, what's steady, and what's now
       on the shelf.
     </p>
     {sections.map(({ status, projects }) => (
       <section class="project-section">
-        <div class="section-header">
-          <h2 class="section-title">{status}</h2>
-          <span class="section-count">{projects.length}</span>
+        <div class="status-header">
+          <span class="status-label">{status}</span>
+          <span class="status-rule" aria-hidden="true"></span>
+          <span class="status-count">[{projects.length}]</span>
         </div>
         <ul class="project-list">
           {projects.map(({ data: projectData, id }) => (
-            <li class="project-card">
-              <div class="project-header">
-                <a href={`/projects/${id}/`} class="project-title">
-                  {projectData.title}
-                </a>
-                <div class="project-meta">
-                  {projectData.startDate && (
-                    <span>Started {formatDate(projectData.startDate)}</span>
-                  )}
-                  {status === "archived" && projectData.endDate && (
-                    <span>Ended {formatDate(projectData.endDate)}</span>
-                  )}
-                  {projectData.category &&
-                    projectData.category.map((value) => <span>{value}</span>)}
-                </div>
-              </div>
-              <p class="project-description">{projectData.description}</p>
-              {projectData.techStack && projectData.techStack.length > 0 && (
-                <ul class="project-tags">
-                  {projectData.techStack.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              )}
-              {projectData.links && (
-                <div class="project-links">
-                  {projectData.links.demo && (
-                    <a
-                      href={projectData.links.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Demo
-                    </a>
-                  )}
-                  {projectData.links.github && (
-                    <a
-                      href={projectData.links.github}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Source
-                    </a>
-                  )}
-                  {projectData.links.website && (
-                    <a
-                      href={projectData.links.website}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Website
-                    </a>
-                  )}
-                  {projectData.links.spotify && (
-                    <a
-                      href={projectData.links.spotify}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Spotify
-                    </a>
-                  )}
-                </div>
-              )}
-            </li>
+            <ProjectCard
+              href={`/projects/${id}/`}
+              title={projectData.title}
+              description={projectData.description}
+              status={status}
+              techStack={projectData.techStack}
+              startDate={projectData.startDate}
+            />
           ))}
         </ul>
       </section>
@@ -140,42 +78,27 @@ const sections = statusOrder
 
 <style>
   .project-section {
-    @apply mt-10;
+    @apply mt-8;
   }
-  .section-header {
-    @apply flex items-center gap-3;
+  .status-header {
+    @apply flex items-baseline gap-2 font-mono text-xs uppercase tracking-wide;
+    color: rgb(var(--color-base));
   }
-  .section-title {
-    @apply text-2xl font-semibold capitalize;
+  .status-label {
+    @apply whitespace-nowrap;
   }
-  .section-count {
-    @apply rounded-full border border-skin-line px-2 py-0.5 text-xs uppercase tracking-wide text-skin-base/70;
+  .status-rule {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .status-count {
+    @apply whitespace-nowrap;
   }
   .project-list {
-    @apply mt-6 grid grid-cols-1 gap-6;
-  }
-  .project-card {
-    @apply rounded-md border border-skin-line p-5;
-  }
-  .project-title {
-    @apply text-xl font-semibold text-skin-accent hover:underline;
-  }
-  .project-meta {
-    @apply mt-2 flex flex-wrap gap-3 text-xs uppercase tracking-wide text-skin-base/70;
-  }
-  .project-description {
-    @apply mt-3 text-skin-base/90;
-  }
-  .project-tags {
-    @apply mt-3 flex flex-wrap gap-2;
-  }
-  .project-tags li {
-    @apply rounded-full border border-skin-line px-2 py-0.5 text-xs uppercase tracking-wide;
-  }
-  .project-links {
-    @apply mt-4 flex flex-wrap gap-4 text-sm;
-  }
-  .project-links a {
-    @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;
+    @apply mt-2;
+    list-style: none;
+    padding: 0;
   }
 </style>

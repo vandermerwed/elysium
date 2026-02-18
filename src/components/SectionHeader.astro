@@ -1,0 +1,52 @@
+---
+export interface Props {
+  title: string;
+  count?: number;
+  href?: string;
+  linkLabel?: string;
+}
+
+const { title, count, href, linkLabel } = Astro.props;
+---
+
+<div class="section-header">
+  <span class="section-prefix" aria-hidden="true">::</span>
+  <span class="section-title">{title}</span>
+  <span class="section-rule" aria-hidden="true"></span>
+  {count !== undefined && <span class="section-count">[{count}]</span>}
+  {href && (
+    <a href={href} class="section-link">
+      {linkLabel || "View all"} &rarr;
+    </a>
+  )}
+</div>
+
+<style>
+  .section-header {
+    @apply flex items-center gap-3 font-mono text-sm uppercase tracking-wider;
+    color: rgb(var(--color-text-base));
+  }
+  .section-prefix {
+    @apply text-skin-accent;
+  }
+  .section-title {
+    @apply font-semibold whitespace-nowrap;
+  }
+  .section-rule {
+    @apply flex-1;
+    border-bottom: 1px solid rgb(var(--color-border));
+  }
+  .section-count {
+    @apply whitespace-nowrap;
+    color: rgb(var(--color-base));
+  }
+  .section-link {
+    @apply whitespace-nowrap text-xs normal-case tracking-normal;
+    color: rgb(var(--color-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .section-link:hover {
+    color: rgb(var(--color-accent));
+  }
+</style>

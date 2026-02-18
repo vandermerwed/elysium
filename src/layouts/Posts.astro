@@ -4,43 +4,46 @@ import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
-import Card from "@components/Card";
+import JournalCard from "@components/JournalCard.astro";
+import { getContentHash, getSeqNum } from "@utils/marginalia";
 import { SITE } from "@config";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
-type CollectionName = "notes" | "writing" | "journal" | "projects";
-
 export interface Props {
-  page: Page<CollectionEntry<CollectionName>>;
+  page: Page<CollectionEntry<"journal">>;
   activeNav?: "notes" | "writing" | "journal" | "projects";
   pageTitle?: string;
   pageDesc?: string;
   basePath?: string;
-  showNexusScore?: boolean;
 }
 
 const {
   page,
-  activeNav = "notes",
-  pageTitle = "Notes",
-  pageDesc = "All the notes I've posted.",
-  basePath = "notes",
-  showNexusScore = basePath === "notes",
+  activeNav = "journal",
+  pageTitle = "Journal",
+  pageDesc = "Personal updates, yearly themes, and tools.",
+  basePath = "journal",
 } = Astro.props;
 ---
 
 <Layout title={`${pageTitle} | ${SITE.title}`}>
   <Header activeNav={activeNav} />
-  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
+  <Main pageTitle={pageTitle} pageDesc={pageDesc} count={page.total}>
     <ul>
       {
-        page.data.map(({ data, id }) => (
-          <Card
+        page.data.map(({ data, id }, i) => (
+          <JournalCard
             href={`/${basePath}/${id}/`}
-            frontmatter={data}
-            showNexusScore={showNexusScore}
-            contentType={basePath}
+            title={data.title}
+            pubDatetime={data.pubDatetime}
+            modDatetime={data.modDatetime}
+            description={data.description}
+            wordCount={data.wordCount}
+            readingTime={data.readingTime}
+            type={data.type}
+            contentHash={getContentHash(data.description || id)}
+            seqNum={getSeqNum(page.start + i, page.total)}
           />
         ))
       }

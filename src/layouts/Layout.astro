@@ -2,7 +2,6 @@
 import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
-import marginNotesScript from "../scripts/margin-notes.ts?url";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -108,18 +107,9 @@ const structuredData = {
       set:html={JSON.stringify(structuredData)}
     />
 
-    <!-- Google Font -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> -->
-    <!-- <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
-      rel="stylesheet"
-    /> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"> -->
+    <!-- Font Preloads -->
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <meta name="theme-color" content="" />
 
@@ -144,4 +134,32 @@ const structuredData = {
   </body>
 </html>
 
-<script type="module" src={marginNotesScript}></script>
+<script>
+import {
+  applyMarginNoteClass,
+  attachMobileSidenoteToggles,
+  patchMarginNoteExternalLinks,
+} from "../utils/dom";
+
+type MarginNoteWindow = typeof window & {
+  __applyMarginNoteClass?: typeof applyMarginNoteClass;
+  __marginNoteSwapHandler?: boolean;
+};
+
+applyMarginNoteClass();
+
+const marginWindow = window as MarginNoteWindow;
+marginWindow.__applyMarginNoteClass = applyMarginNoteClass;
+
+if (!marginWindow.__marginNoteSwapHandler) {
+  document.addEventListener("astro:after-swap", () => {
+    marginWindow.__applyMarginNoteClass?.();
+  });
+  marginWindow.__marginNoteSwapHandler = true;
+}
+
+attachMobileSidenoteToggles();
+patchMarginNoteExternalLinks();
+document.addEventListener("astro:after-swap", attachMobileSidenoteToggles);
+document.addEventListener("astro:after-swap", patchMarginNoteExternalLinks);
+</script>

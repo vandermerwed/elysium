@@ -1,0 +1,139 @@
+---
+import { formatDate } from "@utils/marginalia";
+import NexusScore from "./NexusScore";
+
+export interface Props {
+  href: string;
+  title: string;
+  pubDatetime: Date;
+  description: string;
+  nexusScore?: string;
+  contentHash?: string;
+  seqNum?: string;
+  type?: string;
+  incomingLinks?: number;
+  outgoingLinks?: number;
+  externalLinks?: number;
+  showLinks?: boolean;
+  contentType?: string;
+}
+
+const {
+  href,
+  title,
+  pubDatetime,
+  description,
+  nexusScore,
+  contentHash,
+  seqNum,
+  incomingLinks = 0,
+  outgoingLinks = 0,
+  externalLinks = 0,
+  showLinks = false,
+  contentType = "notes",
+} = Astro.props;
+
+const nexusScorePattern = /^(?:B|A|R|H|T)_(?:Fragment|Basic|Developed|Advanced|Integrated)$/;
+const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
+
+
+---
+
+<li class="note-card" data-content-type={contentType}>
+  {isValidScore && (
+    <div class="note-gutter">
+      <NexusScore score={nexusScore} size="sm" />
+      {seqNum && (
+        <span class="note-seq" aria-hidden="true">{seqNum}</span>
+      )}
+    </div>
+  )}
+  <div class="note-content">
+    <div class="note-row">
+      <a href={href} class="note-title" transition:name={href}>
+        {title}
+      </a>
+      <span class="note-dots" aria-hidden="true"></span>
+      <span class="note-date">{formatDate(pubDatetime)}</span>
+    </div>
+    <div class="note-sub">
+      <span class="note-desc">{description}</span>
+      {contentHash && <span class="note-hash">{contentHash}</span>}
+    </div>
+    {showLinks && (incomingLinks > 0 || outgoingLinks > 0 || externalLinks > 0) && (
+      <div class="note-links" title="incoming ↓ · outgoing ↑ · external ↗">
+        {incomingLinks > 0 && <span>{incomingLinks}&#8595;</span>}
+        {outgoingLinks > 0 && <span>{outgoingLinks}&#8593;</span>}
+        {externalLinks > 0 && <span>{externalLinks}&#8599;</span>}
+      </div>
+    )}
+  </div>
+</li>
+
+<style>
+  .note-card {
+    @apply my-6 flex gap-2;
+  }
+
+  /* Left gutter — pattern + seq number */
+  .note-gutter {
+    @apply hidden flex-shrink-0 flex-col items-center sm:flex;
+    width: 21px;
+    gap: 2px;
+    padding-top: 2px;
+  }
+  .note-seq {
+    margin-top: 2px;
+    font-size: 0.6rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    color: rgb(var(--color-base));
+    opacity: 0.35;
+  }
+
+  /* Right content column */
+  .note-content {
+    @apply min-w-0 flex-1;
+  }
+  .note-row {
+    @apply flex items-baseline gap-2 font-mono text-sm;
+  }
+  .note-title {
+    @apply whitespace-nowrap font-medium;
+    color: rgb(var(--color-text-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .note-title:hover {
+    color: rgb(var(--color-accent));
+    text-decoration: none;
+  }
+  .note-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .note-date {
+    @apply whitespace-nowrap;
+    color: rgb(var(--color-base));
+  }
+  .note-sub {
+    @apply mt-0.5 flex items-baseline gap-2 overflow-hidden text-xs;
+    color: rgb(var(--color-base));
+  }
+  .note-desc {
+    @apply block min-w-0 truncate;
+  }
+  .note-hash {
+    @apply ml-auto shrink-0 font-mono;
+    font-size: 0.6rem;
+    color: rgb(var(--color-base));
+    opacity: 0.2;
+  }
+  .note-links {
+    @apply mt-0.5 hidden gap-1.5 font-mono text-xs sm:flex;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+</style>

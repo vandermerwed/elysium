@@ -16,7 +16,9 @@ module.exports = {
     // if one breakpoint is not enough for you
     screens: {
       sm: "640px",
+      md: "768px",
       lg: "1024px",
+      xl: "1280px",
     },
 
     extend: {
@@ -63,14 +65,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        // mono: ["IBM Plex Mono", "monospace"],
-        // mono: ["Roboto Mono", "monospace"],
-        // mono: ["Rajdhani", "monospace"],
-        // sans: ["Inter", "sans-serif"],
-        // sans: ["Roboto", "sans-serif"],
-        // mono: ["Rajdhani", "monospace"],
-        mono: ["Fira Code", "Consolas", "monospace"],
-        sans: ["system-ui", "sans-serif"]
+        mono: ["JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", "ui-monospace", "monospace"],
+        sans: ["IBM Plex Sans", "system-ui", "-apple-system", "sans-serif"]
       },
 
       typography: {

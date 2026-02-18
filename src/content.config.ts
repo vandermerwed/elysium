@@ -8,7 +8,7 @@ const projectStatusEnum = z.enum(["active", "stable", "archived"]);
 
 // Collection-specific types (folder determines main classification)
 const notesTypeEnum = z.enum(["exploration"]); // Expandable for future note types
-const journalTypeEnum = z.enum(["loadout", "theme"]); // Sub-types for journal entries
+const journalTypeEnum = z.enum(["loadout", "theme", "life"]); // Sub-types for journal entries
 
 const baseContentSchema = ({ image }: { image: any }) =>
   z.object({
@@ -57,6 +57,19 @@ const baseContentSchema = ({ image }: { image: any }) =>
       .default([]),
     externalLinks: z.array(z.string()).default([]),
     nexusScore: z.string().default("A0"),
+    closeness: z.number().default(0),
+    hubScore: z.number().default(0),
+    authorityScore: z.number().default(0),
+    eccentricity: z.number().default(0),
+    betweennessValue: z.number().default(0),
+    pageRankValue: z.number().default(0),
+    reachability: z.number().default(0),
+    reciprocity: z.number().default(0),
+    communityId: z.number().default(-1),
+    communitySize: z.number().default(0),
+    clusterLabel: z.string().default(""),
+    diameter: z.number().default(0),
+    externalLinkCount: z.number().default(0),
     editPost: z
       .object({
         disabled: z.boolean().optional(),
@@ -104,7 +117,7 @@ const projects = defineCollection({
       year: z.number().optional(),
       techStack: z.array(z.string()).optional(),
       category: z
-        .array(z.enum(["open-source", "tool", "theme", "experiment"]))
+        .array(z.enum(["open-source", "tool", "theme", "experiment", "podcast"]))
         .optional(),
       links: z
         .object({

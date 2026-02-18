@@ -1,6 +1,5 @@
 ---
 import { SITE } from "@config";
-import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import type { Props as HeaderProps } from "@components/Header.astro";
@@ -12,6 +11,8 @@ export interface Props {
     description?: string;
     id?: HeaderProps["activeNav"];
     marginNotes?: boolean;
+    lastModified?: string;
+    modDatetime?: string;
   };
   remarkPluginFrontmatter?: {
     marginNotes?: boolean;
@@ -22,17 +23,37 @@ const { frontmatter, remarkPluginFrontmatter } = Astro.props;
 const hasMarginNotes =
   Boolean(frontmatter.marginNotes) ||
   Boolean(remarkPluginFrontmatter?.marginNotes);
+
+const modDate = frontmatter.modDatetime
+  ? new Date(frontmatter.modDatetime)
+  : frontmatter.lastModified
+    ? new Date(frontmatter.lastModified)
+    : null;
+
+function formatDate(d: Date) {
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}.${m}.${day}`;
+}
 ---
 
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
   <Header activeNav={frontmatter.id} />
-  <Breadcrumbs />
   <main id="main-content">
-    <section id={frontmatter.id} class="prose mb-28 max-w-3xl prose-img:border-0">
-      <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
+    <section id={frontmatter.id}>
+      <div class="page-header">
+        <h1 class="page-title">{frontmatter.title}</h1>
+        <span class="title-rule" aria-hidden="true"></span>
+        {modDate && (
+          <div class="page-meta">
+            <span>MOD {formatDate(modDate)}</span>
+          </div>
+        )}
+      </div>
       <article
         id="article"
-        class:list={{ "has-margin-notes": hasMarginNotes }}
+        class:list={["prose", "max-w-3xl", "prose-img:border-0", { "has-margin-notes": hasMarginNotes }]}
       >
         <slot />
       </article>
@@ -40,3 +61,28 @@ const hasMarginNotes =
   </main>
   <Footer />
 </Layout>
+
+<style>
+  #main-content {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12 pt-8;
+  }
+  section {
+    @apply mb-16;
+  }
+  .page-header {
+    @apply mb-8;
+  }
+  .page-title {
+    @apply mt-2 font-mono text-3xl font-normal;
+    color: rgb(var(--color-text-base));
+  }
+  .title-rule {
+    @apply my-3 block;
+    width: 100%;
+    border-bottom: 2px double rgb(var(--color-border));
+  }
+  .page-meta {
+    @apply flex flex-wrap items-baseline gap-x-2 gap-y-1 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+</style>

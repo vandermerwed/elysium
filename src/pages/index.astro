@@ -1,36 +1,43 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
-import Card from "@components/Card";
+import SectionHeader from "@components/SectionHeader.astro";
 import CyclingWords from "@components/CyclingWords.astro";
+import WritingCard from "@components/WritingCard.astro";
+import JournalCard from "@components/JournalCard.astro";
+import NoteCard from "@components/NoteCard.astro";
+import ExplorationCard from "@components/ExplorationCard.astro";
+import ProjectCard from "@components/ProjectCard.astro";
 import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
+import { getSeqNum } from "@utils/marginalia";
 import { SITE } from "@config";
 
-const baseNotes = await getCollection("notes", ({ data }) => data.status && data.status === "published" || data.status === "release");
-const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes);
+const collections = await getCollections();
+const graph = await getSharedGraph();
+
+const baseNotes = collections.notes.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes, graph);
 const sortedNotes = getSortedPosts(notes);
 
-const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published" || data.status === "release");
-const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting);
+const baseWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting, graph);
 const sortedWriting = getSortedPosts(writing);
 
-const baseJournal = await getCollection("journal", ({ data }) => data.status && data.status === "published" || data.status === "release");
-const journal = await getPostsWithEnrichedFrontmatter<"journal">(baseJournal);
+const baseJournal = collections.journal.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const journal = await getPostsWithEnrichedFrontmatter<"journal">(baseJournal, graph);
 const sortedJournal = getSortedPosts(journal);
 
-const projects = getSortedProjects(await getCollection("projects"));
+const projects = getSortedProjects(collections.projects);
 
 const latestWriting = sortedWriting.slice(0, SITE.postPerIndex);
 const latestJournal = sortedJournal.slice(0, SITE.postPerIndex);
-const latestNotes = sortedNotes.slice(0, SITE.postPerIndex);
+const latestNotes = sortedNotes.filter(n => !("type" in n.data && n.data.type === "exploration")).slice(0, SITE.postPerIndex);
 const recentExplorations = getSortedPosts(notes, ["exploration"]).slice(0, 4);
-const recentProjects = projects.slice(0, 3);
+const recentProjects = projects.filter(p => p.data.status !== "archived").slice(0, 3);
 
 ---
 
@@ -38,9 +45,12 @@ const recentProjects = projects.slice(0, 3);
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1 class="mr-2"><span class="text-skin-accent">Daniel</span><br />van der Merwe</h1>
-      <h2>
-        <CyclingWords 
+      <h1 class="hero-name">
+        <span class="hero-first"><span class="hero-prompt" aria-hidden="true">&gt;</span>Daniel</span>
+        <span class="hero-surname">van der Merwe</span>
+      </h1>
+      <h2 class="hero-cycling">
+        <CyclingWords
           words={[
             ["thinks", "in systems"],
             ["automates", "the boring"],
@@ -51,168 +61,115 @@ const recentProjects = projects.slice(0, 3);
             ["cares", "about craft"],
             ["cares", "about people"],
             ["shows", "up"],
-          ]} 
-          style="scramble" 
+          ]}
+          style="scramble"
         />
       </h2>
+      <span class="hero-rule" aria-hidden="true"></span>
     </section>
 
     {
       latestWriting.length > 0 && (
-        <>
-          <section class="featured" id="latest-writing">
-            <h2>Latest Writing</h2>
-            <p class="section-desc">Long-form essays and polished thinking.</p>
-            <ul>
-              {latestWriting.map(({ data, id }) => (
-                <Card
-                  href={`/writing/${id}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  showNexusScore={false}
-                />
-              ))}
-            </ul>
-          </section>
-          <div class="all-posts-btn-wrapper">
-            <LinkButton href="/writing/">
-              All Writing
-              <svg xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </LinkButton>
-          </div>
-          <Hr />
-        </>
+        <section class="home-section" id="latest-writing">
+          <SectionHeader title="Writing" href="/writing/" linkLabel="All" />
+          <ul>
+            {latestWriting.map(({ data, id }) => (
+              <WritingCard
+                href={`/writing/${id}/`}
+                title={data.title}
+                pubDatetime={data.pubDatetime}
+                modDatetime={data.modDatetime}
+                description={data.description}
+                wordCount={data.wordCount}
+                readingTime={data.readingTime}
+              />
+            ))}
+          </ul>
+        </section>
       )
     }
 
     {
       latestJournal.length > 0 && (
-        <>
-          <section class="featured" id="latest-journal">
-            <h2>Journal</h2>
-            <p class="section-desc">Personal updates, yearly themes, and tools.</p>
-            <ul>
-              {latestJournal.map(({ data, id }) => (
-                <Card
-                  href={`/journal/${id}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  showNexusScore={false}
-                />
-              ))}
-            </ul>
-          </section>
-          <div class="all-posts-btn-wrapper">
-            <LinkButton href="/journal/">
-              All Journal
-              <svg xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </LinkButton>
-          </div>
-          <Hr />
-        </>
+        <section class="home-section" id="latest-journal">
+          <SectionHeader title="Journal" href="/journal/" linkLabel="All" />
+          <ul>
+            {latestJournal.map(({ data, id }) => (
+              <JournalCard
+                href={`/journal/${id}/`}
+                title={data.title}
+                pubDatetime={data.pubDatetime}
+                modDatetime={data.modDatetime}
+                description={data.description}
+                wordCount={data.wordCount}
+                readingTime={data.readingTime}
+                type={"type" in data ? (data as Record<string, unknown>).type as string | undefined : undefined}
+              />
+            ))}
+          </ul>
+        </section>
       )
     }
 
     {
       latestNotes.length > 0 && (
-        <>
-          <section class="featured" id="latest-notes">
-            <h2>Latest Notes</h2>
-            <p class="section-desc">In-progress thoughts from the digital garden.</p>
-            <ul>
-              {latestNotes.map(({ data, id }) => (
-                <Card
-                  href={`/notes/${id}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                  showNexusScore={true}
-                  contentType="notes"
-                />
-              ))}
-            </ul>
-          </section>
-          <div class="all-posts-btn-wrapper">
-            <LinkButton href="/notes/">
-              All Notes
-              <svg xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </LinkButton>
-          </div>
-          <Hr />
-        </>
+        <section class="home-section" id="latest-notes">
+          <SectionHeader title="Notes" href="/notes/" linkLabel="All" />
+          <ul>
+            {latestNotes.map(({ data, id }) => (
+              <NoteCard
+                href={`/notes/${id}/`}
+                title={data.title}
+                pubDatetime={data.pubDatetime}
+                description={data.description}
+                nexusScore={data.nexusScore}
+                type={"type" in data ? (data as Record<string, unknown>).type as string | undefined : undefined}
+                contentType="notes"
+              />
+            ))}
+          </ul>
+        </section>
       )
     }
 
     {
       recentExplorations.length > 0 && (
-        <>
-          <section class="featured" id="recent-explorations">
-            <h2>Recent Explorations</h2>
-            <p class="section-desc">Notes with embedded prototypes and experiments.</p>
-            <ul>
-              {recentExplorations.map(({ data, id }) => (
-                <Card
-                  href={`/notes/${id}/`}
-                  frontmatter={{ ...data, type: "exploration" }}
-                  secHeading={false}
-                  showNexusScore={true}
-                  contentType="exploration"
-                />
-              ))}
-            </ul>
-          </section>
-          <div class="all-posts-btn-wrapper">
-            <LinkButton href="/notes/?type=exploration">
-              All Explorations
-              <svg xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </LinkButton>
-          </div>
-          <Hr />
-        </>
+        <section class="home-section" id="recent-explorations">
+          <SectionHeader title="Explorations" href="/notes/?type=exploration" linkLabel="All" />
+          <ul class="exploration-layout">
+            {recentExplorations.map(({ data, id }, index) => (
+              <ExplorationCard
+                href={`/notes/${id}/`}
+                title={data.title}
+                description={data.description}
+                pubDatetime={data.pubDatetime}
+                prototypeUrl={data.prototypeUrl}
+                prototypeType={data.prototypeType}
+                inspiration={data.inspiration as any}
+                seqNum={getSeqNum(index, recentExplorations.length)}
+              />
+            ))}
+          </ul>
+        </section>
       )
     }
 
     {
       recentProjects.length > 0 && (
-        <section class="featured" id="recent-projects">
-          <h2>Projects</h2>
-          <p class="section-desc">Active, stable, and archived work.</p>
+        <section class="home-section" id="recent-projects">
+          <SectionHeader title="Projects" href="/projects/" linkLabel="All" />
           <ul>
             {recentProjects.map(({ data, id }) => (
-              <Card
+              <ProjectCard
                 href={`/projects/${id}/`}
-                frontmatter={data}
-                secHeading={false}
-                showNexusScore={false}
-                contentType="projects"
+                title={data.title}
+                description={data.description}
+                status={data.status}
+                techStack={data.techStack}
+                startDate={data.startDate}
               />
             ))}
           </ul>
-          <div class="all-posts-btn-wrapper">
-            <LinkButton href="/projects/">
-              All Projects
-              <svg xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-                ></path>
-              </svg>
-            </LinkButton>
-          </div>
         </section>
       )
     }
@@ -222,48 +179,73 @@ const recentProjects = projects.slice(0, 3);
 </Layout>
 
 <style>
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply pb-4 pt-8;
-  }
-  #hero h1 {
-    @apply my-4 block text-3xl font-bold sm:my-8 sm:text-6xl;
-  }
-  #hero h2 {
-    @apply my-4 block text-xl sm:my-4 sm:text-2xl;
-  }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-  }
-  #hero p {
-    @apply my-2;
-  }
-  .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
+  /* ===== Main ===== */
+  #main-content {
+    @apply pb-10;
   }
 
-  /* ===== Featured & Recent Posts Sections ===== */
-  .featured {
-    @apply pb-6 pt-12;
+  /* ===== Hero Section ===== */
+  #hero {
+    @apply pb-6 pt-8;
   }
-  .featured h2 {
-    @apply text-3xl font-semibold tracking-wide;
+  .hero-name {
+    @apply font-mono font-normal;
+    color: rgb(var(--color-text-base));
+    line-height: 1.1;
+    text-transform: uppercase;
   }
-  .section-desc {
-    @apply mt-2 text-sm text-skin-base/80;
+  .hero-first {
+    @apply block text-4xl sm:text-5xl;
+    display: flex;
+    align-items: baseline;
   }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
+  .hero-prompt {
+    color: rgb(var(--color-accent));
+    margin-right: 0.35ch;
+    font-weight: 400;
+  }
+  .hero-surname {
+    @apply block text-xl sm:text-2xl;
+    color: rgb(var(--color-text-base) / 0.5);
+    letter-spacing: 0.15em;
+    margin-top: 0.15em;
+  }
+  .hero-cycling {
+    @apply mt-3 block text-xl sm:text-2xl;
+    color: rgb(var(--color-text-base));
+    text-transform: uppercase;
+  }
+  .hero-rule {
+    @apply mt-6 block;
+    width: 6ch;
+    border-bottom: 1px solid rgb(var(--color-border));
+  }
+
+  /* ===== Sections ===== */
+  .home-section {
+    @apply py-10;
+  }
+  .home-section ul {
+    @apply mt-4;
   }
 
   /* ===== Fragment Posts Grid ===== */
   .fragment-grid {
-    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2;
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+
+  /* ===== Explorations Layout ===== */
+  .exploration-layout {
+    @apply grid grid-cols-1 gap-4;
+  }
+  /* First item full-width featured; 3+ items: rest in 2-col grid */
+  @media (min-width: 640px) {
+    .exploration-layout {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .exploration-layout > :global(:first-child) {
+      grid-column: 1 / -1;
+    }
+    /* Single item stays full-width naturally */
   }
 </style>

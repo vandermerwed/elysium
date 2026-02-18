@@ -1,11 +1,21 @@
 import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import type Graph from "graphology";
+import { getNodeMetrics, getIncomingLinkIds, getOutgoingLinkIds, getNormContext } from "./noteGraph";
+import { computeNexusScore } from "./getNexusScore";
 
 type CollectionName = "notes" | "writing" | "journal" | "projects";
 
+/**
+ * Render posts and merge remark plugin frontmatter.
+ * When a graph is provided, computes real NexusScore and link data from the graph.
+ */
 const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
-    posts: CollectionEntry<T>[]
+    posts: CollectionEntry<T>[],
+    graph?: Graph
 ) => {
+    const normCtx = graph ? getNormContext(graph) : undefined;
+
     return Promise.all(
         posts.map(async post => {
             const { remarkPluginFrontmatter } = await render(post);
@@ -18,9 +28,27 @@ const getPostsWithEnrichedFrontmatter = async <T extends CollectionName>(
                     )
                 )
                 : {};
+
+            let graphData: Record<string, unknown> = {};
+
+            if (graph) {
+                const nodeId = `${post.collection}/${post.id}`;
+                const metrics = getNodeMetrics(graph, nodeId);
+                const nexusScore = computeNexusScore(metrics, normCtx!);
+                const incoming = getIncomingLinkIds(graph, nodeId);
+                const outgoing = getOutgoingLinkIds(graph, nodeId);
+
+                graphData = {
+                    nexusScore,
+                    incomingLinks: incoming.map(id => ({ id })),
+                    outgoingLinks: outgoing.map(id => ({ id })),
+                };
+            }
+
             const enrichedData: CollectionEntry<T>["data"] = {
                 ...post.data,
                 ...filteredFrontmatter,
+                ...graphData,
             };
 
             const enrichedPost: CollectionEntry<T> = {

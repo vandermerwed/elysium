@@ -32,3 +32,7 @@ pnpm-debug.log*
 .pnp.*
 src/content/.obsidian/workspace.json
 .jampack/*
+
+.playwright-mcp
+
+.claude/settings.local.json

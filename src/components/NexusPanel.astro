@@ -1,0 +1,254 @@
+---
+import NexusScore from "./NexusScore";
+
+export interface Props {
+  nexusScore: string;
+  incomingCount: number;
+  outgoingCount: number;
+  externalCount: number;
+  closeness: number;
+  hubScore: number;
+  authorityScore: number;
+  eccentricity: number;
+  betweennessValue: number;
+  pageRankValue: number;
+  reachability: number;
+  reciprocity: number;
+  communityId: number;
+  communitySize: number;
+  clusterLabel: string;
+  diameter: number;
+}
+
+const { nexusScore, incomingCount, outgoingCount, externalCount, closeness, hubScore, authorityScore, eccentricity, betweennessValue, pageRankValue, reachability, reciprocity, communityId, communitySize, clusterLabel, diameter } = Astro.props;
+
+const nexusScorePattern = /^(B|A|H|R|T)_(Fragment|Basic|Developed|Advanced|Integrated)$/;
+const match = nexusScore.match(nexusScorePattern);
+
+const topologyMap: Record<string, string> = { B: "Bridge", A: "Authority", H: "Hub", R: "Relay", T: "Terminal" };
+const topology = match ? topologyMap[match[1]] ?? match[1] : "—";
+const stage = match ? match[2] : "—";
+---
+
+<div class="nexus-panel" data-nexus-panel>
+  <button class="nexus-toggle" data-nexus-toggle aria-expanded="false" aria-controls="nexus-body" type="button">
+    <span class="nexus-icon">
+      <NexusScore score={nexusScore} size="sm" />
+    </span>
+    <span class="nexus-toggle-label">nexus</span>
+    <span class="nexus-summary">{stage} · {topology}</span>
+    <span class="nexus-rule" aria-hidden="true"></span>
+    <span class="nexus-chevron" aria-hidden="true"><span class="bracket">[</span><span class="op" data-nexus-op>+</span><span class="bracket">]</span></span>
+  </button>
+
+  <div class="nexus-body" id="nexus-body" data-nexus-body>
+    <div class="nexus-body-inner">
+      <div class="nexus-row">
+        <span class="nexus-label" title="Maturity level based on link density, word count, and centrality scores">stage</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{stage}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Structural role — Bridge: connects clusters, Authority: canonical reference, Hub: curates links, Relay: bidirectional exchange, Terminal: leaf node">topology</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{topology}</span>
+      </div>
+      <div class="nexus-row">
+        <span class="nexus-label" title="Notes that link to this note">incoming</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{incomingCount}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Notes this note links to">outgoing</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{outgoingCount}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Links to external websites">external</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{externalCount}</span>
+      </div>
+      <div class="nexus-row">
+        <span class="nexus-label" title="Closeness centrality — how quickly this note can reach the rest of the garden (higher = more central)">reach</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{(closeness * 100).toFixed(0)}%</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Percentage of garden notes reachable from this note via outgoing links">reachable</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{(reachability * 100).toFixed(0)}%</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Eccentricity — maximum hops to farthest reachable note, relative to graph diameter">depth</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{eccentricity}{diameter > 0 ? ` / ${diameter}` : ""}</span>
+      </div>
+      <div class="nexus-row">
+        <span class="nexus-label" title="Betweenness centrality — how often this note lies on the shortest path between other notes (bridge score)">bridge</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{betweennessValue.toFixed(3)}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="PageRank — recursive importance: notes linked by important notes score higher">rank</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{pageRankValue.toFixed(3)}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Number of bidirectional links — notes that mutually reference each other">mutual</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{reciprocity}</span>
+      </div>
+      <div class="nexus-row">
+        <span class="nexus-label" title="HITS authority score — how often this note is referenced by well-connected hub notes (higher = more authoritative)">authority</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{authorityScore.toFixed(3)}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="HITS hub score — how often this note links to authoritative notes (higher = better curator)">hub</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{hubScore.toFixed(3)}</span>
+        <span class="nexus-spacer"></span>
+        <span class="nexus-label" title="Louvain community — auto-detected topic cluster this note belongs to">cluster</span>
+        <span class="nexus-dots" aria-hidden="true"></span>
+        <span class="nexus-value">{communityId >= 0 ? `${clusterLabel || `#${communityId}`} (${communitySize})` : "—"}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  type NexusWindow = typeof window & { __nexusPanelBound?: boolean };
+  const w = window as NexusWindow;
+
+  if (!w.__nexusPanelBound) {
+    document.addEventListener("click", (e) => {
+      const toggle = (e.target as Element).closest("[data-nexus-toggle]");
+      if (!toggle) return;
+
+      const panel = toggle.closest("[data-nexus-panel]");
+      if (!panel) return;
+      const body = panel.querySelector("[data-nexus-body]") as HTMLElement;
+      if (!body) return;
+
+      const isOpen = panel.classList.contains("is-open");
+      const op = panel.querySelector("[data-nexus-op]");
+
+      if (isOpen) {
+        body.style.height = body.scrollHeight + "px";
+        requestAnimationFrame(() => {
+          body.style.height = "0";
+        });
+        panel.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        if (op) op.textContent = "+";
+      } else {
+        panel.classList.add("is-open");
+        toggle.setAttribute("aria-expanded", "true");
+        if (op) op.textContent = "\u2212";
+        body.style.height = body.scrollHeight + "px";
+        body.addEventListener("transitionend", function handler() {
+          body.style.height = "auto";
+          body.removeEventListener("transitionend", handler);
+        });
+      }
+    });
+    w.__nexusPanelBound = true;
+  }
+</script>
+
+<style>
+  .nexus-panel {
+    @apply my-3 font-mono text-sm;
+  }
+
+  /* Toggle trigger */
+  .nexus-toggle {
+    @apply flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-sm;
+    color: rgb(var(--color-base));
+    transition: color 0.15s ease;
+  }
+  .nexus-toggle:hover {
+    color: rgb(var(--color-text-base));
+  }
+
+  .nexus-icon {
+    @apply flex items-center;
+    color: rgb(var(--color-accent));
+    transition: color 0.15s ease;
+  }
+  .nexus-toggle:hover .nexus-icon {
+    color: rgb(var(--color-accent));
+  }
+
+  .nexus-toggle-label {
+    @apply whitespace-nowrap text-xs font-normal tracking-wide;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+
+  .nexus-summary {
+    @apply whitespace-nowrap text-xs;
+    color: rgb(var(--color-base));
+  }
+
+  .nexus-rule {
+    @apply flex-1;
+    border-bottom: 2px double rgb(var(--color-border));
+  }
+
+  .nexus-chevron {
+    @apply flex-shrink-0 font-mono;
+    font-size: 0.9rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    color: rgb(var(--color-base));
+    transition: color 0.15s ease;
+  }
+  .nexus-chevron .bracket {
+    line-height: 1;
+  }
+  .nexus-chevron .op {
+    display: inline-block;
+    width: 0.6em;
+    text-align: center;
+    line-height: 1;
+    position: relative;
+    top: -0.5px;
+  }
+  .nexus-toggle:hover .nexus-chevron {
+    color: rgb(var(--color-text-base));
+  }
+  .nexus-panel.is-open .nexus-chevron {
+    /* Content swapped via JS */
+  }
+
+  /* Collapsible body */
+  .nexus-body {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.25s ease;
+  }
+
+  .nexus-body-inner {
+    @apply flex flex-col gap-1 border-l py-3 pl-4;
+    border-color: rgb(var(--color-border-muted));
+    margin-left: 9px;
+    margin-top: 0.5rem;
+  }
+
+  .nexus-row {
+    @apply flex flex-wrap items-baseline gap-1;
+    color: rgb(var(--color-base));
+  }
+  .nexus-label {
+    @apply whitespace-nowrap text-xs;
+  }
+  .nexus-dots {
+    @apply flex-grow;
+    min-width: 1ch;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .nexus-value {
+    @apply whitespace-nowrap;
+    color: rgb(var(--color-text-base));
+  }
+  .nexus-spacer {
+    @apply w-4;
+  }
+</style>

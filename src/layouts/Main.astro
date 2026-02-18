@@ -1,15 +1,17 @@
 ---
-import Breadcrumbs from "@components/Breadcrumbs.astro";
+import SectionHeader from "@components/SectionHeader.astro";
 
 interface StringTitleProp {
   pageTitle: string;
   pageDesc?: string;
+  count?: number;
 }
 
 interface ArrayTitleProp {
   pageTitle: [string, string];
   titleTransition: string;
   pageDesc?: string;
+  count?: number;
 }
 
 export type Props = StringTitleProp | ArrayTitleProp;
@@ -17,7 +19,6 @@ export type Props = StringTitleProp | ArrayTitleProp;
 const { props } = Astro;
 ---
 
-<Breadcrumbs />
 <main id="main-content">
   {
     "titleTransition" in props ? (
@@ -28,21 +29,22 @@ const { props } = Astro;
         </span>
       </h1>
     ) : (
-      <h1>{props.pageTitle}</h1>
+      <SectionHeader title={props.pageTitle} count={props.count} />
     )
   }
-  <p>{props.pageDesc}</p>
+  {props.pageDesc && <p class="section-desc">{props.pageDesc}</p>}
   <slot />
 </main>
 
 <style>
   #main-content {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply mx-auto w-full max-w-3xl px-4 pb-12 pt-8;
   }
   #main-content h1 {
     @apply text-2xl font-semibold sm:text-3xl;
   }
-  #main-content p {
-    @apply mb-6 mt-2 italic;
+  .section-desc {
+    @apply mb-6 mt-3 text-sm;
+    color: rgb(var(--color-base));
   }
 </style>

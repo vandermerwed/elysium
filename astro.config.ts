@@ -15,7 +15,7 @@ import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs';
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 import { remarkTufteFootnotes } from "./src/plugins/remark-tufte-footnotes.mjs";
 import remarkGfm from "remark-gfm";
-// import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
+import { remarkWordCount } from './src/plugins/remark-word-count.mjs';
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
@@ -39,7 +39,7 @@ export default defineConfig({
       remarkToc,
       remarkModifiedTime,
       remarkReadingTime,
-      // remarkWordCount,
+      remarkWordCount,
       [
         remarkCollapse,
         {
@@ -77,7 +77,12 @@ export default defineConfig({
           if (hasKnownSectionPrefix) {
             return [resolvedId];
           }
-          return [`notes/${resolvedId}`];
+          return [
+            `notes/${resolvedId}`,
+            `writing/${resolvedId}`,
+            `journal/${resolvedId}`,
+            `projects/${resolvedId}`,
+          ];
         }
       }],
       remarkNexusScore,

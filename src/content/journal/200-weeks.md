@@ -10,6 +10,7 @@ tags:
   - discipline
   - progressive-taring
   - pact
+type: life
 description: I jogged three times a week for 200 weeks. I still don't like jogging. Here's what I learned.
 aiUsage:
   - proofreading

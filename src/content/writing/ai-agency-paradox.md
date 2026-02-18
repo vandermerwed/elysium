@@ -12,7 +12,6 @@ tags:
   - ethics
 description: Artificial Intelligence is everywhere. A look at how it's reshaping our world, the risks to agency, and how I plan to use it responsibly.
 aiUsage:
-  - code-assistance
   - research
   - proofreading
 ---

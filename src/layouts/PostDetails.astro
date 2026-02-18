@@ -3,13 +3,13 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
-import Datetime from "@components/Datetime";
-import NexusScore from "@components/NexusScore";
-import ShareLinks from "@components/ShareLinks.astro";
+import NexusPanel from "@components/NexusPanel.astro";
+
 import { SITE } from "@config";
 import AidaNotice from "@components/AidaNotice.astro";
 import EmbedPrototype from "@components/EmbedPrototype.astro";
 import Backlinks from "@components/Backlinks.astro";
+import { formatDate, formatWordCount, formatReadingTime } from "@utils/marginalia";
 import { type CollectionEntry, render } from "astro:content";
 
 export interface Props {
@@ -37,12 +37,12 @@ const {
   modDatetime,
   tags,
   editPost,
-  type,
   inspiration,
   prototypeUrl,
   prototypeType,
   aiUsage,
 } = post.data;
+const type = "type" in post.data ? (post.data as Record<string, unknown>).type as string | undefined : undefined;
 
 const { Content, remarkPluginFrontmatter } = await render(post);
 
@@ -85,88 +85,100 @@ const articleClasses = ["prose", "mx-auto", "mt-8", "max-w-3xl"];
 if (remarkPluginFrontmatter.marginNotes) {
   articleClasses.push("has-margin-notes");
 }
+
+/* ========== Metadata ========== */
+const wordCount = remarkPluginFrontmatter.wordCount ?? post.data.wordCount ?? 0;
+const readingTime = remarkPluginFrontmatter.readingTime ?? post.data.readingTime ?? "";
+const nexusScore = remarkPluginFrontmatter.nexusScore ?? post.data.nexusScore ?? "";
+const incomingLinks = Array.isArray(post.data.incomingLinks) ? post.data.incomingLinks : [];
+const outgoingLinks = Array.isArray(post.data.outgoingLinks) ? post.data.outgoingLinks : [];
+const externalLinkCount = (post.data as Record<string, any>).externalLinkCount ?? (Array.isArray(post.data.externalLinks) ? post.data.externalLinks.length : 0);
+const closeness = (post.data as Record<string, any>).closeness ?? 0;
+const hubScore = (post.data as Record<string, any>).hubScore ?? 0;
+const authorityScore = (post.data as Record<string, any>).authorityScore ?? 0;
+const eccentricity = (post.data as Record<string, any>).eccentricity ?? 0;
+const betweennessValue = (post.data as Record<string, any>).betweennessValue ?? 0;
+const pageRankValue = (post.data as Record<string, any>).pageRankValue ?? 0;
+const reachability = (post.data as Record<string, any>).reachability ?? 0;
+const reciprocity = (post.data as Record<string, any>).reciprocity ?? 0;
+const communityId = (post.data as Record<string, any>).communityId ?? -1;
+const communitySize = (post.data as Record<string, any>).communitySize ?? 0;
+const clusterLabel = (post.data as Record<string, any>).clusterLabel ?? "";
+const diameter = (post.data as Record<string, any>).diameter ?? 0;
 ---
 
 <Layout {...layoutProps}>
   <Header activeNav={activeNav} />
 
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
-    <button
-      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
-      onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg"
-        ><path
-          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-        ></path>
-      </svg><span>Go back</span>
-    </button>
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-4">
+    <a href={`/${basePath}/`} class="back-link">
+      &larr; {basePath}
+    </a>
   </div>
   <main id="main-content">
-    {basePath === "notes" && (
-      <NexusScore
-        score={remarkPluginFrontmatter.nexusScore}
-        showDescription={true}
-        size="sm"
-        className="m-auto mr-2"
-      />
-    )}
-    <div class="flex flex-wrap items-center gap-3">
-      <h1 transition:name={post.id} class="post-title mt-2">{title}</h1>
-      {resolvedTypeLabel && (
-        <span class="type-badge">{resolvedTypeLabel}</span>
+    <div class="post-header">
+      <h1 transition:name={post.id} class="post-title">{title}</h1>
+
+      {basePath === "notes" && nexusScore ? (
+        <NexusPanel
+          nexusScore={nexusScore}
+          incomingCount={incomingLinks.length}
+          outgoingCount={outgoingLinks.length}
+          externalCount={externalLinkCount}
+          closeness={closeness}
+          hubScore={hubScore}
+          authorityScore={authorityScore}
+          eccentricity={eccentricity}
+          betweennessValue={betweennessValue}
+          pageRankValue={pageRankValue}
+          reachability={reachability}
+          reciprocity={reciprocity}
+          communityId={communityId}
+          communitySize={communitySize}
+          clusterLabel={clusterLabel}
+          diameter={diameter}
+        />
+      ) : (
+        <span class="title-rule" aria-hidden="true"></span>
       )}
-    </div>
-    <Datetime
-      showModified={true}
-      showTime={false}
-      pubDatetime={pubDatetime}
-      modDatetime={modDatetime}
-      readingTime={remarkPluginFrontmatter.readingTime}
-      size="lg"
-      className="my-2"
-      editPost={editPost}
-      postId={post.id}
-    />
 
-    <ul class="tags-container">
-      {tags.map((tag: string) => <Tag tag={tag} />)}
-    </ul>
+      <div class="post-meta">
+        <span>PUB {formatDate(pubDatetime)}</span>
+        {modDatetime && <span class="meta-sep">&middot;&middot;&middot;</span>}
+        {modDatetime && <span>MOD {formatDate(modDatetime)}</span>}
+        {wordCount > 0 && <span class="meta-sep">&middot;&middot;&middot;</span>}
+        {wordCount > 0 && <span>{formatWordCount(wordCount)}</span>}
+        {readingTime && <span>/</span>}
+        {readingTime && <span>{formatReadingTime(readingTime)}</span>}
+        {resolvedTypeLabel && (
+          <>
+            <span class="meta-sep">&middot;&middot;&middot;</span>
+            <span class="post-type">{resolvedTypeLabel}</span>
+          </>
+        )}
+      </div>
 
-    {inspiration && (
-      <section class="inspiration">
-        <h2>Inspiration</h2>
-        <p>
+      <ul class="tags-container">
+        {tags.map((tag: string) => <Tag tag={tag} />)}
+      </ul>
+
+      {inspiration && (
+        <section class="inspiration">
+          <span class="inspiration-label">Inspired by</span>
           <a href={inspiration.url} target="_blank" rel="noreferrer">
             {inspiration.title}
           </a>
-          {inspiration.author && <span> — {inspiration.author}</span>}
-        </p>
-      </section>
-    )}
+          {inspiration.author && <span class="inspiration-author"> — {inspiration.author}</span>}
+        </section>
+      )}
+    </div>
 
     <article id="article" class={articleClasses.join(" ")}>
       {
         String(type) === "fragment" && (
           <div class="fragment-notice">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-alert-triangle scale-100 inline-block h-6 w-6"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 9v4" />
-              <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
-              <path d="M12 16h.01" />
-            </svg>
-            <span class="italic">
+            <span class="fragment-icon" aria-hidden="true">!</span>
+            <span>
               <b>Fragment in Flux:</b> This fragment is currently unstable and
               undergoing updates.
             </span>
@@ -184,95 +196,39 @@ if (remarkPluginFrontmatter.marginNotes) {
       />
     )}
 
-    <div>
-      <AidaNotice aiUsage={aiUsage} />
-    </div>
+    <hr class="detail-rule" />
 
-    <div
-      class="flex flex-col-reverse items-center justify-between gap-6 sm:mt-6 sm:flex-row-reverse sm:items-end sm:gap-4"
-    >
-      <button
-        id="back-to-top"
-        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
-          <path
-            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
-          ></path>
-        </svg>
-        <span>Back to Top</span>
-      </button>
-
-      <ShareLinks />
-    </div>
-
-    <hr class="my-6 border-solid border-skin-line-muted" />
-
-    <!-- Previous/Next Post Buttons -->
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div class="prev-next">
       {
         prevPost && (
-          <a
-            href={`/${basePath}/${prevPost.id}`}
-            class="flex w-full gap-1 hover:opacity-75"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M15 6l-6 6l6 6" />
-            </svg>
-            <div>
-              <span>Previous Post</span>
-              <div class="text-sm text-skin-accent/85">{prevPost.title}</div>
-            </div>
+          <a href={`/${basePath}/${prevPost.id}/`} class="prev-link">
+            <span class="pn-direction">&larr; Previous</span>
+            <span class="pn-title">{prevPost.title}</span>
           </a>
         )
       }
       {
         nextPost && (
-          <a
-            href={`/${basePath}/${nextPost.id}`}
-            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
-          >
-            <div>
-              <span>Next Post</span>
-              <div class="text-sm text-skin-accent/85">{nextPost.title}</div>
-            </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 6l6 6l-6 6" />
-            </svg>
+          <a href={`/${basePath}/${nextPost.id}/`} class="next-link">
+            <span class="pn-direction">Next &rarr;</span>
+            <span class="pn-title">{nextPost.title}</span>
           </a>
         )
       }
     </div>
     {backlinks.length > 0 && (
-      <>
-        <hr class="my-6 border-solid border-skin-line-muted" />
-        <Backlinks backlinks={backlinks} />
-      </>
+      <Backlinks backlinks={backlinks} />
     )}
+
+    <div class="post-footer-meta">
+      <AidaNotice aiUsage={aiUsage} />
+      <button
+        id="back-to-top"
+        class="focus-outline back-to-top"
+      >
+        &uarr; Top
+      </button>
+    </div>
   </main>
   <Footer />
 </Layout>
@@ -281,29 +237,121 @@ if (remarkPluginFrontmatter.marginNotes) {
   main {
     @apply mx-auto w-full max-w-3xl px-4 pb-12;
   }
+  .back-link {
+    @apply mb-1 mt-8 font-mono text-sm;
+    color: rgb(var(--color-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .back-link:hover {
+    color: rgb(var(--color-accent));
+  }
   .post-title {
-    @apply text-4xl font-semibold text-skin-accent;
+    @apply mt-2 font-mono text-3xl font-normal;
+    color: rgb(var(--color-text-base));
+  }
+  .title-rule {
+    @apply my-3 block;
+    width: 100%;
+    border-bottom: 2px double rgb(var(--color-border));
+  }
+  .post-meta {
+    @apply flex flex-wrap items-baseline gap-x-2 gap-y-1 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .meta-sep {
+    color: rgb(var(--color-border-muted));
+    letter-spacing: -1px;
+  }
+  .post-type {
+    @apply uppercase;
+    color: rgb(var(--color-accent-secondary));
   }
   .tags-container {
-    @apply my-0;
-  }
-  .incoming-links-container {
-    @apply w-full my-2;
-  }
-  .fragment-notice {
-    @apply flex text-skin-base items-center space-x-2 opacity-80 pb-4 rounded-md;
-  }
-  .type-badge {
-    @apply rounded-full border border-skin-line px-3 py-1 text-xs uppercase tracking-wide text-skin-base;
+    @apply my-3 flex flex-wrap gap-1;
+    list-style: none;
+    padding: 0;
   }
   .inspiration {
-    @apply my-8 rounded-md border border-skin-line p-4;
-  }
-  .inspiration h2 {
-    @apply mb-2 text-lg font-semibold;
+    @apply my-4 border-l-2 py-2 pl-4 font-mono text-sm;
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-base));
   }
   .inspiration a {
-    @apply underline decoration-dotted decoration-2 underline-offset-4 hover:text-skin-accent;
+    color: rgb(var(--color-text-base));
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 4px;
+  }
+  .inspiration a:hover {
+    color: rgb(var(--color-accent));
+  }
+  .inspiration-label {
+    @apply mr-2 text-xs uppercase;
+  }
+  .inspiration-author {
+    color: rgb(var(--color-base));
+  }
+  .fragment-notice {
+    @apply flex items-center gap-2 pb-4 font-mono text-sm;
+    color: rgb(var(--color-base));
+  }
+  .fragment-icon {
+    @apply flex h-5 w-5 flex-shrink-0 items-center justify-center border text-xs;
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-accent));
+  }
+  .post-footer-meta {
+    @apply flex items-center justify-between gap-4;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+  }
+  .back-to-top {
+    @apply whitespace-nowrap font-mono text-xs;
+    color: rgb(var(--color-base));
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color var(--transition-base);
+  }
+  .back-to-top:hover {
+    color: rgb(var(--color-accent));
+  }
+  .detail-rule {
+    @apply my-5;
+    border: none;
+    border-top: 1px solid rgb(var(--color-border));
+  }
+  .prev-next {
+    @apply grid grid-cols-1 gap-3 sm:grid-cols-2;
+    margin-bottom: 0.5rem;
+  }
+  .prev-link,
+  .next-link {
+    @apply flex flex-col gap-0.5 font-mono text-sm;
+    text-decoration: none;
+  }
+  .next-link {
+    @apply text-right sm:col-start-2;
+  }
+  .pn-direction {
+    @apply text-xs uppercase tracking-wide;
+    color: rgb(var(--color-base));
+  }
+  .pn-title {
+    color: rgb(var(--color-text-base));
+    transition: color var(--transition-base);
+  }
+  .prev-link:hover .pn-title,
+  .next-link:hover .pn-title {
+    color: rgb(var(--color-accent));
+  }
+
+  /* Allow margin notes to overflow to the right without shifting main */
+  @media (min-width: 72rem) {
+    main:has(#article.has-margin-notes) {
+      overflow: visible;
+    }
   }
 </style>
 
@@ -423,6 +471,63 @@ if (remarkPluginFrontmatter.marginNotes) {
     });
   }
   backToTop();
+
+  /** Lightweight image lightbox for prose images (event delegation) */
+  function initLightbox() {
+    const article = document.getElementById("article");
+    if (!article || article.dataset.lightboxBound) return;
+    article.dataset.lightboxBound = "true";
+
+    let overlay = null;
+
+    function open(src, alt) {
+      overlay = document.createElement("div");
+      overlay.className = "lightbox-overlay";
+
+      var closeBtn = document.createElement("button");
+      closeBtn.className = "lightbox-close";
+      closeBtn.setAttribute("aria-label", "Close preview");
+      closeBtn.textContent = "\u00d7";
+      overlay.appendChild(closeBtn);
+
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = alt || "";
+      overlay.appendChild(img);
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = "hidden";
+
+      // Trigger enter animation on next frame
+      requestAnimationFrame(function () { overlay.classList.add("is-visible"); });
+
+      overlay.addEventListener("click", close);
+      document.addEventListener("keydown", onKey);
+    }
+
+    function close() {
+      if (!overlay) return;
+      overlay.classList.remove("is-visible");
+      overlay.addEventListener("transitionend", function () {
+        overlay.remove();
+        overlay = null;
+      }, { once: true });
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+    }
+
+    function onKey(e) {
+      if (e.key === "Escape") close();
+    }
+
+    article.addEventListener("click", function (e) {
+      var img = e.target.closest("img");
+      if (!img) return;
+      e.preventDefault();
+      open(img.src, img.alt);
+    });
+  }
+  initLightbox();
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>

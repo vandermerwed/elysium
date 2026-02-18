@@ -5,40 +5,59 @@ import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
-import Card from "@components/Card";
+import NoteCard from "@components/NoteCard.astro";
+import GardenStatus from "@components/GardenStatus.astro";
 import ContentTypeFilter from "@components/ContentTypeFilter.astro";
+import { getContentHash, getSeqNum } from "@utils/marginalia";
 import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
+import { computeGardenStats } from "@utils/gardenStats";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const basePosts = await getCollection("notes", ({ data }) => data.status && data.status === "published");
-  const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts);
+  const collections = await getCollections();
+  const graph = await getSharedGraph();
 
-  return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
+  const basePosts = collections.notes.filter(({ data }) => data.status && data.status === "published");
+  const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts, graph);
+  const gardenStats = computeGardenStats(graph, "notes");
+
+  return paginate(getSortedPosts(posts), {
+    pageSize: SITE.postPerPage,
+    props: { gardenStats },
+  });
 }) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
+const { page, gardenStats } = Astro.props;
 ---
 
 <Layout title={`Notes | ${SITE.title}`}>
   <Header activeNav="notes" />
-  <Main pageTitle="Notes" pageDesc="Shorter notes, quick findings, and in-progress thoughts.">
+  <Main pageTitle="Notes" pageDesc="Shorter notes, quick findings, and in-progress thoughts." count={page.total}>
     <p class="text-sm text-skin-base/80 not-italic">
       Notes are my digital garden. Ideas that grow over time.
-      If you’re curious about where that comes from, start with
+      If you're curious about where that comes from, start with
       <a href="/notes/digital-gardens/"> the history of digital gardens</a>.
     </p>
-    <ContentTypeFilter types={["all", "exploration"]} targetId="notes-list" />
+    {page.currentPage === 1 && <GardenStatus stats={gardenStats} />}
+    <ContentTypeFilter types={["all", "notes", "exploration"]} targetId="notes-list" />
     <ul id="notes-list">
-      {page.data.map(({ data, id }) => (
-        <Card
+      {page.data.map(({ data, id }, i) => (
+        <NoteCard
           href={`/notes/${id}/`}
-          frontmatter={data}
-          secHeading={false}
-          showNexusScore={true}
-          contentType={data.type || "notes"}
+          title={data.title}
+          pubDatetime={data.pubDatetime}
+          description={data.description}
+          nexusScore={data.nexusScore}
+          contentHash={getContentHash(data.description || id)}
+          seqNum={getSeqNum(page.start + i, page.total)}
+          type={"type" in data ? (data as Record<string, unknown>).type as string | undefined : undefined}
+          incomingLinks={Array.isArray(data.incomingLinks) ? data.incomingLinks.length : 0}
+          outgoingLinks={Array.isArray(data.outgoingLinks) ? data.outgoingLinks.length : 0}
+          externalLinks={Array.isArray(data.externalLinks) ? data.externalLinks.length : 0}
+          showLinks={true}
+          contentType={"type" in data ? ((data as Record<string, unknown>).type as string) || "notes" : "notes"}
         />
       ))}
     </ul>

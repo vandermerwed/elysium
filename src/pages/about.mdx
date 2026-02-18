@@ -3,19 +3,15 @@ layout: ../layouts/SimpleLayout.astro
 title: "About"
 id: "about"
 lastModified: "2023-10-01 17:00:00"
+modDatetime: 2026-02-16T13:48:34Z
 ---
 
-import TimeSince from "@components/TimeSince.tsx";
+import TimeSince from "@components/TimeSince.astro";
 
-<div style="display:none">
-  {/* TODO: Dirty hack to get around the fact that the first instance of a loaded component has script and style tags that break <p> tag rendering. Need to figure out a fix for this. */}
-  <TimeSince client:visible startDateTime="1988-09-30 07:50:00" />
-</div>
-
-I'm Daniel van der Merwe, and I'm precisely <TimeSince client:load startDateTime="1988-09-30 07:50:00" /> years old.
+I'm Daniel van der Merwe, and I'm precisely <TimeSince startDateTime="1988-09-30 07:50:00" /> years old.
 I live in a scenic little town on the West Coast of South Africa, surrounded by the sweet chaos of family life with my wife and two children.
 
-I've accumulated <TimeSince client:load startDateTime="2008-01-01 08:00:00" decimalPlaces={2} updateInterval={100000} /> years of programming and business experience in a wide range of sectors like insurance, travel, media, you name it.
+I've accumulated <TimeSince startDateTime="2008-01-01 08:00:00" decimalPlaces={2} updateInterval={100000} /> years of programming and business experience in a wide range of sectors like insurance, travel, media, you name it.
 Currently, I'm the co-founder and Technical Director of a software development company called [Rokkit200](https://rokkit200.co).
 The majority of my experience is on the Optimizely (formerly Episerver) suite of products with a strong focus on the .NET stack, although I'm not a stranger to front-end technologies.
 

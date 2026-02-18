@@ -98,7 +98,7 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
                         return true;
                     }
                 } else if (pathFormat === "obsidian-absolute") {
-                    if (e === "/" + p) {
+                    if (e === "/" + p || e === p) {
                         return true;
                     }
                 } else {
@@ -110,13 +110,17 @@ function fromMarkdown(this: any, opts: FromMarkdownOptions = {}) {
             });
         });
 
-        // TODO this is ugly
-        const link =
+        let link =
             matchingPermalink ||
             (pathFormat === "obsidian-absolute"
                 ? "/" + possibleWikiLinkPermalinks[0]
                 : possibleWikiLinkPermalinks[0]) ||
             "";
+
+        // Ensure absolute path for obsidian-absolute format
+        if (pathFormat === "obsidian-absolute" && link && !link.startsWith("/")) {
+            link = "/" + link;
+        }
 
         wikiLink.data.exists = !!matchingPermalink;
         wikiLink.data.permalink = link;

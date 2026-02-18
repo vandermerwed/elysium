@@ -1,0 +1,290 @@
+---
+import type { GardenStats } from "@utils/gardenStats";
+
+export interface Props {
+  stats: GardenStats;
+}
+
+const { stats } = Astro.props;
+---
+
+<div class="garden-status" data-garden-panel>
+  <button class="garden-toggle" data-garden-toggle aria-expanded="false" aria-controls="garden-body" type="button">
+    <span class="garden-toggle-label">garden status</span>
+    <span class="garden-summary">{stats.total} notes · {stats.totalLinks} links · {stats.communityCount} clusters</span>
+    <span class="garden-rule" aria-hidden="true"></span>
+    <span class="garden-chevron" aria-hidden="true"><span class="bracket">[</span><span class="op" data-garden-op>+</span><span class="bracket">]</span></span>
+  </button>
+
+  <div class="garden-status-body" id="garden-body" data-garden-body>
+    <div class="garden-body-inner">
+      <div class="garden-stat-row">
+        <span class="garden-stat-label">{stats.total} notes</span>
+      </div>
+
+      <div class="garden-stat-group">
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Well-developed notes with strong content and connections (Advanced + Integrated)">Developed</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byStage.developed}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Notes with moderate content and some connections (Developed stage)">Emerging</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byStage.emerging}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">└─</span>
+          <span class="garden-stat-label" title="Early-stage notes with minimal content or connections (Fragment + Basic)">Seedling</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byStage.seedling}</span>
+        </div>
+      </div>
+
+      <div class="garden-stat-row garden-stat-heading">
+        <span class="garden-stat-label">Topology</span>
+      </div>
+      <div class="garden-stat-group">
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Notes that connect different topic clusters — high betweenness centrality">Bridges</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byTopology.bridges}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Canonical reference notes frequently linked to by others — high HITS authority score">Authorities</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byTopology.authorities}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Curators that link out to many authoritative notes — high HITS hub score">Hubs</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byTopology.hubs}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Well-integrated notes with bidirectional links — high reachability and reciprocity">Relays</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byTopology.relays}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">└─</span>
+          <span class="garden-stat-label" title="Leaf notes with few or no connections to the rest of the garden">Terminals</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.byTopology.terminals}</span>
+        </div>
+      </div>
+
+      <div class="garden-stat-row garden-stat-heading">
+        <span class="garden-stat-label">Graph</span>
+      </div>
+      <div class="garden-stat-group">
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Total wikilinks between notes in this collection">Links</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.totalLinks}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Average outgoing links per note">Avg / note</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.avgLinksPerNote}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Percentage of possible connections that actually exist — higher means a more interconnected garden">Density</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{(stats.density * 100).toFixed(1)}%</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Topic communities auto-detected via Louvain algorithm — notes that link to each other tend to form clusters">Clusters</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.communityCount}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Longest shortest path between any two reachable notes — measures how spread out the garden is">Diameter</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.diameter} hops</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Notes with no incoming or outgoing links — isolated from the rest of the garden">Orphans</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.orphans}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Bidirectional links — notes that reference each other">Mutual</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.mutualLinks}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">├─</span>
+          <span class="garden-stat-label" title="Links to external websites across all notes">External</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.externalLinks}</span>
+        </div>
+        <div class="garden-stat-row">
+          <span class="garden-tree-prefix" aria-hidden="true">└─</span>
+          <span class="garden-stat-label" title="Total word count across all notes in this collection">Words</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.totalWords.toLocaleString()}</span>
+        </div>
+      </div>
+
+      {stats.mostConnected && (
+        <div class="garden-stat-row">
+          <span class="garden-stat-label" title="The note with the highest total of incoming and outgoing links">Most connected</span>
+          <span class="garden-stat-dots" aria-hidden="true"></span>
+          <span class="garden-stat-value">{stats.mostConnected.title} ({stats.mostConnected.linkCount})</span>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+<script>
+  type GardenWindow = typeof window & { __gardenPanelBound?: boolean };
+  const w = window as GardenWindow;
+
+  if (!w.__gardenPanelBound) {
+    document.addEventListener("click", (e) => {
+      const toggle = (e.target as Element).closest("[data-garden-toggle]");
+      if (!toggle) return;
+
+      const panel = toggle.closest("[data-garden-panel]");
+      if (!panel) return;
+      const body = panel.querySelector("[data-garden-body]") as HTMLElement;
+      if (!body) return;
+
+      const isOpen = panel.classList.contains("is-open");
+      const op = panel.querySelector("[data-garden-op]");
+
+      if (isOpen) {
+        body.style.height = body.scrollHeight + "px";
+        requestAnimationFrame(() => {
+          body.style.height = "0";
+        });
+        panel.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        if (op) op.textContent = "+";
+      } else {
+        panel.classList.add("is-open");
+        toggle.setAttribute("aria-expanded", "true");
+        if (op) op.textContent = "\u2212";
+        body.style.height = body.scrollHeight + "px";
+        body.addEventListener("transitionend", function handler() {
+          body.style.height = "auto";
+          body.removeEventListener("transitionend", handler);
+        });
+      }
+    });
+    w.__gardenPanelBound = true;
+  }
+</script>
+
+<style>
+  .garden-status {
+    @apply my-3 font-mono text-sm;
+  }
+
+  /* Toggle trigger */
+  .garden-toggle {
+    @apply flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-sm;
+    color: rgb(var(--color-base));
+    transition: color 0.15s ease;
+  }
+  .garden-toggle:hover {
+    color: rgb(var(--color-text-base));
+  }
+  .garden-toggle-label {
+    @apply whitespace-nowrap text-xs font-normal tracking-wide;
+    color: rgb(var(--color-base));
+    opacity: 0.7;
+  }
+  .garden-summary {
+    @apply whitespace-nowrap text-xs;
+    color: rgb(var(--color-base));
+  }
+  .garden-rule {
+    @apply flex-1;
+    border-bottom: 2px double rgb(var(--color-border));
+  }
+  .garden-chevron {
+    @apply flex-shrink-0 font-mono;
+    font-size: 0.9rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    color: rgb(var(--color-base));
+    transition: color 0.15s ease;
+  }
+  .garden-chevron .bracket {
+    line-height: 1;
+  }
+  .garden-chevron .op {
+    display: inline-block;
+    width: 0.6em;
+    text-align: center;
+    line-height: 1;
+    position: relative;
+    top: -0.5px;
+  }
+  .garden-toggle:hover .garden-chevron {
+    color: rgb(var(--color-text-base));
+  }
+
+  /* Collapsible body */
+  .garden-status-body {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.25s ease;
+  }
+  .garden-body-inner {
+    @apply flex flex-col gap-0 border-l py-3 pl-4;
+    border-color: rgb(var(--color-border-muted));
+    margin-left: 9px;
+    margin-top: 0.5rem;
+    color: rgb(var(--color-base));
+  }
+
+  .garden-stat-group {
+    margin-bottom: 0.5rem;
+  }
+  .garden-stat-heading {
+    margin-top: 0.5rem;
+  }
+  .garden-stat-row {
+    @apply flex items-baseline gap-1;
+    line-height: 1.75;
+  }
+  .garden-tree-prefix {
+    @apply text-xs;
+    color: rgb(var(--color-border));
+    width: 2ch;
+    flex-shrink: 0;
+  }
+  .garden-stat-label {
+    @apply whitespace-nowrap;
+  }
+  .garden-stat-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    margin: 0 0.25rem;
+    min-width: 2ch;
+    position: relative;
+    top: -3px;
+  }
+  .garden-stat-value {
+    @apply whitespace-nowrap;
+    color: rgb(var(--color-text-base));
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+import { formatProjectAge } from "@utils/marginalia";
+
+export interface Props {
+  href: string;
+  title: string;
+  description: string;
+  status?: "active" | "stable" | "archived";
+  techStack?: string[];
+  startDate?: Date;
+  version?: string;
+}
+
+const {
+  href,
+  title,
+  description,
+  status = "active",
+  techStack = [],
+  startDate,
+  version,
+} = Astro.props;
+
+const statusIndicator = status === "active" ? ">>> ACTIVE" : status === "stable" ? "--- STABLE" : "... ARCHIVED";
+const statusClass = status === "archived" ? "status-archived" : status === "active" ? "status-active" : "status-stable";
+---
+
+<li class="project-card">
+  <div class="project-row">
+    <span class="project-diamond" aria-hidden="true"></span>
+    <a href={href} class="project-title">
+      {title}
+    </a>
+    <span class="project-dots" aria-hidden="true"></span>
+    <span class={`project-status ${statusClass}`}>{statusIndicator}</span>
+  </div>
+  <p class="project-desc">{description}</p>
+  <div class="project-meta">
+    {techStack.length > 0 && (
+      <span class="project-tech">{techStack.join(" \u00b7 ")}</span>
+    )}
+    {techStack.length > 0 && startDate && <span class="project-tech-dots" aria-hidden="true"></span>}
+    {startDate && <span class="project-age">{formatProjectAge(startDate)}</span>}
+    {version && <span class="project-version">v{version}</span>}
+  </div>
+</li>
+
+<style>
+  .project-card {
+    @apply my-4;
+    transition: color var(--transition-base);
+  }
+  .project-row {
+    @apply flex items-baseline gap-2 font-mono text-sm;
+  }
+  .project-diamond {
+    @apply text-skin-accent;
+  }
+  .project-diamond::before {
+    content: "\25C7";
+  }
+  .project-card:hover .project-diamond::before {
+    content: "\25C6";
+  }
+  .project-title {
+    @apply whitespace-nowrap font-semibold;
+    color: rgb(var(--color-text-base));
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .project-title:hover {
+    color: rgb(var(--color-accent));
+    text-decoration: none;
+  }
+  .project-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+  .project-status {
+    @apply whitespace-nowrap font-mono text-xs uppercase tracking-wide;
+  }
+  .status-active {
+    color: rgb(var(--color-accent-secondary));
+  }
+  .status-stable {
+    color: rgb(var(--color-base));
+  }
+  .status-archived {
+    color: rgb(var(--color-base));
+    opacity: 0.6;
+  }
+  .project-desc {
+    @apply mt-1 pl-5 text-sm;
+    color: rgb(var(--color-text-base) / 0.85);
+  }
+  .project-meta {
+    @apply mt-2 flex items-baseline gap-2 pl-5 font-mono text-xs;
+    color: rgb(var(--color-base));
+  }
+  .project-tech {
+    @apply truncate;
+  }
+  .project-tech-dots {
+    @apply flex-1;
+    border-bottom: 1px dotted rgb(var(--color-border-muted));
+    position: relative;
+    top: -3px;
+  }
+</style>

@@ -5,15 +5,19 @@ import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
-import Card from "@components/Card";
+import WritingCard from "@components/WritingCard.astro";
+import { getContentHash, getSeqNum } from "@utils/marginalia";
 import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const baseWriting = await getCollection("writing", ({ data }) => data.status && data.status === "published" || data.status === "release");
-  const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting);
+  const collections = await getCollections();
+  const graph = await getSharedGraph();
+
+  const baseWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+  const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting, graph);
 
   return paginate(getSortedPosts(writing), { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
@@ -25,15 +29,21 @@ const { page } = Astro.props;
   <Header activeNav="writing" />
   <Main
     pageTitle="Writing"
-    pageDesc="Long-form essays and narratives I’ve written and refined."
+    pageDesc="Longer articles and narratives I've written and refined."
+    count={page.total}
   >
     <ul>
-      {page.data.map(({ data, id }) => (
-        <Card
+      {page.data.map(({ data, id }, i) => (
+        <WritingCard
           href={`/writing/${id}/`}
-          frontmatter={data}
-          secHeading={false}
-          showNexusScore={false}
+          title={data.title}
+          pubDatetime={data.pubDatetime}
+          modDatetime={data.modDatetime}
+          description={data.description}
+          wordCount={data.wordCount}
+          readingTime={data.readingTime}
+          contentHash={getContentHash(data.description || id)}
+          seqNum={getSeqNum(page.start + i, page.total)}
         />
       ))}
     </ul>

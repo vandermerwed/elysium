@@ -1,3 +1,35 @@
+/* Self-hosted Font Faces */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fonts/IBMPlexSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fonts/IBMPlexSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,28 +38,29 @@
 @layer base {
   :root {
     /* Light theme values */
-    --light-color: 55, 65, 81;
-    --light-fill: 255, 255, 254;
+    --light-color: 107, 114, 128;
+    --light-fill: 252, 251, 250;
     --light-text-base: 43, 40, 49;
-    --light-accent: 231, 93, 14;
-    --light-accent-secondary: 0, 166, 113;
-    --light-card: 230, 230, 230;
-    --light-card-muted: 205, 205, 205;
-    --light-border: 236, 233, 233;
-    --light-border-muted: 205, 205, 205;
+    --light-accent: 232, 84, 37;
+    --light-accent-secondary: 16, 163, 127;
+    --light-card: 245, 244, 242;
+    --light-card-muted: 235, 234, 232;
+    --light-border: 229, 228, 226;
+    --light-border-muted: 214, 213, 211;
 
     /* Dark theme values */
-    --dark-color: 240, 246, 248;
-    --dark-fill: 37, 36, 38;
-    --dark-text-base: 240, 246, 248;
-    --dark-accent: 232, 84, 37;
-    --dark-accent-secondary: 0, 161, 96;
-    --dark-card: 59, 58, 60;
-    --dark-card-muted: 138, 51, 2;
-    --dark-border: 80, 82, 83;
-    --dark-border-muted: 138, 51, 2;
+    --dark-color: 161, 161, 170;
+    --dark-fill: 24, 24, 27;
+    --dark-text-base: 244, 244, 245;
+    --dark-accent: 239, 103, 55;
+    --dark-accent-secondary: 45, 180, 140;
+    --dark-card: 39, 39, 42;
+    --dark-card-muted: 50, 50, 54;
+    --dark-border: 63, 63, 70;
+    --dark-border-muted: 82, 82, 91;
 
     /* Dynamic theme variables */
+    --color-base: var(--light-color);
     --color: var(--light-color);
     --color-fill: var(--light-fill);
     --color-text-base: var(--light-text-base);
@@ -39,10 +72,32 @@
     --color-border-muted: var(--light-border-muted);
 
     /* Layout breakpoints */
-    --breakpoint-margin-notes: 60rem;
+    --breakpoint-margin-notes: 72rem;
+
+    /* Font stacks */
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', ui-monospace, monospace;
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+
+    /* Spacing tokens */
+    --space-section: clamp(4rem, 10vh, 8rem);
+    --space-block: 2rem;
+    --space-element: 1rem;
+    --space-tight: 0.5rem;
+
+    /* Container widths */
+    --container-prose: 65ch;
+    --container-content: 48rem;
+    --container-wide: 64rem;
+    --gutter: clamp(1rem, 5vw, 2rem);
+
+    /* Transition tokens */
+    --transition-fast: 100ms ease;
+    --transition-base: 150ms ease;
+    --transition-slow: 300ms ease;
   }
 
   html[data-theme="dark"] {
+    --color-base: var(--dark-color);
     --color: var(--dark-color);
     --color-fill: var(--dark-fill);
     --color-text-base: var(--dark-text-base);
@@ -56,6 +111,7 @@
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
+      --color-base: var(--dark-color);
       --color: var(--dark-color);
       --color-fill: var(--dark-fill);
       --color-text-base: var(--dark-text-base);
@@ -76,22 +132,35 @@
 
   /* Base Layout & Typography */
   body {
-    @apply flex min-h-screen flex-col bg-skin-fill font-sans text-skin-base 
+    @apply flex min-h-screen flex-col bg-skin-fill font-sans text-skin-base
     selection:bg-skin-accent selection:bg-opacity-80 selection:text-skin-inverted;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-mono uppercase;
+    @apply font-mono;
   }
 
-  section, footer {
+  section {
     @apply mx-auto max-w-3xl px-4;
   }
 
   /* Links & Interactive Elements */
   a {
-    @apply outline-2 outline-offset-1 outline-skin-fill 
-    focus-visible:no-underline focus-visible:outline-dashed;
+    color: rgb(var(--color-accent));
+    text-decoration: none;
+    background-image: linear-gradient(rgb(var(--color-accent)), rgb(var(--color-accent)));
+    background-size: 0% 1px;
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    transition: color var(--transition-base), background-size var(--transition-base);
+  }
+  a:hover {
+    background-size: 100% 1px;
+  }
+  a:focus-visible {
+    outline: 2px dashed rgb(var(--color-accent));
+    outline-offset: 2px;
+    text-decoration: none;
   }
 
   /* SVG Icons */
@@ -100,43 +169,49 @@
   }
 
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent 
-    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
+    @apply inline-block h-6 w-6 scale-125 fill-transparent
+    stroke-current stroke-2 opacity-90 group-hover:fill-transparent
     sm:scale-110;
   }
 
   /* Prose Styles */
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
-    prose-h3:italic prose-p:!text-skin-base 
-    prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-4
-    hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
+    @apply prose-headings:!mb-3 prose-headings:!text-skin-base
+    prose-h3:italic prose-p:!text-skin-base
+    prose-a:!text-skin-accent prose-a:!no-underline
+    hover:prose-a:!text-skin-accent prose-blockquote:!border-l-skin-accent
     prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
     prose-figcaption:!text-skin-base prose-figcaption:opacity-70
     prose-strong:!text-skin-base
 
-    
-    prose-code:rounded prose-code:bg-skin-card 
-    prose-code:bg-opacity-75 prose-code:p-1 prose-code:!text-skin-base 
+
+    prose-code:rounded prose-code:bg-skin-card
+    prose-code:bg-opacity-75 prose-code:p-1 prose-code:!text-skin-base
     prose-code:before:!content-[''] prose-code:after:!content-['']
-    prose-pre:!text-skin-base prose-ol:!text-skin-base 
+    prose-pre:!text-skin-base prose-ol:!text-skin-base
     prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent
     prose-table:text-skin-base prose-th:border
-    prose-th:border-skin-line prose-td:border 
-    prose-td:border-skin-line prose-img:mx-auto 
-    prose-img:!mt-2 prose-img:border-2 
-    prose-img:border-skin-line
+    prose-th:border-skin-line prose-td:border
+    prose-td:border-skin-line prose-img:mx-auto
+    prose-img:!mt-2 prose-img:border-2
+    prose-img:border-skin-line prose-img:cursor-zoom-in
+    prose-img:transition-all prose-img:duration-200 prose-img:ease-out
+    hover:prose-img:brightness-105 hover:prose-img:shadow-lg
+    hover:prose-img:border-skin-accent/40
     prose-hr:!border-skin-line-muted
     prose-hr:max-w-sm prose-hr:mx-auto;
   }
 
   /* External Link Styles */
-  .prose a.external-link {
-    @apply hover:!text-skin-accent-secondary;
+  .prose a.external-link,
+  .prose .margin-sidenote a[href^="http"] {
+    color: rgb(var(--color-accent-secondary)) !important;
+    background-image: linear-gradient(rgb(var(--color-accent-secondary)), rgb(var(--color-accent-secondary)));
   }
 
-  .prose a.external-link::after {
-    content: "🡥";
+  .prose a.external-link::after,
+  .prose .margin-sidenote a[href^="http"]::after {
+    content: "↗";
     margin-left: .25rem;
     text-decoration: none;
     display: inline-block;
@@ -195,10 +270,10 @@
   }
 
   /* Breakpoint value matches --breakpoint-margin-notes custom property */
-  @media (min-width: 60rem) {
+  @media (min-width: 72rem) {
     #article.has-margin-notes {
-      --margin-note-width: clamp(13rem, 24vw, 18rem);
-      --margin-note-gap: clamp(1.75rem, 5vw, 2.75rem);
+      --margin-note-width: clamp(12rem, 20vw, 16rem);
+      --margin-note-gap: clamp(1.5rem, 3vw, 2.5rem);
     }
 
     #article.has-margin-notes .margin-sidenote {
@@ -249,6 +324,48 @@
   ::-webkit-scrollbar-thumb { @apply bg-skin-card; }
   ::-webkit-scrollbar-thumb:hover { @apply bg-skin-card-muted; }
 
+  /* Image Lightbox */
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(0 0 0 / 0.8);
+    backdrop-filter: blur(4px);
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+  .lightbox-overlay.is-visible { opacity: 1; }
+  .lightbox-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 0.4);
+    transform: scale(0.95);
+    transition: transform 200ms ease;
+  }
+  .lightbox-overlay.is-visible img { transform: scale(1); }
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: rgb(255 255 255 / 0.7);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-mono);
+    transition: color 150ms ease;
+  }
+  .lightbox-close:hover { color: #fff; }
+
   /* Code Block Styles */
   pre:has(code) { @apply border border-skin-line; }
   code, blockquote { word-wrap: break-word; }
@@ -267,11 +384,22 @@
   }
 }
 
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 /* Utility Classes */
 @layer components {
   .display-none { @apply hidden; }
   .focus-outline {
-    @apply outline-2 outline-offset-1 outline-skin-fill 
+    @apply outline-2 outline-offset-2 outline-skin-fill
     focus-visible:no-underline focus-visible:outline-dashed;
   }
 }

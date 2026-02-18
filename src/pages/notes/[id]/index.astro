@@ -2,7 +2,10 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@layouts/PostDetails.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
-import getIncomingLinks from "@utils/getIncomingLinks";
+import { getIncomingLinkIds, getOutgoingLinkIds, getNodeMetrics, getGraphDiameter, getCommunitySize, getClusterLabel, getNormContext } from "@utils/noteGraph";
+import { computeNexusScore } from "@utils/getNexusScore";
+import { getSharedGraph, getAllPosts, getCollections } from "@utils/buildGraph";
+import { getBacklinks } from "@utils/getBacklinks";
 
 export interface Props {
   post: CollectionEntry<"notes">;
@@ -21,22 +24,35 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 
-const posts = await getCollection("notes");
-const sortedPosts = getSortedPosts(posts);
-const writingPosts = await getCollection("writing");
-const journalPosts = await getCollection("journal");
-const projectPosts = await getCollection("projects");
-const backlinkSources = [...posts, ...writingPosts, ...journalPosts, ...projectPosts];
-const incomingLinks = getIncomingLinks(backlinkSources, post.id, "notes");
-const backlinks = incomingLinks.map(entry => {
-  const entryBasePath = entry.collection === "projects" ? "projects" : entry.collection;
-  return {
-    title: entry.data.title,
-    url: `/${entryBasePath}/${entry.id}/`,
-    type: entry.data.type, // exploration, loadout, theme, or undefined
-    description: entry.data.description,
-  };
-});
+const collections = await getCollections();
+const sortedPosts = getSortedPosts(collections.notes);
+const graph = await getSharedGraph();
+const allPosts = await getAllPosts();
+const nodeId = `notes/${post.id}`;
+
+// Enrich post data with graph metrics
+const metrics = getNodeMetrics(graph, nodeId);
+const normContext = getNormContext(graph);
+const incoming = getIncomingLinkIds(graph, nodeId);
+const outgoing = getOutgoingLinkIds(graph, nodeId);
+post.data.nexusScore = computeNexusScore(metrics, normContext);
+post.data.incomingLinks = incoming.map(id => ({ id }));
+post.data.outgoingLinks = outgoing.map(id => ({ id }));
+post.data.closeness = metrics.closeness;
+post.data.hubScore = metrics.hubScore;
+post.data.authorityScore = metrics.authorityScore;
+post.data.eccentricity = metrics.eccentricity;
+post.data.betweennessValue = metrics.betweenness;
+post.data.pageRankValue = metrics.pageRank;
+post.data.reachability = metrics.reachability;
+post.data.reciprocity = metrics.reciprocity;
+post.data.communityId = metrics.communityId;
+post.data.communitySize = getCommunitySize(graph, metrics.communityId);
+post.data.clusterLabel = getClusterLabel(graph, metrics.communityId);
+post.data.diameter = getGraphDiameter(graph);
+post.data.externalLinkCount = metrics.externalLinkCount;
+
+const backlinks = getBacklinks(graph, nodeId, allPosts);
 ---
 
 <PostDetails post={post} posts={sortedPosts} basePath="notes" activeNav="notes" backlinks={backlinks} />
