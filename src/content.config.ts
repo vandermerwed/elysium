@@ -69,6 +69,7 @@ const baseContentSchema = ({ image }: { image: any }) =>
     communitySize: z.number().default(0),
     clusterLabel: z.string().default(""),
     diameter: z.number().default(0),
+    externalLinkCount: z.number().default(0),
     editPost: z
       .object({
         disabled: z.boolean().optional(),
