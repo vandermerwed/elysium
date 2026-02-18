@@ -69,7 +69,7 @@ function normaliseStatus(value) {
 
 function findCandidateFiles() {
   // Scan known content directories. Explicit targets via PUBLISH_TARGETS remain unaffected.
-  const contentDirs = ['notes', 'writing'].map((d) => path.join(rootDir, 'src', 'content', d));
+  const contentDirs = ['notes', 'writing', 'projects', 'journal'].map((d) => path.join(rootDir, 'src', 'content', d));
   const allMarkdown = contentDirs.flatMap((dir) => (fs.existsSync(dir) ? collectMarkdownFiles(dir) : []));
   const candidates = [];
 
