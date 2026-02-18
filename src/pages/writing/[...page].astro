@@ -8,19 +8,15 @@ import Pagination from "@components/Pagination.astro";
 import WritingCard from "@components/WritingCard.astro";
 import { getContentHash, getSeqNum } from "@utils/marginalia";
 import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
-import { buildNoteGraph } from "@utils/noteGraph";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const allNotes = await getCollection("notes");
-  const allWriting = await getCollection("writing");
-  const allJournal = await getCollection("journal");
-  const allProjects = await getCollection("projects");
-  const graph = buildNoteGraph([...allNotes, ...allWriting, ...allJournal, ...allProjects]);
+  const collections = await getCollections();
+  const graph = await getSharedGraph();
 
-  const baseWriting = allWriting.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+  const baseWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
   const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting, graph);
 
   return paginate(getSortedPosts(writing), { pageSize: SITE.postPerPage });

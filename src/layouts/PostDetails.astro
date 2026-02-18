@@ -472,10 +472,11 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
   }
   backToTop();
 
-  /** Lightweight image lightbox for prose images */
+  /** Lightweight image lightbox for prose images (event delegation) */
   function initLightbox() {
     const article = document.getElementById("article");
-    if (!article) return;
+    if (!article || article.dataset.lightboxBound) return;
+    article.dataset.lightboxBound = "true";
 
     let overlay = null;
 
@@ -519,13 +520,12 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
       if (e.key === "Escape") close();
     }
 
-    var imgs = article.querySelectorAll("img");
-    for (var i = 0; i < imgs.length; i++) {
-      imgs[i].addEventListener("click", function (e) {
-        e.preventDefault();
-        open(this.src, this.alt);
-      });
-    }
+    article.addEventListener("click", function (e) {
+      var img = e.target.closest("img");
+      if (!img) return;
+      e.preventDefault();
+      open(img.src, img.alt);
+    });
   }
   initLightbox();
 

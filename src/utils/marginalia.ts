@@ -11,7 +11,7 @@ export function getContentHash(content: string): string {
     hash = ((hash << 5) - hash) + content.charCodeAt(i);
     hash |= 0;
   }
-  return `#${Math.abs(hash).toString(16).slice(0, 4)}`;
+  return `#${Math.abs(hash).toString(16).padStart(4, "0").slice(0, 4)}`;
 }
 
 /** 2847 -> "2.8k words", 532 -> "532 words" */

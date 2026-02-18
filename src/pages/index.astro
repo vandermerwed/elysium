@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -13,29 +12,26 @@ import ProjectCard from "@components/ProjectCard.astro";
 import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
-import { buildNoteGraph } from "@utils/noteGraph";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
 import { getSeqNum } from "@utils/marginalia";
 import { SITE } from "@config";
 
-const allNotes = await getCollection("notes");
-const allWriting = await getCollection("writing");
-const allJournal = await getCollection("journal");
-const allProjects = await getCollection("projects");
-const graph = buildNoteGraph([...allNotes, ...allWriting, ...allJournal, ...allProjects]);
+const collections = await getCollections();
+const graph = await getSharedGraph();
 
-const baseNotes = allNotes.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const baseNotes = collections.notes.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes, graph);
 const sortedNotes = getSortedPosts(notes);
 
-const baseWriting = allWriting.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const baseWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting, graph);
 const sortedWriting = getSortedPosts(writing);
 
-const baseJournal = allJournal.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const baseJournal = collections.journal.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const journal = await getPostsWithEnrichedFrontmatter<"journal">(baseJournal, graph);
 const sortedJournal = getSortedPosts(journal);
 
-const projects = getSortedProjects(allProjects);
+const projects = getSortedProjects(collections.projects);
 
 const latestWriting = sortedWriting.slice(0, SITE.postPerIndex);
 const latestJournal = sortedJournal.slice(0, SITE.postPerIndex);

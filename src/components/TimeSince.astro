@@ -56,7 +56,14 @@ const {
     });
   }
 
+  type TimeSinceWindow = typeof window & { __timeSinceSwapBound?: boolean };
+  const w = window as TimeSinceWindow;
+
   initTimeSince();
-  document.addEventListener("astro:before-swap", cleanupTimeSince);
-  document.addEventListener("astro:after-swap", initTimeSince);
+
+  if (!w.__timeSinceSwapBound) {
+    document.addEventListener("astro:before-swap", cleanupTimeSince);
+    document.addEventListener("astro:after-swap", initTimeSince);
+    w.__timeSinceSwapBound = true;
+  }
 </script>

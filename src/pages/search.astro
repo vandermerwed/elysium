@@ -1,24 +1,24 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import { getSortedPosts } from "@utils/getSortedPosts";
-import { buildNoteGraph, getNodeMetrics, getIncomingLinkIds, getNormContext } from "@utils/noteGraph";
+import { getNodeMetrics, getIncomingLinkIds, getNormContext } from "@utils/noteGraph";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
 import { computeNexusScore } from "@utils/getNexusScore";
 
-// Fetch all published content
-const allNotes = await getCollection("notes", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
-const allWriting = await getCollection("writing", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
-const allJournal = await getCollection("journal", ({ data }) => data.status && (data.status === "published" || data.status === "release"));
-const allProjects = await getCollection("projects");
-
-// Build the graph for metrics
-const allPosts = [...allNotes, ...allWriting, ...allJournal, ...allProjects];
-const graph = buildNoteGraph(allPosts);
+// Use the shared cached graph instead of rebuilding
+const collections = await getCollections();
+const graph = await getSharedGraph();
 const normCtx = getNormContext(graph);
+
+// Filter to published content for search results
+const allNotes = collections.notes.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
+const allJournal = collections.journal.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
 
 // Helper: extract plain text from markdown body (strip markup)
 function extractPlainText(body: string | undefined, maxLen = 500): string {
@@ -39,13 +39,13 @@ function extractPlainText(body: string | undefined, maxLen = 500): string {
 // Build enriched search list with body text, tags, and graph metrics
 type SearchCollection = "notes" | "writing" | "journal";
 type AnyPost = CollectionEntry<"notes"> | CollectionEntry<"writing"> | CollectionEntry<"journal">;
-const collections: { posts: AnyPost[]; collection: SearchCollection; basePath: string }[] = [
+const searchCollections: { posts: AnyPost[]; collection: SearchCollection; basePath: string }[] = [
   { posts: allNotes as AnyPost[], collection: "notes", basePath: "/notes" },
   { posts: allWriting as AnyPost[], collection: "writing", basePath: "/writing" },
   { posts: allJournal as AnyPost[], collection: "journal", basePath: "/journal" },
 ];
 
-const searchList = collections.flatMap(({ posts, collection, basePath }) =>
+const searchList = searchCollections.flatMap(({ posts, collection, basePath }) =>
   getSortedPosts(posts).map(({ data, id, body }) => {
     const nodeId = `${collection}/${id}`;
     const metrics = getNodeMetrics(graph, nodeId);

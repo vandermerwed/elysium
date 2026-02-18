@@ -10,20 +10,16 @@ import GardenStatus from "@components/GardenStatus.astro";
 import ContentTypeFilter from "@components/ContentTypeFilter.astro";
 import { getContentHash, getSeqNum } from "@utils/marginalia";
 import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
 import { getSortedPosts } from "@utils/getSortedPosts";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
-import { buildNoteGraph } from "@utils/noteGraph";
+import { getSharedGraph, getCollections } from "@utils/buildGraph";
 import { computeGardenStats } from "@utils/gardenStats";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const allNotes = await getCollection("notes");
-  const allWriting = await getCollection("writing");
-  const allJournal = await getCollection("journal");
-  const allProjects = await getCollection("projects");
-  const graph = buildNoteGraph([...allNotes, ...allWriting, ...allJournal, ...allProjects]);
+  const collections = await getCollections();
+  const graph = await getSharedGraph();
 
-  const basePosts = allNotes.filter(({ data }) => data.status && data.status === "published");
+  const basePosts = collections.notes.filter(({ data }) => data.status && data.status === "published");
   const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts, graph);
   const gardenStats = computeGardenStats(graph, "notes");
 
