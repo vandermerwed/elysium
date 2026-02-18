@@ -68,15 +68,9 @@ function normaliseStatus(value) {
 }
 
 function findCandidateFiles() {
-  // Limit default scanning to only the note content folder
-  // Previously this scanned the entire src/content tree.
-  // Explicit targets via PUBLISH_TARGETS remain unaffected.
-  const contentDir = path.join(rootDir, 'src', 'content', 'notes');
-  if (!fs.existsSync(contentDir)) {
-    return [];
-  }
-
-  const allMarkdown = collectMarkdownFiles(contentDir);
+  // Scan known content directories. Explicit targets via PUBLISH_TARGETS remain unaffected.
+  const contentDirs = ['notes', 'writing'].map((d) => path.join(rootDir, 'src', 'content', d));
+  const allMarkdown = contentDirs.flatMap((dir) => (fs.existsSync(dir) ? collectMarkdownFiles(dir) : []));
   const candidates = [];
 
   for (const filePath of allMarkdown) {
