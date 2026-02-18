@@ -302,6 +302,25 @@ function processFile(filePath, options) {
     changed = true;
   }
 
+  const modIndexInitial = lookupIndex('modDatetime');
+  if (isReadyToPublish) {
+    // On first publish, align modDatetime with pubDatetime
+    const newModLine = buildLine('modDatetime', isoTimestamp);
+    if (modIndexInitial === -1) {
+      lines.push(newModLine);
+    } else {
+      lines[modIndexInitial] = newModLine;
+    }
+    changed = true;
+  } else if (modIndexInitial !== -1) {
+    // Normalize existing modDatetime format if needed
+    const modDecision = normaliseTimestamp(extractValue(lines[modIndexInitial]));
+    if (modDecision.action === 'update') {
+      lines[modIndexInitial] = buildLine('modDatetime', modDecision.value);
+      changed = true;
+    }
+  }
+
   if (!changed) {
     return false;
   }

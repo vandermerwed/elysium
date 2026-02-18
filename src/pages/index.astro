@@ -11,6 +11,7 @@ import ExplorationCard from "@components/ExplorationCard.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import { getSortedProjects } from "@utils/getSortedProjects";
 import { getSortedPosts } from "@utils/getSortedPosts";
+import { getSortedNotes } from "@utils/getSortedNotes";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { getSharedGraph, getCollections } from "@utils/buildGraph";
 import { getSeqNum } from "@utils/marginalia";
@@ -21,7 +22,7 @@ const graph = await getSharedGraph();
 
 const baseNotes = collections.notes.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const notes = await getPostsWithEnrichedFrontmatter<"notes">(baseNotes, graph);
-const sortedNotes = getSortedPosts(notes);
+const sortedNotes = getSortedNotes(notes);
 
 const baseWriting = collections.writing.filter(({ data }) => data.status && (data.status === "published" || data.status === "release"));
 const writing = await getPostsWithEnrichedFrontmatter<"writing">(baseWriting, graph);
@@ -35,7 +36,7 @@ const projects = getSortedProjects(collections.projects);
 
 const latestWriting = sortedWriting.slice(0, SITE.postPerIndex);
 const latestJournal = sortedJournal.slice(0, SITE.postPerIndex);
-const latestNotes = sortedNotes.filter(n => !("type" in n.data && n.data.type === "exploration")).slice(0, SITE.postPerIndex);
+const latestNotes = sortedNotes.filter(n => !("type" in n.data && n.data.type === "exploration")).slice(0, SITE.notesPerIndex);
 const recentExplorations = getSortedPosts(notes, ["exploration"]).slice(0, 4);
 const recentProjects = projects.filter(p => p.data.status !== "archived").slice(0, 3);
 

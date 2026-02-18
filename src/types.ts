@@ -11,7 +11,7 @@ export type Site = {
   lightAndDarkMode: boolean;
   noteContentTypes?: string[];
   postPerIndex: number;
-  fragmentsPerIndex: number;
+  notesPerIndex: number;
   postPerPage: number;
   scheduledPostMargin: number;
   showArchives?: boolean;

@@ -9,8 +9,8 @@ export const SITE: Site = {
   logo: "logo.png",
   ogImage: "og.png",
   lightAndDarkMode: true,
-  postPerIndex: 5,
-  fragmentsPerIndex: 6,
+  postPerIndex: 3,
+  notesPerIndex: 5,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: true,
