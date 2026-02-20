@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 
 const rootDir = process.cwd();
 const placeholders = new Set(['', '~', 'null', 'NULL', 'undefined', 'pending', 'first']);
-const publishStatusField = 'publishStatus';
-const legacyStatusField = 'status';
 const validStatuses = new Set(['draft', 'ready', 'release', 'publish', 'published']);
 
 const targetListRaw = process.env.PUBLISH_TARGETS || '';
@@ -86,29 +85,26 @@ function findCandidateFiles() {
     const frontmatterRaw = preview.slice(3 + newline.length, closing);
     const lines = frontmatterRaw.split(newline);
 
-    const publishStatusLine = lines.find((line) => line.trim().startsWith(`${publishStatusField}:`));
-    const legacyStatusLine = lines.find((line) => line.trim().startsWith(`${legacyStatusField}:`));
+    // The only supported status field is 'status:'. The 'draft:' field is a legacy
+    // boolean form that processFile() will migrate to 'status:' on write.
+    const statusLine = lines.find((line) => line.trim().startsWith('status:'));
     const draftLine = lines.find((line) => line.trim().startsWith('draft:'));
 
-    const publishStatusValue = publishStatusLine ? normaliseStatus(extractValue(publishStatusLine)) : '';
-    const legacyStatusValue = legacyStatusLine ? normaliseStatus(extractValue(legacyStatusLine)) : '';
+    const statusValueRaw = statusLine ? normaliseStatus(extractValue(statusLine)) : '';
     const draftStatusValue = draftLine ? normaliseStatus(extractValue(draftLine)) : '';
-
-    let statusValue = publishStatusValue || legacyStatusValue || draftStatusValue;
-    if (!statusValue) {
-      statusValue = 'draft';
-    }
+    const statusValue = statusValueRaw || draftStatusValue || 'draft';
 
     const pubLine = lines.find((line) => line.trim().startsWith('pubDatetime:'));
     const pubValue = pubLine ? extractValue(pubLine) : '';
 
-    const needsMigration = Boolean(draftLine) || (!publishStatusLine && Boolean(legacyStatusValue));
+    // needsMigration: file uses the legacy 'draft:' boolean; processFile will rewrite it to 'status:'
+    const needsMigration = Boolean(draftLine);
     const readyForPublish = statusValue === 'ready' || statusValue === 'release' || statusValue === 'publish';
-    
+
     // Skip already-published articles with valid pubDatetime unless they need migration
     const hasValidPubDate = Boolean(pubValue) && !placeholders.has(pubValue) && pubValue.endsWith('Z') && !/\.[0-9]{3}Z$/.test(pubValue);
     const alreadyPublished = statusValue === 'published' && hasValidPubDate;
-    
+
     if (alreadyPublished && !needsMigration) {
       continue;
     }
@@ -118,6 +114,57 @@ function findCandidateFiles() {
     }
   }
 
+  return candidates;
+}
+
+function findChangedPublishedFiles(excludePaths) {
+  // Detect already-published files that changed in the current push and update their modDatetime.
+  // Skipped entirely when explicit targets are provided.
+  const diffBase = (process.env.GIT_DIFF_BASE || '').trim() || 'HEAD~1';
+  let changedRelative;
+  try {
+    const output = execSync(`git diff ${diffBase} HEAD --name-only`, { encoding: 'utf8' });
+    changedRelative = output.trim().split('\n').filter(Boolean);
+  } catch {
+    return []; // git unavailable or no prior commit
+  }
+
+  const excludeSet = new Set(excludePaths);
+  const contentPrefixes = ['notes', 'writing', 'projects', 'journal'].map(
+    (d) => `src/content/${d}/`
+  );
+
+  const candidates = [];
+  for (const rel of changedRelative) {
+    const normalised = rel.replace(/\\/g, '/');
+    if (!contentPrefixes.some((p) => normalised.startsWith(p))) continue;
+    if (!/\.mdx?$/.test(normalised)) continue;
+
+    const filePath = path.resolve(rootDir, normalised);
+    if (excludeSet.has(filePath)) continue;
+    if (!fs.existsSync(filePath)) continue;
+
+    const preview = fs.readFileSync(filePath, 'utf8');
+    if (!preview.startsWith('---')) continue;
+    const nl = preview.includes('\r\n') ? '\r\n' : '\n';
+    const closing = preview.indexOf(`${nl}---`, 3);
+    if (closing === -1) continue;
+
+    const fmLines = preview.slice(3 + nl.length, closing).split(nl);
+    const statusLine = fmLines.find((l) => l.trim().startsWith('status:'));
+    const pubLine = fmLines.find((l) => l.trim().startsWith('pubDatetime:'));
+    const pubValue = pubLine ? extractValue(pubLine) : '';
+    const statusValue = statusLine ? normaliseStatus(extractValue(statusLine)) : '';
+    const hasValidPub =
+      Boolean(pubValue) &&
+      !placeholders.has(pubValue) &&
+      pubValue.endsWith('Z') &&
+      !/\.[0-9]{3}Z$/.test(pubValue);
+
+    if (statusValue === 'published' && hasValidPub) {
+      candidates.push(filePath);
+    }
+  }
   return candidates;
 }
 
@@ -190,7 +237,7 @@ function normaliseTimestamp(value) {
   return { action: 'keep', value: normalized };
 }
 
-function processFile(filePath, options) {
+function processFile(filePath, options = {}) {
   const raw = fs.readFileSync(filePath, 'utf8');
   if (!raw.startsWith('---')) {
     console.warn(`Skipping "${path.relative(rootDir, filePath)}": no frontmatter found.`);
@@ -213,6 +260,40 @@ function processFile(filePath, options) {
   const lookupIndex = (key) => lines.findIndex((line) => line.trim().startsWith(`${key}:`));
 
   let changed = false;
+
+  // Remove duplicate frontmatter keys (keep first occurrence)
+  const seenKeys = new Set();
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const colonIdx = lines[i].indexOf(':');
+    if (colonIdx > 0) {
+      const key = lines[i].slice(0, colonIdx).trim();
+      if (key && !/^\s/.test(lines[i]) && seenKeys.has(key)) {
+        lines.splice(i, 1);
+        changed = true;
+      } else {
+        seenKeys.add(key);
+      }
+    }
+  }
+
+  // modOnly: update modDatetime for already-published files that were edited (git diff pass)
+  if (options.modOnly) {
+    const modIdx = lookupIndex('modDatetime');
+    const newModLine = buildLine('modDatetime', isoTimestamp);
+    if (modIdx === -1) {
+      lines.push(newModLine);
+      changed = true;
+    } else if (lines[modIdx] !== newModLine) {
+      lines[modIdx] = newModLine;
+      changed = true;
+    }
+    if (!changed) return false;
+    const updatedFrontmatter = lines.join(newline);
+    const updated = `---${newline}${updatedFrontmatter}${newline}---${body}`;
+    fs.writeFileSync(filePath, updated, 'utf8');
+    console.log(`Updated modDatetime in ${path.relative(rootDir, filePath)}`);
+    return true;
+  }
 
   let statusIndex = lookupIndex('status');
   const draftIndex = lookupIndex('draft');
@@ -257,7 +338,7 @@ function processFile(filePath, options) {
 
   let nextStatus = statusValue;
   const isReadyToPublish = statusValue === 'ready' || statusValue === 'publish' || statusValue === 'release';
-  
+
   if (isReadyToPublish) {
     nextStatus = 'published';
   }
@@ -271,20 +352,17 @@ function processFile(filePath, options) {
   const pubIndexInitial = lookupIndex('pubDatetime');
   const existingPub = pubIndexInitial === -1 ? '' : extractValue(lines[pubIndexInitial]);
 
-  let pubIndex = pubIndexInitial;
   if (statusValue === 'published') {
-    // If status was 'ready', always set a new publish date (even if one exists)
-    // This allows republishing by setting status back to 'ready'
+    // If status was 'ready'/'release'/'publish', always set a new publish date (even if one exists).
+    // This allows republishing by setting status back to one of those values.
     const shouldSetNewDate = isReadyToPublish || !existingPub || placeholders.has(stripQuotes(existingPub.trim()));
-    
+
     if (shouldSetNewDate) {
       const newLine = buildLine('pubDatetime', isoTimestamp);
       if (pubIndexInitial === -1) {
         lines.push(newLine);
-        pubIndex = lines.length - 1;
       } else {
         lines[pubIndexInitial] = newLine;
-        pubIndex = pubIndexInitial;
       }
       changed = true;
     } else {
@@ -292,7 +370,6 @@ function processFile(filePath, options) {
       const pubDecision = normaliseTimestamp(existingPub);
       if (pubDecision.action === 'update') {
         lines[pubIndexInitial] = buildLine('pubDatetime', pubDecision.value);
-        pubIndex = pubIndexInitial;
         changed = true;
       }
     }
@@ -303,18 +380,32 @@ function processFile(filePath, options) {
   }
 
   const modIndexInitial = lookupIndex('modDatetime');
+  const existingMod = modIndexInitial === -1 ? '' : extractValue(lines[modIndexInitial]);
+  const modIsPlaceholder = !existingMod || placeholders.has(stripQuotes(existingMod.trim()));
+
   if (isReadyToPublish) {
-    // On first publish, align modDatetime with pubDatetime
-    const newModLine = buildLine('modDatetime', isoTimestamp);
-    if (modIndexInitial === -1) {
-      lines.push(newModLine);
+    if (modIsPlaceholder) {
+      // First publish with no prior modDatetime: align with pubDatetime so the
+      // Datetime component's "modDatetime > pubDatetime" guard suppresses the
+      // update indicator (correct — content wasn't modified after publish).
+      const newModLine = buildLine('modDatetime', isoTimestamp);
+      if (modIndexInitial === -1) {
+        lines.push(newModLine);
+      } else {
+        lines[modIndexInitial] = newModLine;
+      }
+      changed = true;
     } else {
-      lines[modIndexInitial] = newModLine;
+      // Author pre-set a real modDatetime — preserve it; normalize format only.
+      const modDecision = normaliseTimestamp(existingMod);
+      if (modDecision.action !== 'keep') {
+        lines[modIndexInitial] = buildLine('modDatetime', modDecision.value);
+        changed = true;
+      }
     }
-    changed = true;
   } else if (modIndexInitial !== -1) {
-    // Normalize existing modDatetime format if needed
-    const modDecision = normaliseTimestamp(extractValue(lines[modIndexInitial]));
+    // Not publishing: normalize existing modDatetime format if needed.
+    const modDecision = normaliseTimestamp(existingMod);
     if (modDecision.action === 'update') {
       lines[modIndexInitial] = buildLine('modDatetime', modDecision.value);
       changed = true;
@@ -334,15 +425,23 @@ function processFile(filePath, options) {
 
 function main() {
   const files = explicitTargets ? resolveTargets(requestedTargets) : findCandidateFiles();
+  const modOnlyFiles = explicitTargets ? [] : findChangedPublishedFiles(files);
 
-  if (files.length === 0) {
-    console.log('No files matched the publish criteria.');
+  if (files.length === 0 && modOnlyFiles.length === 0) {
+    console.log('No changes were necessary.');
     return;
   }
 
   let updatedCount = 0;
   for (const filePath of files) {
     const changed = processFile(filePath, { explicit: explicitTargets });
+    if (changed) {
+      updatedCount += 1;
+    }
+  }
+
+  for (const filePath of modOnlyFiles) {
+    const changed = processFile(filePath, { modOnly: true });
     if (changed) {
       updatedCount += 1;
     }

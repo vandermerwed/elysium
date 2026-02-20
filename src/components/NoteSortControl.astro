@@ -1,0 +1,117 @@
+---
+export interface Props {
+  targetId?: string;
+}
+
+const { targetId = "notes-list" } = Astro.props;
+---
+
+<div class="note-sort-controls" data-sort-target={targetId}>
+  <div class="sort-group">
+    <button type="button" class="sort-button" data-sort-field="modDatetime" aria-pressed="true">MOD</button>
+    <button type="button" class="sort-button" data-sort-field="pubDatetime" aria-pressed="false">PUB</button>
+  </div>
+  <div class="sort-group">
+    <button type="button" class="sort-button" data-sort-order="desc" aria-pressed="true">DESC&nbsp;↓</button>
+    <button type="button" class="sort-button" data-sort-order="asc" aria-pressed="false">ASC&nbsp;↑</button>
+  </div>
+</div>
+
+<style>
+  .note-sort-controls {
+    @apply flex items-center gap-2 font-mono;
+  }
+  .sort-group {
+    @apply flex items-center;
+  }
+  .sort-button {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgb(var(--color-base));
+    background: none;
+    border: 1px solid rgb(var(--color-border));
+    cursor: pointer;
+    transition: color var(--transition-base), background var(--transition-base);
+  }
+  .sort-group .sort-button:first-child {
+    border-radius: 2px 0 0 2px;
+  }
+  .sort-group .sort-button:last-child {
+    border-radius: 0 2px 2px 0;
+  }
+  .sort-group .sort-button + .sort-button {
+    border-left: none;
+  }
+  .sort-button:hover {
+    color: rgb(var(--color-text-base));
+    background: rgb(var(--color-card-muted) / 0.4);
+  }
+  .sort-button.is-active {
+    color: rgb(var(--color-accent));
+    background: rgb(var(--color-card));
+    border-color: rgb(var(--color-border-muted));
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    const controls = document.querySelector(".note-sort-controls");
+    const targetId = controls?.getAttribute("data-sort-target");
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (!controls || !target) return;
+
+    const getParams = () => {
+      const p = new URLSearchParams(window.location.search);
+      return {
+        field: p.get("sort") || "modDatetime",
+        order: p.get("order") || "desc",
+      };
+    };
+
+    const setActiveButtons = (field, order) => {
+      controls.querySelectorAll("[data-sort-field]").forEach(btn => {
+        const active = btn.getAttribute("data-sort-field") === field;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      controls.querySelectorAll("[data-sort-order]").forEach(btn => {
+        const active = btn.getAttribute("data-sort-order") === order;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    };
+
+    const sortList = (field, order) => {
+      const items = [...target.querySelectorAll("li[data-pub-datetime]")];
+      items.sort((a, b) => {
+        const attr = field === "modDatetime" ? "data-mod-datetime" : "data-pub-datetime";
+        const aVal = parseInt(a.getAttribute(attr) || "0", 10);
+        const bVal = parseInt(b.getAttribute(attr) || "0", 10);
+        return order === "asc" ? aVal - bVal : bVal - aVal;
+      });
+      items.forEach(item => target.appendChild(item));
+      setActiveButtons(field, order);
+    };
+
+    const updateUrl = (field, order) => {
+      const url = new URL(window.location.href);
+      url.searchParams.set("sort", field);
+      url.searchParams.set("order", order);
+      window.history.replaceState({}, "", url);
+    };
+
+    let { field, order } = getParams();
+    sortList(field, order);
+
+    controls.addEventListener("click", e => {
+      const btn = e.target.closest("[data-sort-field], [data-sort-order]");
+      if (!btn) return;
+      if (btn.hasAttribute("data-sort-field")) field = btn.getAttribute("data-sort-field");
+      if (btn.hasAttribute("data-sort-order")) order = btn.getAttribute("data-sort-order");
+      sortList(field, order);
+      updateUrl(field, order);
+    });
+  });
+</script>

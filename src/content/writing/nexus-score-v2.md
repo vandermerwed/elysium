@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2026-02-18T03:53:45Z
-pubDatetime: 2026-02-18T03:53:45Z
+modDatetime: 2026-02-17T17:30:46Z
 title: "Nexus Score v2: Teaching Notes to Know Their Place"
 featured: false
 status: published

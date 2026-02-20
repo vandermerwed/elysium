@@ -8,9 +8,10 @@ import Pagination from "@components/Pagination.astro";
 import NoteCard from "@components/NoteCard.astro";
 import GardenStatus from "@components/GardenStatus.astro";
 import ContentTypeFilter from "@components/ContentTypeFilter.astro";
+import NoteSortControl from "@components/NoteSortControl.astro";
 import { getContentHash, getSeqNum } from "@utils/marginalia";
 import type { GetStaticPaths } from "astro";
-import { getSortedPosts } from "@utils/getSortedPosts";
+import { getSortedNotes } from "@utils/getSortedNotes";
 import getPostsWithEnrichedFrontmatter from "@utils/getPostsWithEnrichedFrontmatter";
 import { getSharedGraph, getCollections } from "@utils/buildGraph";
 import { computeGardenStats } from "@utils/gardenStats";
@@ -23,7 +24,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getPostsWithEnrichedFrontmatter<"notes">(basePosts, graph);
   const gardenStats = computeGardenStats(graph, "notes");
 
-  return paginate(getSortedPosts(posts), {
+  return paginate(getSortedNotes(posts), {
     pageSize: SITE.postPerPage,
     props: { gardenStats },
   });
@@ -41,13 +42,17 @@ const { page, gardenStats } = Astro.props;
       <a href="/notes/digital-gardens/"> the history of digital gardens</a>.
     </p>
     {page.currentPage === 1 && <GardenStatus stats={gardenStats} />}
-    <ContentTypeFilter types={["all", "notes", "exploration"]} targetId="notes-list" />
+    <div class="notes-controls">
+      <ContentTypeFilter types={["all", "notes", "exploration"]} targetId="notes-list" />
+      <NoteSortControl targetId="notes-list" />
+    </div>
     <ul id="notes-list">
       {page.data.map(({ data, id }, i) => (
         <NoteCard
           href={`/notes/${id}/`}
           title={data.title}
           pubDatetime={data.pubDatetime}
+          modDatetime={data.modDatetime}
           description={data.description}
           nexusScore={data.nexusScore}
           contentHash={getContentHash(data.description || id)}
@@ -67,3 +72,14 @@ const { page, gardenStats } = Astro.props;
 
   <Footer noMarginTop={page.lastPage > 1} />
 </Layout>
+
+<style>
+  .notes-controls {
+    @apply my-6 flex flex-wrap items-center justify-between gap-2;
+  }
+  /* Remove the default margin from child filter components when inside the row */
+  .notes-controls :global(.content-type-filter),
+  .notes-controls :global(.note-sort-controls) {
+    @apply my-0;
+  }
+</style>

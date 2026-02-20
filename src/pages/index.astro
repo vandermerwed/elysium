@@ -122,6 +122,7 @@ const recentProjects = projects.filter(p => p.data.status !== "archived").slice(
                 href={`/notes/${id}/`}
                 title={data.title}
                 pubDatetime={data.pubDatetime}
+                modDatetime={data.modDatetime}
                 description={data.description}
                 nexusScore={data.nexusScore}
                 type={"type" in data ? (data as Record<string, unknown>).type as string | undefined : undefined}

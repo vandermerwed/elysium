@@ -6,6 +6,7 @@ export interface Props {
   href: string;
   title: string;
   pubDatetime: Date;
+  modDatetime?: Date | null;
   description: string;
   nexusScore?: string;
   contentHash?: string;
@@ -22,6 +23,7 @@ const {
   href,
   title,
   pubDatetime,
+  modDatetime,
   description,
   nexusScore,
   contentHash,
@@ -39,7 +41,7 @@ const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
 
 ---
 
-<li class="note-card" data-content-type={contentType}>
+<li class="note-card" data-content-type={contentType} data-pub-datetime={new Date(pubDatetime).getTime().toString()} data-mod-datetime={new Date(modDatetime ?? pubDatetime).getTime().toString()}>
   {isValidScore && (
     <div class="note-gutter">
       <NexusScore score={nexusScore} size="sm" />
@@ -54,19 +56,32 @@ const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
         {title}
       </a>
       <span class="note-dots" aria-hidden="true"></span>
-      <span class="note-date">{formatDate(pubDatetime)}</span>
+      
+      {showLinks && (incomingLinks > 0 || outgoingLinks > 0 || externalLinks > 0) && (
+        <span class="note-links" title="incoming ↓ · outgoing ↑ · external ↗">
+          {incomingLinks > 0 && <span>{incomingLinks}&#8595;</span>}
+          {outgoingLinks > 0 && <span>{outgoingLinks}&#8593;</span>}
+          {externalLinks > 0 && <span>{externalLinks}&#8599;</span>}
+          <span class="meta-sep">&middot;</span>
+        </span>
+      )}
+      <span class="note-date">
+        {modDatetime
+          ? <><span class="note-date-label">MOD</span>{formatDate(modDatetime)}</>
+          : formatDate(pubDatetime)
+        }
+      </span>
     </div>
     <div class="note-sub">
       <span class="note-desc">{description}</span>
       {contentHash && <span class="note-hash">{contentHash}</span>}
     </div>
-    {showLinks && (incomingLinks > 0 || outgoingLinks > 0 || externalLinks > 0) && (
-      <div class="note-links" title="incoming ↓ · outgoing ↑ · external ↗">
-        {incomingLinks > 0 && <span>{incomingLinks}&#8595;</span>}
-        {outgoingLinks > 0 && <span>{outgoingLinks}&#8593;</span>}
-        {externalLinks > 0 && <span>{externalLinks}&#8599;</span>}
+    {modDatetime && (
+      <div class="note-pub">
+        <span class="note-date-label">PUB</span>{formatDate(pubDatetime)}
       </div>
     )}
+
   </div>
 </li>
 
@@ -118,6 +133,18 @@ const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
     @apply whitespace-nowrap;
     color: rgb(var(--color-base));
   }
+  .note-date-label {
+    @apply mr-1 font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: rgb(var(--color-base));
+    opacity: 0.5;
+  }
+  .note-pub {
+    @apply mt-0.5 font-mono text-xs;
+    color: rgb(var(--color-base));
+    opacity: 0.6;
+  }
   .note-sub {
     @apply mt-0.5 flex items-baseline gap-2 overflow-hidden text-xs;
     color: rgb(var(--color-base));
@@ -132,8 +159,11 @@ const isValidScore = nexusScore && nexusScorePattern.test(nexusScore);
     opacity: 0.2;
   }
   .note-links {
-    @apply mt-0.5 hidden gap-1.5 font-mono text-xs sm:flex;
+    @apply hidden items-baseline gap-1.5 font-mono text-xs sm:inline-flex;
     color: rgb(var(--color-base));
     opacity: 0.7;
+  }
+  .meta-sep {
+    color: rgb(var(--color-border-muted));
   }
 </style>
