@@ -1,8 +1,8 @@
 ---
-pubDatetime: 2026-07-13T09:00:00
+pubDatetime: 2026-07-13T12:20:53Z
 title: Leading a Regulated Cloud Migration in the AI Age
 featured: false
-status: draft
+status: published
 tags:
   - cloud-migration
   - digital-transformation
