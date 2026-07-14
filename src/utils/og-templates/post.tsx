@@ -4,6 +4,7 @@ import { SITE } from "@config";
 import loadGoogleFonts, { type FontOptions } from "../loadGoogleFont";
 
 export default async (post: CollectionEntry<"notes" | "projects" | "writing">) => {
+  const domain = SITE.website.replace(/^https?:\/\//, "").replace(/\/$/, "");
   return satori(
     <div
       style={{
@@ -88,7 +89,7 @@ export default async (post: CollectionEntry<"notes" | "projects" | "writing">) =
             </span>
 
             <span style={{ overflow: "hidden", fontWeight: "bold", color: "#e75d0e" }}>
-              {SITE.title}
+              {domain}
             </span>
           </div>
         </div>
@@ -99,7 +100,7 @@ export default async (post: CollectionEntry<"notes" | "projects" | "writing">) =
       height: 630,
       embedFont: true,
       fonts: (await loadGoogleFonts(
-        post.data.title + post.data.author + SITE.title + "by"
+        post.data.title + post.data.author + domain + "by"
       )) as FontOptions[],
     }
   );
