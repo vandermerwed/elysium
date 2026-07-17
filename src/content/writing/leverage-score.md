@@ -10,9 +10,9 @@ tags:
   - measurement
 description: Why I started counting agent hours against my own, the ratio I call my leverage score, and why a big number means nothing without judgement.
 aiUsage:
-  - ideation
   - research
-  - content-generation
+  - ideation
+  - editing
   - proofreading
 ---
 
