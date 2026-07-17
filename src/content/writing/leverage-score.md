@@ -2,7 +2,7 @@
 pubDatetime: 2026-07-17T09:00:00Z
 title: The Leverage Score
 featured: false
-status: ready
+status: release
 tags:
   - ai
   - agents
