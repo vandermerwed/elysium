@@ -21,7 +21,9 @@ const postFilter = (
     isContent = type ? contentTypes.includes(type) : false;
   }
 
-  return isContent && data.status && data.status === "published" && (import.meta.env.DEV || isPublishTimePassed);
+  const isVisibleStatus =
+    data.status === "published" || data.status === "release";
+  return isContent && !!data.status && isVisibleStatus && (import.meta.env.DEV || isPublishTimePassed);
 };
 
 export default postFilter;
