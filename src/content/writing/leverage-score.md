@@ -1,8 +1,8 @@
 ---
-pubDatetime: 2026-07-17T09:00:00Z
+pubDatetime: 2026-07-17T12:52:09Z
 title: The Leverage Score
 featured: false
-status: release
+status: published
 tags:
   - ai
   - agents
@@ -14,6 +14,7 @@ aiUsage:
   - ideation
   - editing
   - proofreading
+modDatetime: 2026-07-17T12:52:09Z
 ---
 
 I have tracked my time for many years. I do it without thinking. I switch a timer when I switch tasks, and I have done it so long that it just runs as a subconscious background process.
