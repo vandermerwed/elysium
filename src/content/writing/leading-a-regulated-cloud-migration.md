@@ -18,13 +18,13 @@ aiUsage:
 modDatetime: 2026-07-18T06:35:37Z
 ---
 
-## Table of contents
-
 I have worked on enough cloud migrations to stop trusting the post-mortems. When one disappoints, the explanation is always technical. The wrong landing zone. The monolith that would not come apart. A managed service that did not behave the way the slide promised. Those problems are real. They are almost never the actual reason.
 
 The reason is duller and harder to fix. The organisation moved its systems to the cloud without changing how it makes decisions, who owns the risk, or how it decides whether any of it worked. The surveys that get quoted put the wasted spend in the tens of billions, and most CIOs will tell you they have lived through a migration that ran late or fell over. I don't need a survey for that. I have watched it happen, and it was never really about the technology. It was about leadership, and most of it was decided before the first workload moved.
 
 A migration in a regulated business is not a technology programme with a change workstream bolted on the side. It is a change to how the organisation operates that happens to involve technology. AI changes how fast all of this moves. It changes none of what matters.
+
+## Table of contents
 
 ## Start with who owns the outcome
 
