@@ -15,7 +15,7 @@ aiUsage:
   - ideation
   - editing
   - proofreading
-modDatetime: 2026-07-18T06:35:37Z
+modDatetime: 2026-07-20T09:17:23Z
 ---
 
 I have worked on enough cloud migrations to stop trusting the post-mortems. When one disappoints, the explanation is always technical. The wrong landing zone. The monolith that would not come apart. A managed service that did not behave the way the slide promised. Those problems are real but almost never the actual reason.
