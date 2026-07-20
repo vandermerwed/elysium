@@ -18,9 +18,9 @@ aiUsage:
 modDatetime: 2026-07-18T06:35:37Z
 ---
 
-I have worked on enough cloud migrations to stop trusting the post-mortems. When one disappoints, the explanation is always technical. The wrong landing zone. The monolith that would not come apart. A managed service that did not behave the way the slide promised. Those problems are real. They are almost never the actual reason.
+I have worked on enough cloud migrations to stop trusting the post-mortems. When one disappoints, the explanation is always technical. The wrong landing zone. The monolith that would not come apart. A managed service that did not behave the way the slide promised. Those problems are real but almost never the actual reason.
 
-The reason is duller and harder to fix. The organisation moved its systems to the cloud without changing how it makes decisions, who owns the risk, or how it decides whether any of it worked. The surveys that get quoted put the wasted spend in the tens of billions, and most CIOs will tell you they have lived through a migration that ran late or fell over. I don't need a survey for that. I have watched it happen, and it was never really about the technology. It was about leadership, and most of it was decided before the first workload moved.
+The real reason is rather boring and hard to fix. The organisation moved its systems to the cloud without changing how it makes decisions, who owns the risk, or how it decides whether any of it worked. The surveys that get quoted put the wasted spend in the tens of billions, and most CIOs will tell you they have lived through a migration that ran late or fell over. I don't need a survey for that. I have watched it happen, and it was never really about the technology. It was about leadership, and most of it was decided before the first workload moved.
 
 A migration in a regulated business is not a technology programme with a change workstream bolted on the side. It is a change to how the organisation operates that happens to involve technology. AI changes how fast all of this moves. It changes none of what matters.
 
@@ -28,9 +28,9 @@ A migration in a regulated business is not a technology programme with a change 
 
 ## Start with who owns the outcome
 
-Picture the kickoff. The CFO wants the data-centre lease gone. Security wants a defensible posture. A product team wants to ship faster. Infrastructure wants to stop patching hardware at 2am. Every one of those is a fair reason to move, and left side by side they will sink the project, because whatever you actually deliver, at least one of those people will decide it was a failure.
+The project kickoff usually goes something like this: The CFO wants the data-centre lease gone. Security wants a defensible posture. A product team wants to ship faster. Infrastructure wants to stop patching hardware at 2am. Every one of those is a fair reason to move, and left side by side they will sink the project, because whatever you actually deliver, at least one of those people will decide it was a failure.
 
-Someone has to force them into a single story with numbers attached, and turn that into targets the finance team and the technology team read together every quarter. The harder part is deciding who gets to make the trade-offs before any of them come up. Who approves the exception when a workload turns out dearer in the cloud than on the floor. Who signs it off when a team wants to skip a control to hit a date. If nobody has decided, the answer defaults to whoever is most senior in the room that day. That is how governance goes. Not in one bad decision, but one reasonable-sounding exception at a time.
+Someone has to force them into a single story with numbers attached, and turn that into targets the finance team and the technology team read together every quarter. The harder part is deciding who gets to make the trade-offs before any of them come up. Who approves the exception when a workload ends up costing more in the cloud than it did on-premise. Who signs it off when a team wants to skip a control to hit a date. If nobody has decided, the answer defaults to whoever is most senior in the room that day. That is how governance goes. Not in one bad decision, but one reasonable-sounding exception at a time.
 
 ## Governance is not a meeting
 
@@ -58,6 +58,6 @@ There is a harder reason to be careful. AI amplifies whatever you point it at. A
 
 I don't big-bang a regulated estate. I move in waves, and I choose each wave to produce evidence. Start where the value is provable and the risk is contained. Use the early waves to test the landing zone, the controls and the cost model against reality instead of against a diagram. Let those wins pay for and de-risk the harder waves behind them. The point of the first wave is not the workload. It is proof that the machine works, delivered in the currency you agreed at the start.
 
-If you want to know whether a migration is being led or just managed, don't look at the architecture. Look at what gets measured, and whether anyone owns the number. Value against the business case, in the business's terms and not IT's. Governance, with the accountability mapped and every exception logged and owned. Whether the teams can actually stand on their own yet. And what the AI really returned, against a real baseline, reported honestly even when it is less than the slide said.
+If you want to know whether a migration is being led or just managed, don't look at the architecture. Look at what gets measured, and whether anyone owns those metrics. Value against the business case, in the business's terms and not IT's. Governance, with the accountability mapped and every exception logged and owned. Whether the teams can actually stand on their own yet. And what the AI really returned, against a real baseline, reported honestly even when it is less than the slide said.
 
 None of this is really about the cloud. It is about whether someone owned the outcome from the start. That is the part no tool is going to do for you.
