@@ -70,6 +70,7 @@
     --color-card-muted: var(--light-card-muted);
     --color-border: var(--light-border);
     --color-border-muted: var(--light-border-muted);
+    --color-img-outline: 0, 0, 0;
 
     /* Layout breakpoints */
     --breakpoint-margin-notes: 72rem;
@@ -107,6 +108,7 @@
     --color-card-muted: var(--dark-card-muted);
     --color-border: var(--dark-border);
     --color-border-muted: var(--dark-border-muted);
+    --color-img-outline: 255, 255, 255;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -121,6 +123,7 @@
       --color-card-muted: var(--dark-card-muted);
       --color-border: var(--dark-border);
       --color-border-muted: var(--dark-border-muted);
+      --color-img-outline: 255, 255, 255;
     }
   }
 
@@ -195,6 +198,7 @@
     prose-td:border-skin-line prose-img:mx-auto
     prose-img:!mt-2 prose-img:border-2
     prose-img:border-skin-line prose-img:cursor-zoom-in
+    prose-img:[outline:1px_solid_rgb(var(--color-img-outline)/0.1)]
     prose-img:transition-all prose-img:duration-200 prose-img:ease-out
     hover:prose-img:brightness-105 hover:prose-img:shadow-lg
     hover:prose-img:border-skin-accent/40
@@ -344,6 +348,7 @@
     max-height: 90vh;
     object-fit: contain;
     border: none;
+    outline: none;
     border-radius: 2px;
     box-shadow: 0 8px 32px rgb(0 0 0 / 0.4);
     transform: scale(0.95);
