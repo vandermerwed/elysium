@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import { SOCIALS } from "@config";
 import { getGitHash, getVersion, getBuildTimestamp } from "@utils/buildInfo";
+import Subscribe from "@components/Subscribe.astro";
 
 const currentYear = new Date().getFullYear();
 
@@ -65,6 +66,8 @@ const { noMarginTop = false } = Astro.props;
           <a href="/rss.xml">rss</a>
         </nav>
       </div>
+
+      <Subscribe compact />
 
       <nav class="footer-social" aria-label="Social links">
         {activeSocials.map((social, i) => (

@@ -38,7 +38,10 @@ function formatDate(d: Date) {
 }
 ---
 
-<Layout title={`${frontmatter.title} | ${SITE.title}`}>
+<Layout
+  title={`${frontmatter.title} | ${SITE.title}`}
+  description={frontmatter.description}
+>
   <Header activeNav={frontmatter.id} />
   <main id="main-content">
     <section id={frontmatter.id}>

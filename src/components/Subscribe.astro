@@ -1,0 +1,107 @@
+---
+import { SITE } from "@config";
+
+// Change the pitch here; it's used in both the full and compact variants.
+const SUBSCRIBE_COPY =
+  "Occasional notes on building software for one, AI operating models, and the practice behind them. No schedule, no spam.";
+
+export interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+const inputId = compact ? "subscribe-email-compact" : "subscribe-email";
+---
+
+{
+  SITE.kitFormId && (
+    <div class:list={["subscribe", { "subscribe-compact": compact }]}>
+      {!compact && (
+        <>
+          <h2 class="subscribe-heading">Subscribe</h2>
+          <p class="subscribe-copy">{SUBSCRIBE_COPY}</p>
+        </>
+      )}
+      <form
+        class="subscribe-form"
+        action={`https://app.kit.com/forms/${SITE.kitFormId}/subscriptions`}
+        method="post"
+      >
+        {compact && <span class="subscribe-copy-compact">{SUBSCRIBE_COPY}</span>}
+        <label class="sr-only" for={inputId}>
+          Email address
+        </label>
+        <input
+          id={inputId}
+          class="subscribe-input"
+          type="email"
+          name="email_address"
+          placeholder="you@example.com"
+          required
+          autocomplete="email"
+        />
+        <button type="submit" class="subscribe-button">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  )
+}
+
+<style>
+  .subscribe {
+    @apply my-8;
+  }
+  .subscribe-heading {
+    @apply font-mono text-lg font-normal;
+    color: rgb(var(--color-text-base));
+  }
+  .subscribe-copy {
+    @apply mt-2 text-sm;
+    color: rgb(var(--color-base));
+  }
+  .subscribe-form {
+    @apply mt-4 flex flex-col gap-2 sm:flex-row;
+  }
+  .subscribe-input {
+    @apply w-full flex-1 py-2 px-3 font-mono text-sm sm:max-w-xs;
+    background: rgb(var(--color-card));
+    color: rgb(var(--color-text-base));
+    border: 1px solid rgb(var(--color-border));
+    outline: none;
+    transition: border-color var(--transition-base);
+  }
+  .subscribe-input::placeholder {
+    color: rgb(var(--color-base));
+    font-style: italic;
+  }
+  .subscribe-input:focus {
+    border-color: rgb(var(--color-accent));
+  }
+  .subscribe-button {
+    @apply whitespace-nowrap py-2 px-4 font-mono text-sm;
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-fill));
+    border: 1px solid rgb(var(--color-accent));
+    cursor: pointer;
+    transition: opacity var(--transition-base);
+  }
+  .subscribe-button:hover {
+    opacity: 0.85;
+  }
+
+  /* Compact variant: single inline row for the footer */
+  .subscribe-compact .subscribe-form {
+    @apply flex-row flex-wrap items-center gap-2 sm:flex-nowrap;
+  }
+  .subscribe-copy-compact {
+    @apply w-full font-mono text-xs sm:w-auto sm:flex-1;
+    color: rgb(var(--color-base));
+  }
+  .subscribe-compact .subscribe-input {
+    @apply flex-1 py-1.5 px-2 text-xs sm:max-w-[12rem];
+  }
+  .subscribe-compact .subscribe-button {
+    @apply py-1.5 px-3 text-xs;
+  }
+</style>
