@@ -9,6 +9,7 @@ import { SITE } from "@config";
 import AidaNotice from "@components/AidaNotice.astro";
 import EmbedPrototype from "@components/EmbedPrototype.astro";
 import Backlinks from "@components/Backlinks.astro";
+import Subscribe from "@components/Subscribe.astro";
 import { formatDate, formatWordCount, formatReadingTime } from "@utils/marginalia";
 import { type CollectionEntry, render } from "astro:content";
 
@@ -195,6 +196,8 @@ const diameter = (post.data as Record<string, any>).diameter ?? 0;
         title={`Prototype: ${title}`}
       />
     )}
+
+    {basePath === "writing" && <Subscribe />}
 
     <hr class="detail-rule" />
 

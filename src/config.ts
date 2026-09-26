@@ -14,6 +14,10 @@ export const SITE: Site = {
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: true,
+  // Kit (kit.com) form ID. Find it in Kit > Grow > Landing pages & forms >
+  // the form's ID in its embed code or its URL. Leave empty to keep the
+  // subscribe form hidden until the form exists.
+  kitFormId: "",
   editPost: {
     url: "https://github.com/vandermerwed/elysium/edit/main/src/content",
     text: "Suggest Changes",
@@ -37,7 +41,7 @@ export const LOGO_IMAGE = {
 export const SOCIALS: SocialObjects = [
   {
     name: "Mail",
-    href: "mailto:daniel@danielvandermerwe.com",
+    href: "mailto:hi@danielvandermerwe.com",
     linkTitle: `Send an email to ${SITE.title}`,
     active: true,
   },

@@ -2,7 +2,7 @@
 import { SITE } from "@config";
 
 export interface Props {
-  activeNav?: "writing" | "projects" | "about" | "search" | "notes" | "journal" | "tags" | "archives";
+  activeNav?: "writing" | "projects" | "about" | "search" | "notes" | "journal" | "tags" | "archives" | "work-with-me";
 }
 
 const { activeNav } = Astro.props;
@@ -68,6 +68,11 @@ const isActive = (path: string, navKey?: Props["activeNav"]) =>
           <li>
             <a href="/about/" class={isActive("/about", "about") ? "active" : ""}>
               /about
+            </a>
+          </li>
+          <li>
+            <a href="/work-with-me/" class={isActive("/work-with-me", "work-with-me") ? "active" : ""}>
+              /work-with-me
             </a>
           </li>
           <li class="nav-icon-item">
@@ -169,7 +174,7 @@ const isActive = (path: string, navKey?: Props["activeNav"]) =>
     @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
   nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-6 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:flex sm:w-auto sm:items-center sm:gap-1;
+    @apply mt-4 grid w-44 grid-cols-2 grid-rows-[repeat(7,minmax(0,1fr))] gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:flex sm:w-auto sm:items-center sm:gap-1;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;

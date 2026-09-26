@@ -15,6 +15,7 @@ export type Site = {
   postPerPage: number;
   scheduledPostMargin: number;
   showArchives?: boolean;
+  kitFormId: string;
   editPost?: {
     url?: URL["href"];
     text?: string;
