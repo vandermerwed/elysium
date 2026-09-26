@@ -3,7 +3,7 @@ import { SITE } from "@config";
 
 // Change the pitch here; it's used in both the full and compact variants.
 const SUBSCRIBE_COPY =
-  "Occasional notes on building software for one, AI operating models, and the practice behind them. No schedule, no spam.";
+  "Notes from building personal tools and agent systems inside a working software business. Roughly weekly, short, and you can reply.";
 
 export interface Props {
   compact?: boolean;
@@ -18,7 +18,7 @@ const inputId = compact ? "subscribe-email-compact" : "subscribe-email";
     <div class:list={["subscribe", { "subscribe-compact": compact }]}>
       {!compact && (
         <>
-          <h2 class="subscribe-heading">Subscribe</h2>
+          <h2 class="subscribe-heading">Software for one</h2>
           <p class="subscribe-copy">{SUBSCRIBE_COPY}</p>
         </>
       )}
