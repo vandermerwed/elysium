@@ -41,7 +41,7 @@ export const LOGO_IMAGE = {
 export const SOCIALS: SocialObjects = [
   {
     name: "Mail",
-    href: "mailto:daniel@danielvandermerwe.com",
+    href: "mailto:hi@danielvandermerwe.com",
     linkTitle: `Send an email to ${SITE.title}`,
     active: true,
   },
